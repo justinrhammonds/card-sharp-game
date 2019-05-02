@@ -1,0 +1,178 @@
+Card Sharp Solo is a game made up of 'mini-games', each of which is made up of 'stages', and each stage prompts a 
+number of actions by the player:
+
+NEW GAME:
+-- (n) MINI-GAMES: 
+----- 0-5 STAGES: BASE, ROW1, ROW2, ROW3, ROW4, BONUS
+-------- 1-2 ACTIONS: (JOKER-SWAP, CARD-SWAP, PREDICT-HIGHER, PREDICT-LOWER)
+
+Row Action Display Rules:
+**display high/low when card.revealed && card.value > 0
+**display swap when card.revealed && card.value > 0 && swaps > 0
+**display jokerswap card.revealed && card.value == 0
+
+MINI-GAME WALKTHROUGH:
+
+STAGE[0]
+swaps: 1,
+card: "red-joker",
+prev: null,
+prediction: null
+
+GAME
+score: 0,
+tries: 3,
+bonus: "points"
+
+======////======
+
+Clicks "Add Bonus" (JokerSwap())
+
+======////======
+
+STAGE[0]
+swaps: 1,
+card: "8-clubs",
+prev: null,
+prediction: null
+
+GAME
+score: 300,
+tries: 3,
+bonus: "points"
+
+======////======
+
+Clicks "Swap" (SwapCard())
+
+======////======
+
+STAGE[0]
+swaps: 0,
+card: "2-hearts",
+prev: null,
+prediction: null
+
+GAME
+score: 300,
+tries: 3,
+bonus: "points"
+
+======////======
+
+Clicks "Higher" (Predict("higher", 2)) -- advances stage
+
+======////======
+
+STAGE[1]
+swaps: 1,
+card: "10-hearts",
+prev: 2,
+prediction: "higher"
+
+GAME
+score: 300,
+tries: 3,
+bonus: "points"
+
+======////======
+
+EvaluatePrediction(10, "higher", 2) = true
+--true: Award()
+--false: FlipTable()
+
+======////======
+
+STAGE[1]
+swaps: 1,
+card: "10-hearts",
+prev: 2,
+prediction: "higher"
+
+GAME
+score: 400,
+tries: 3,
+bonus: "points"
+
+======////======
+
+Clicks "Lower" (Predict("lower", 10)) -- advances stage
+
+======////======
+
+STAGE[2]
+swaps: 1,
+card: "K-hearts",
+prev: 10,
+prediction: "lower"
+
+GAME
+score: 400,
+tries: 3,
+bonus: "points"
+
+======////======
+
+EvaluatePrediction(K, "lower", 10) = false
+--true: Award()
+--false: FlipTable()
+
+======////======
+
+STAGE[0]
+swaps: 1,
+card: "4-diamonds",
+prev: null,
+prediction: null
+
+GAME
+score: 400,
+tries: 2,
+bonus: "points"
+
+======////======
+
+..... bonus card
+
+======////======
+
+STAGE[4]
+swaps: 0,
+card: "8-diamonds",
+prev: 10,
+prediction: "lower"
+
+GAME
+score: 2650,
+tries: 0,
+bonus: "points"
+
+======////======
+
+Clicks "Lower" (Predict("lower", 8)) -- advances stage
+
+======////======
+
+STAGE[5]
+swaps: 0,
+card: "J-clubs",
+prev: 8,
+prediction: "lower"
+
+GAME
+score: 2650,
+tries: 0,
+bonus: "points"
+
+======////======
+
+EvaluatePrediction(11, "lower", 10) = false
+--true: Award()
+--false: FlipTable()
+
+GAME
+score: 2650,
+tries: 0,
+bonus: "points"
+
+

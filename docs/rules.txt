@@ -1,0 +1,45 @@
+How to Play:
+Object: Score the most points before you run out of tries. 
+When the game begins, players have 3 tries.
+
+Board Setup:
+[deck] [base(revealed)] [row1] [row2] [row3] [row4] [bonus] 
+
+Player predicts whether next card (L to R) will be "higher" or "lower"
+or if a swap is available, player can choose to swap the card.
+
+If the most recent revealed card is a joker, the player collects a bonus and swaps out the card for free.
+
+After a Prediction is made and next card is revealed:
+- If new card is a joker, collect bonus and swap for free
+- If prediction is correct, player earns points, the revealed card is now the 'base card' and play continues. 
+- If prediction is incorrect, the mini-game is over and the player loses a try. If there are no more tries, 
+the game is over. Otherwise, the player loses a try and the board resets for a new mini-game.
+
+PLAYERS WANT TO WIN A ROW by making four correct predictions. In the final stage of a mini-game, players will 
+make a bonus prediction (no swap available, no penalty if incorrect). If the bonus prediction is correct, the player 
+will collect a bonus of their choice!
+
+NOT ALL STAGES HAVE SWAPS!
+NOT ALL SWAPS ARE FOR FREE!
+
+Swap Table:
+Row: # of Swaps | Penalty
+Base: 1 | no
+Row1: 1 | yes
+Row2: 1 | yes
+Row3: 1 | yes
+Row4: 0 | n/a
+Bonus: n/a | n/a
+
+Scoring/Penalty Table:
+Correct Prediction: +100 points 
+Correct Bonus Prediction: +300 points or +1 Try 
+Joker Bonus: +300 points or +1 Try
+Swap Penalty: -60 points
+
+
+
+
+
+

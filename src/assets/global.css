@@ -1,0 +1,52 @@
+:root {
+  --righteous: 'Righteous', cursive;
+  --open-sans: 'Open Sans', sans-serif;
+  --bungee: 'Bungee Shade', cursive;
+  --graduate: 'Graduate', cursive;
+  --card-height: 15rem;
+  --card-width: calc(var(--card-height) * .727278)
+}
+
+html {
+  height: 100vh;
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #299104;
+  background-image: url('./45-degree-fabric.png');
+  background-repeat: repeat; 
+  color: white;
+  font-family: var(--open-sans);
+  font-size: 12px;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  margin: 1rem auto;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.85rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.6rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.35rem;
+}
+
+
+
+
+
