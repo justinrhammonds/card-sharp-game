@@ -1,12 +1,13 @@
 <template>
   <div class="row-stage">
     <card 
-      :suit="stageCard.suit" 
-      :face-value="stageCard.name" 
+      :revealed="isRevealed"
+      :suit="stage.card.suit" 
+      :face-value="stage.card.name" 
     />
     <!-- if it is the 'active' stage, render the action buttons -->
     <div 
-      v-if="active"
+      v-if="isActive"
       class="button-group">
       <button 
         class="prediction-button"
@@ -30,24 +31,12 @@ export default {
   components: {
     Card,
   },
-  props: {
-    stageId: {
+  props: { 
+    stage: {
+      type: Object
+    },
+    activeStageId: {
       type: Number
-    },
-    swaps: {
-      type: Number,
-      default: 0
-    },
-    stageCard: {
-      type: Object,
-      default: () => ({
-        suit: "spades", 
-        name: "card-back", 
-        value: 0,    
-      })
-    },
-    isActive: {
-      type: Boolean
     }
   },
   data() {
@@ -56,18 +45,21 @@ export default {
     }
   },
   computed: {
-    // I think this should belong somewhere else
-    active: function() {
-      return this.isActive;
+    isRevealed: function() {
+      return (this.stage.id <= this.activeStageId) ? true : false;
+    },
+    isActive: function() {
+      return  this.activeStageId === this.stage.id && 
+              this.stage.name != "bonus";
     }
   },
   methods: {
     predict(prediction) {
       this.prediction = prediction;
       // pass prediction, and card value to next stage on game row
-      this.$emit("prediction", this.prediction, this.stageCard.value);
+      this.$emit("prediction", this.prediction, this.stage.card.value);
     }
-  },
+},
   created() {
 
   }

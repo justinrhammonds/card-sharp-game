@@ -1,12 +1,10 @@
 <template>
   <div class="game-row">
-    <!-- TODO Implement for loop once stage advancement is worked out -->
       <row-stage 
         :key="index"
         v-for="(stage, index) in stages"
-        :swaps="true ? stage.swaps : undefined" 
-        :is-active="true"
-        :stage-card="setStageCard(rowCards, index)" 
+        :active-stage-id="currentStageIndex"
+        :stage="stage"
         @prediction="advanceStageAndEvaluate"
       />
   </div>
@@ -16,7 +14,6 @@
 import stages from '../data/stages.js';
 import cards from '../data/cards.js';
 import RowStage from './RowStage.vue';
-import { constants } from 'crypto';
 
 export default {
   name: "game-row",
@@ -25,6 +22,7 @@ export default {
   },
   data() {
     return {
+      cards,
       stages,
       currentStageIndex: 0,
     }
@@ -33,67 +31,61 @@ export default {
     nextStageIndex: function() {
       return this.currentStageIndex + 1
     },
-    deck: function() {
-      for (const card of cards) {
-        card.order = Math.random()
-      }
-      return cards.sort((a,b) => {
-        return a.order - b.order
-      })
-      .slice( 0, 12 ) //don't need more than 12 cards in each game row
-    },
-    rowCards: function() {
-      return this.deal(6);
-    },
-    drawPile: function() {
-      return this.deal(6, 6);
-    },
     currentStage: function() {
       return this.stages[currentStageIndex];
     }
   },
+  beforeCreate() {
+  },
   created() {
-//
+    function shuffle() {
+      for (const card of cards) {
+        card.order = Math.random()
+      }
+      cards.sort((a,b) => {
+        return a.order - b.order
+      });
+    }
+
+    function dealStages(cards) {
+      for (let i = 0; i < stages.length; i++) {
+        stages[i].card = cards[i];
+      }
+    }
+
+    shuffle();
+    //only need a max of 12 cards for a game
+    this.cards = this.cards.slice(0, 12);
+    dealStages(this.cards);
+  },
+  mounted() {
+  },  
+  updated() {
   },
   methods: {
-    deal(numberOfCards, fromPosition = 0) {
-      console.log('deck:', this.deck);
-      return this.deck.slice(fromPosition, numberOfCards)
-    },
-    drawCard(deckInput) {
-      const card = deckInput.shift();
+    drawCard(cards, position) {
+      const card = cards[position];
       this.currentStageCardValue = card.value; 
       return card;
     },
     advanceStageAndEvaluate(prediction, previousCardValue) {
       this.currentStageIndex = this.nextStageIndex;
-      console.log("advance", this.currentStageIndex)
-      this.stages[this.currentStageIndex].card = this.drawCard(this.rowCards)
-
+      this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
+      let evaluation;
       if (prediction === "higher") {
-        const evaluation = this.currentStageCardValue > previousCardValue;
-        console.log("evaluation", previousCardValue, prediction, this.currentStageCardValue, evaluation);
-        return evaluation;
+      evaluation = this.currentStageCardValue > previousCardValue;
       } 
       else {
-        const evaluation = this.currentStageCardValue < previousCardValue;
-        console.log("evaluation", previousCardValue, prediction, this.currentStageCardValue, evaluation);
-        return evaluation;
+        evaluation = this.currentStageCardValue < previousCardValue;
       }
+      console.log('EvaluatePrediction :', evaluation);
+      return evaluation;
     },
-    setStageCard(rowCards, stageIndex) {
-      if(this.currentStageIndex === stageIndex ) {
-        console.log(`rowCards: `, rowCards);
-        const card = this.drawCard(rowCards);
-        console.log(`setStage ${stageIndex} card:`, card); 
-        return card;
-      } 
-      else if (this.currentStageIndex < stageIndex) {
-        const card = this.stages[stageIndex].card;
-        console.log(`setStage ${stageIndex} card:`, card);
-        return card;
-      }
-
+    drawNewCardFromPile() {
+      // TODO drawCard from cards at position equal to stages length + number of previously drawn cards => 6 to begin with
+    },
+    determineIsActive(stageIndex) {
+      return this.currentStageIndex === stageIndex
     }
   }
 }

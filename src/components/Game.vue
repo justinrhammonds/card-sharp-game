@@ -3,13 +3,12 @@
     <nav class="hud">
       <ul>
         <li 
-        class="bonus-type"
-        @click="toggleBonus()"
-        >
+          class="bonus-type"
+          @click="toggleBonus()">
           <font-awesome-icon :icon="bonus" /> BONUS
         </li>
         <li class="total-score">
-          <font-awesome-icon icon="dollar-sign" />{{totalScore}}
+          <font-awesome-icon icon="dollar-sign" /> {{totalScore}}
         </li>
         <li class="total-lives">
           <font-awesome-icon icon="heart" /> {{livesRemaining}}
@@ -22,13 +21,11 @@
 
 <script>
 import GameRow from '../components/GameRow.vue';
-import cards from '../components/Card.vue';
 
 export default {
   name: "game",
   data() {
     return {
-      cards,
     }
   },
   components: {
