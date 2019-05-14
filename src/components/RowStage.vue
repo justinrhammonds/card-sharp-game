@@ -36,7 +36,8 @@ export default {
       type: Object
     },
     activeStageId: {
-      type: Number
+      type: Number,
+      default: -1
     }
   },
   data() {

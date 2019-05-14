@@ -38,31 +38,45 @@ export default {
   beforeCreate() {
   },
   created() {
-    function shuffle() {
-      for (const card of cards) {
-        card.order = Math.random()
-      }
-      cards.sort((a,b) => {
-        return a.order - b.order
-      });
-    }
-
-    function dealStages(cards) {
-      for (let i = 0; i < stages.length; i++) {
-        stages[i].card = cards[i];
-      }
-    }
-
-    shuffle();
+    this.shuffle();
     //only need a max of 12 cards for a game
     this.cards = this.cards.slice(0, 12);
-    dealStages(this.cards);
+    this.dealStages(this.cards);
   },
   mounted() {
   },  
   updated() {
   },
   methods: {
+    flipTable() {
+      /* 
+      I used this.$nextTick().then()... because I
+      needed to force waiting for a new UI cycle to
+      avoid the side effect of 'not rerendering' the 
+      stage 0 card in the view
+      */
+      this.$nextTick().then(() => {
+        this.currentStageIndex = 0;
+        this.cards = cards;
+        this.shuffle();
+        this.cards = this.cards.slice(0,12);
+        this.dealStages(this.cards);
+      })
+    },
+    shuffle() {
+      for (const card of cards) {
+        card.order = Math.random()
+      }
+      cards.sort((a,b) => {
+        return a.order - b.order
+      });
+    },
+    dealStages(cards) {
+      console.log('Starting new game...');
+      for (let i = 0; i < stages.length; i += 1) {
+        stages[i].card = cards[i];
+      }
+    },
     drawCard(cards, position) {
       const card = cards[position];
       this.currentStageCardValue = card.value; 
@@ -73,19 +87,25 @@ export default {
       this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
       let evaluation;
       if (prediction === "higher") {
-      evaluation = this.currentStageCardValue > previousCardValue;
+        evaluation = this.currentStageCardValue > previousCardValue;
       } 
       else {
         evaluation = this.currentStageCardValue < previousCardValue;
       }
-      console.log('EvaluatePrediction :', evaluation);
+      if (evaluation) console.log('You guessed right!');
+      if (!evaluation) console.log('You guessed wrong!');
+      if (!evaluation) this.flipTable();
+      if (this.stages[this.currentStageIndex].name === "bonus") {
+        if (evaluation) console.log('You win a BONUS!');
+        this.flipTable();
+      }
       return evaluation;
     },
     drawNewCardFromPile() {
       // TODO drawCard from cards at position equal to stages length + number of previously drawn cards => 6 to begin with
     },
     determineIsActive(stageIndex) {
-      return this.currentStageIndex === stageIndex
+      return this.currentStageIndex === stageIndex;
     }
   }
 }
