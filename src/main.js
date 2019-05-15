@@ -19,19 +19,6 @@ library.add(
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
-const routes = {
-  '/': App,
-}
-
 new Vue({
-  el: "#app",
-  data: {
-    currentRoute: window.location.pathname
-  },
-  computed: {
-    ViewComponent() {
-      return routes[this.currentRoute]
-    }
-  },
-  render (h) { return h(this.ViewComponent) }
-})
+  render: h => h(App),
+}).$mount('#app')
