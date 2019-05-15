@@ -69,11 +69,13 @@ export default {
 
 <style scoped>
 .prediction-button {
-  font-size: 2rem;
-  height: 4rem;
-  width: 4rem;
-  border: none;
+  font-size: calc(var(--card-width) * .16);;
+  height: calc(var(--card-width) * .32);
+  width: calc(var(--card-width) * .32);
+  border: .15rem solid white;
   border-radius: 50%;
+  background-color: rgb(55, 218, 209);
+  color: white;
 }
 
 </style>

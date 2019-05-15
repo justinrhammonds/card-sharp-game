@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     nextStageIndex: function() {
-      return this.currentStageIndex + 1
+      return this.currentStageIndex + 1;
     },
     currentStage: function() {
       return this.stages[currentStageIndex];
@@ -68,7 +68,7 @@ export default {
         card.order = Math.random()
       }
       cards.sort((a,b) => {
-        return a.order - b.order
+        return a.order - b.order;
       });
     },
     dealStages(cards) {
@@ -112,7 +112,11 @@ export default {
 </script>
 
 <style scoped>
-
+.game-row {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 10vh;
+}
 
 
 </style>
