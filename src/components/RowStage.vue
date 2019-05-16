@@ -1,24 +1,11 @@
 <template>
   <div class="row-stage">
-    <card 
-      :revealed="isRevealed"
-      :suit="stage.card.suit" 
-      :face-value="stage.card.name" 
-    />
-    <!-- if it is the 'active' stage, render the action buttons -->
-    <div 
-      v-if="isActive"
-      class="button-group">
-      <button 
-        class="prediction-button"
-        @click="predict('higher')">
-        <font-awesome-icon icon="arrow-up" />
-      </button>
-      <button 
-        class="prediction-button"
-        @click="predict('lower')">
-        <font-awesome-icon icon="arrow-down" />
-      </button>
+    <div :class="{highlighted: isNextStage}">
+      <card 
+        :revealed="isRevealed"
+        :suit="stage.card.suit" 
+        :face-value="stage.card.name" 
+      />
     </div>
   </div>
 </template>
@@ -40,11 +27,6 @@ export default {
       default: -1
     }
   },
-  data() {
-    return {
-      prediction: null,
-    }
-  },
   computed: {
     isRevealed: function() {
       return (this.stage.id <= this.activeStageId) ? true : false;
@@ -52,15 +34,11 @@ export default {
     isActive: function() {
       return  this.activeStageId === this.stage.id && 
               this.stage.name != "bonus";
+    },
+    isNextStage: function() {
+      return this.activeStageId + 1 === this.stage.id;
     }
   },
-  methods: {
-    predict(prediction) {
-      this.prediction = prediction;
-      // pass prediction, and card value to next stage on game row
-      this.$emit("prediction", this.prediction, this.stage.card.value);
-    }
-},
   created() {
 
   }
@@ -68,16 +46,14 @@ export default {
 </script>
 
 <style scoped>
-.prediction-button {
-  font-size: calc(var(--card-width) * .16);;
-  height: calc(var(--card-width) * .32);
-  width: calc(var(--card-width) * .32);
-  border: .15rem solid white;
-  border-radius: 50%;
-  background-color: rgb(55, 218, 209);
-  color: white;
-}
+  .row-stage {
+    align-self: center;
+  }
 
+  .highlighted {
+    background-color: aqua;
+    box-shadow: 0 0 calc(var(--card-width) * .06) calc(var(--card-width) * .06) aqua;
+  }
 </style>
 
 

@@ -5,6 +5,7 @@
   --graduate: 'Graduate', cursive;
   --card-height: calc(var(--card-width) / .727278);
   --card-width: 12vw;
+  --nav-font-size: calc(10px + (20 - 10) * (100vw - 400px) / (1600 - 400));
 }
 
 html {

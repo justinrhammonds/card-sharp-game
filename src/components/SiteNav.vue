@@ -38,9 +38,9 @@ nav li {
 
 .nav-1, .nav-2 {
   flex-grow: 1;
-  font-size: 1rem;
+  font-size: var(--nav-font-size);
   font-family: var(--graduate);
-  padding: 0 1rem;
+  padding: 0 var(--nav-font-size);
 }
 
 .title {

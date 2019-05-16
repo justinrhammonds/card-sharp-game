@@ -4,7 +4,7 @@
       <li 
         class="bonus-type"
         @click="toggleBonus()">
-        <span class="bonus-container"><font-awesome-icon icon="cog" />Bonus: {{bonus}}</span>
+        <span class="bonus-container"><font-awesome-icon icon="star" />Bonus: {{bonus}}</span>
       </li>
       <li class="total-score">
         Score: {{totalScore}}
@@ -53,7 +53,7 @@ export default {
   background-color: #750a70;
   color: #fff;
   font-family: var(--open-sans);
-  font-size: 1rem;
+  font-size: var(--nav-font-size);
   font-weight: 700;
 }
 
@@ -73,7 +73,7 @@ export default {
   padding: .5rem;
 }
 
-.fa-cog {
+.fa-star {
   margin-right: 5px;
 }
 

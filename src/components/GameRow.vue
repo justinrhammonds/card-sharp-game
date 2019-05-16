@@ -1,5 +1,6 @@
 <template>
   <div class="game-row">
+    <div class="row-container">
       <row-stage 
         :key="index"
         v-for="(stage, index) in stages"
@@ -7,6 +8,10 @@
         :stage="stage"
         @prediction="advanceStageAndEvaluate"
       />
+    </div>  
+    <game-controls 
+      @prediction="advanceStageAndEvaluate"
+    />
   </div>
 </template>
 
@@ -14,17 +19,20 @@
 import stages from '../data/stages.js';
 import cards from '../data/cards.js';
 import RowStage from './RowStage.vue';
+import GameControls from './GameControls.vue';
 
 export default {
   name: "game-row",
   components: {
-    RowStage
+    RowStage,
+    GameControls
   },
   data() {
     return {
       cards,
       stages,
       currentStageIndex: 0,
+      previousCardValue: null,
     }
   },
   computed: {
@@ -82,7 +90,9 @@ export default {
       this.currentStageCardValue = card.value; 
       return card;
     },
-    advanceStageAndEvaluate(prediction, previousCardValue) {
+    advanceStageAndEvaluate(prediction) {
+      const previousCardValue = this.stages[this.currentStageIndex].card.value;
+      console.log('prevCardValue :', this.previousCardValue);
       this.currentStageIndex = this.nextStageIndex;
       this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
       let evaluation;
@@ -101,6 +111,9 @@ export default {
       }
       return evaluation;
     },
+    isNextStage() {
+      return "highlight";
+    },
     drawNewCardFromPile() {
       // TODO drawCard from cards at position equal to stages length + number of previously drawn cards => 6 to begin with
     },
@@ -112,11 +125,9 @@ export default {
 </script>
 
 <style scoped>
-.game-row {
-  display: flex;
-  justify-content: space-evenly;
-  padding-top: 10vh;
-}
-
-
+  .row-container {
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 10vh;
+  }
 </style>

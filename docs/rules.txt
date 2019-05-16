@@ -3,7 +3,7 @@ Object: Score the most points before you run out of tries.
 When the game begins, players have 3 tries.
 
 Board Setup:
-[deck] [base(revealed)] [row1] [row2] [row3] [row4] [bonus] 
+[base card(revealed)] [row 1] [row 2] [row 3] [row 4] [bonus card] 
 
 Player predicts whether next card (L to R) will be "higher" or "lower"
 or if a swap is available, player can choose to swap the card.
@@ -23,20 +23,18 @@ will collect a bonus of their choice!
 NOT ALL STAGES HAVE SWAPS!
 NOT ALL SWAPS ARE FOR FREE!
 
-Swap Table:
-Row: # of Swaps | Penalty
-Base: 1 | no
-Row1: 1 | yes
-Row2: 1 | yes
-Row3: 1 | yes
-Row4: 0 | n/a
-Bonus: n/a | n/a
+Swaps:
+Base Card: Player can swap once for no penalty
+1st Row Card: Player can swap once for a point penalty
+2nd Row Card: Player can swap once for a point penalty
+3rd Row Card: Player can swap once for a point penalty
+4th Row Card: Player cannot swap
 
 Scoring/Penalty Table:
 Correct Prediction: +100 points 
-Correct Bonus Prediction: +300 points or +1 Try 
+Correct 'Bonus Card' Prediction: +300 points or +1 Try 
 Joker Bonus: +300 points or +1 Try
-Swap Penalty: -60 points
+Swap Point Penalty: -60 points
 
 
 
