@@ -1,27 +1,20 @@
 <template>
-    <nav class="site-nav">
-      <ul>
-        <li class="title"><h1>Card Sharp</h1></li>
-        <li class="nav-1">New Game</li>
-        <li class="nav-2">How to Play</li>
-      </ul>
-    </nav>
+  <nav class="site-nav">
+    <ul>
+      <li class="title"><h1>Card Sharp</h1></li>
+      <li class="nav-1">New Game</li>
+      <li class="nav-2">How to Play</li>
+    </ul>
+  </nav>
 </template>
 
 <script>
 export default {
-    name: "site-nav"
+  name: "site-nav",
 }
 </script>
 
 <style>
-nav ul, nav li {
-  display: inline-block;
-}
-
-nav li {
-  list-style-type: none;
-}
 
 .site-nav {
   background-color: #1a1a1a;
@@ -50,5 +43,3 @@ nav li {
 }
 
 </style>
-
-

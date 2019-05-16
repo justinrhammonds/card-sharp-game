@@ -43,17 +43,11 @@ export default {
       return this.stages[currentStageIndex];
     }
   },
-  beforeCreate() {
-  },
   created() {
     this.shuffle();
     //only need a max of 12 cards for a game
     this.cards = this.cards.slice(0, 12);
     this.dealStages(this.cards);
-  },
-  mounted() {
-  },  
-  updated() {
   },
   methods: {
     flipTable() {
@@ -73,7 +67,7 @@ export default {
     },
     shuffle() {
       for (const card of cards) {
-        card.order = Math.random()
+        card.order = Math.random();
       }
       cards.sort((a,b) => {
         return a.order - b.order;
@@ -92,7 +86,6 @@ export default {
     },
     advanceStageAndEvaluate(prediction) {
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
-      console.log('prevCardValue :', this.previousCardValue);
       this.currentStageIndex = this.nextStageIndex;
       this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
       let evaluation;
@@ -102,8 +95,12 @@ export default {
       else {
         evaluation = this.currentStageCardValue < previousCardValue;
       }
-      if (evaluation) console.log('You guessed right!');
-      if (!evaluation) console.log('You guessed wrong!');
+      if (evaluation) {
+        console.log(`${this.stages[this.currentStageIndex].name} stage: You guessed right!`);
+      } 
+      else {
+        console.log(`${this.stages[this.currentStageIndex].name} stage: You guessed wrong!`);
+      }
       if (!evaluation) this.flipTable();
       if (this.stages[this.currentStageIndex].name === "bonus") {
         if (evaluation) console.log('You win a BONUS!');
@@ -111,23 +108,16 @@ export default {
       }
       return evaluation;
     },
-    isNextStage() {
-      return "highlight";
-    },
-    drawNewCardFromPile() {
-      // TODO drawCard from cards at position equal to stages length + number of previously drawn cards => 6 to begin with
-    },
-    determineIsActive(stageIndex) {
-      return this.currentStageIndex === stageIndex;
-    }
   }
 }
 </script>
 
 <style scoped>
+
   .row-container {
     display: flex;
     justify-content: space-evenly;
     padding-top: 10vh;
   }
+
 </style>

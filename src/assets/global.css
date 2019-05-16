@@ -12,6 +12,7 @@ html {
   height: 100vh;
   box-sizing: border-box;
 }
+
 *,
 *::before,
 *::after {
@@ -47,7 +48,10 @@ h3 {
   line-height: 1.35rem;
 }
 
+nav ul, nav li {
+  display: inline-block;
+}
 
-
-
-
+nav li {
+  list-style-type: none;
+}

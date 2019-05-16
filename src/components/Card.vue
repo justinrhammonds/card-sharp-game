@@ -7,7 +7,7 @@ export default {
   name: 'card',
   props: {
     revealed: {
-      default:"false",
+      default:false,
       type: Boolean
     },
     suit: {
@@ -41,9 +41,9 @@ export default {
 
 <style scoped>
 
-.card {
-  height: var(--card-height);
-  width: var(--card-width);
-}
+  .card {
+    height: var(--card-height);
+    width: var(--card-width);
+  }
 
 </style>

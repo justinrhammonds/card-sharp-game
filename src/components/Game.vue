@@ -19,8 +19,9 @@ export default {
 </script>
 
 <style scoped>
-#game {
-  height: 100%;
-}
+
+  #game {
+    height: 100%;
+  }
 
 </style>

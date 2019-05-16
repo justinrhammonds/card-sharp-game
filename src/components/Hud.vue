@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       bonus: "Points",
-      toggle: "toggle-on"
+      toggle: "toggle-on",
     }
   },
   computed: {
@@ -37,7 +37,7 @@ export default {
     toggleBonus() {
       if (this.bonus === "Points") {
         this.toggle = "toggle-on";
-        this.bonus = "Lives"
+        this.bonus = "Lives";
       } 
       else {
         this.toggle = "toggle-off";
@@ -47,34 +47,36 @@ export default {
   }
 }
 </script>
+
 <style scoped>
-.hud {
-  width: 100vw;
-  background-color: #750a70;
-  color: #fff;
-  font-family: var(--open-sans);
-  font-size: var(--nav-font-size);
-  font-weight: 700;
-}
 
-.hud ul {
-  margin: 0 auto;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-}
+  .hud {
+    width: 100vw;
+    background-color: #750a70;
+    color: #fff;
+    font-family: var(--open-sans);
+    font-size: var(--nav-font-size);
+    font-weight: 700;
+  }
 
-.bonus-type {
-  width: 40vw;
-}
+  .hud ul {
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+  }
 
-.bonus-container {
-  border: 2px solid white;
-  padding: .5rem;
-}
+  .bonus-type {
+    width: 40vw;
+  }
 
-.fa-star {
-  margin-right: 5px;
-}
+  .bonus-container {
+    border: 2px solid white;
+    padding: .5rem;
+  }
+
+  .fa-star {
+    margin-right: .5rem;
+  }
 
 </style>

@@ -39,21 +39,19 @@ export default {
       return this.activeStageId + 1 === this.stage.id;
     }
   },
-  created() {
-
-  }
 }
 </script>
 
 <style scoped>
+
   .row-stage {
     align-self: center;
   }
 
   .highlighted {
     background-color: aqua;
+    border-radius: 4%;
     box-shadow: 0 0 calc(var(--card-width) * .06) calc(var(--card-width) * .06) aqua;
   }
+
 </style>
-
-
