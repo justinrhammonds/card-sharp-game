@@ -11,11 +11,9 @@ export default {
       type: Boolean
     },
     suit: {
-      default:"spades",
-      type: String
+      type: String,
     },
     faceValue: {
-      default:"card-back",
       type: String
     }
   },
@@ -26,12 +24,11 @@ export default {
       this is because vue binding is executed at runtime while 
       webpack aliases are executed at compile time
       */
+     const url = require(`../assets/${this.suit}.svg`);
      if (this.revealed) {
-      const url = require(`../assets/${this.suit}.svg`);
       return `${url}#view-${this.faceValue}`;
      } 
      else {
-      const url = require(`../assets/spades.svg`);
       return `${url}#view-card-back`;
      }
     } 

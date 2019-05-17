@@ -6,12 +6,14 @@
         @click="toggleBonus()">
         <span class="bonus-container"><font-awesome-icon icon="star" />Bonus: {{bonus}}</span>
       </li>
+      <!-- TODO
       <li class="total-score">
         Score: {{totalScore}}
       </li>
       <li class="total-lives">
         Tries Remaining: {{livesRemaining}}
-      </li>
+      </li> 
+      -->
     </ul>
   </nav>
 </template>

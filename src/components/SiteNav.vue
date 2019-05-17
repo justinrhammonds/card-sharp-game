@@ -2,8 +2,10 @@
   <nav class="site-nav">
     <ul>
       <li class="title"><h1>Card Sharp</h1></li>
+      <!-- TODO 
       <li class="nav-1">New Game</li>
-      <li class="nav-2">How to Play</li>
+      <li class="nav-2">How to Play</li> 
+      -->
     </ul>
   </nav>
 </template>
