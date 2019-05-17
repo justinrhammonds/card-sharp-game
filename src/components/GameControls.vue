@@ -2,14 +2,19 @@
   <div 
     class="game-controls">
     <button 
-      class="prediction-button"
+      class="control-button"
       @click="predict('higher')">
       Higher
     </button>
     <button 
-      class="prediction-button"
+      class="control-button"
       @click="predict('lower')">
       Lower
+    </button>
+    <button 
+      class="control-button"
+      @click={}>
+      Collect Bonus
     </button>
   </div>
 </template>
@@ -42,7 +47,7 @@ export default {
     width: 100vw;
   }
 
-  .prediction-button {
+  .control-button {
     text-transform: uppercase;
     background-color: aqua;
     color: white;

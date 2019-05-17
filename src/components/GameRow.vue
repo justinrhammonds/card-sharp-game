@@ -6,7 +6,6 @@
         v-for="(stage, index) in stages"
         :active-stage-id="currentStageIndex"
         :stage="stage"
-        @prediction="advanceStageAndEvaluate"
       />
     </div>  
     <game-controls 
@@ -61,7 +60,7 @@ export default {
         this.currentStageIndex = 0;
         this.cards = cards;
         this.shuffle();
-        this.cards = this.cards.slice(0,12);
+        this.cards = this.cards.slice(0, 12);
         this.dealStages(this.cards);
       })
     },
@@ -69,7 +68,7 @@ export default {
       for (const card of cards) {
         card.order = Math.random();
       }
-      cards.sort((a,b) => {
+      cards.sort((a, b) => {
         return a.order - b.order;
       });
     },
@@ -95,6 +94,7 @@ export default {
       else {
         evaluation = this.currentStageCardValue < previousCardValue;
       }
+      // only temporary for following game flow
       if (evaluation) {
         console.log(`${this.stages[this.currentStageIndex].name} stage: You guessed right!`);
       } 
@@ -104,7 +104,7 @@ export default {
       if (!evaluation) this.flipTable();
       if (this.stages[this.currentStageIndex].name === "bonus") {
         if (evaluation) console.log('You win a BONUS!');
-        this.flipTable();
+        setTimeout(this.flipTable, 1000);
       }
       return evaluation;
     },
