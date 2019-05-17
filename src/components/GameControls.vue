@@ -1,19 +1,20 @@
 <template>
   <div 
     class="game-controls">
-    <button 
+    <button v-if="!bonusStageReached"
       class="control-button"
       @click="predict('higher')">
       Higher
     </button>
-    <button 
+    <button v-if="!bonusStageReached"
       class="control-button"
       @click="predict('lower')">
       Lower
     </button>
-    <button 
+    <button  
+      v-if="bonusStageReached"
       class="control-button"
-      @click={}>
+      @click="collectBonus()">
       Collect Bonus
     </button>
   </div>
@@ -22,9 +23,19 @@
 <script>
 export default {
   name: "game-controls",
+  props: {
+    stageName: {
+      type: String
+    }
+  },
   data() {
     return {
       prediction: null,
+    }
+  },
+  computed: {
+    bonusStageReached: function() {
+      return this.stageName === "bonus";
     }
   },
   methods: {
@@ -33,6 +44,9 @@ export default {
       // pass prediction, and card value to next stage on game row
       // this.$emit("prediction", this.prediction, this.stage.card.value);
       this.$emit("prediction", this.prediction);
+    },
+    collectBonus() {
+      this.$emit("collect-bonus");
     }
   }
 }

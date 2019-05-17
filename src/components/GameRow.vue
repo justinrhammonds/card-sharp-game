@@ -10,6 +10,8 @@
     </div>  
     <game-controls 
       @prediction="advanceStageAndEvaluate"
+      @collect-bonus="collectBonus"
+      :stage-name="currentStage.name"
     />
   </div>
 </template>
@@ -39,7 +41,7 @@ export default {
       return this.currentStageIndex + 1;
     },
     currentStage: function() {
-      return this.stages[currentStageIndex];
+      return this.stages[this.currentStageIndex];
     }
   },
   created() {
@@ -94,22 +96,18 @@ export default {
       else {
         evaluation = this.currentStageCardValue < previousCardValue;
       }
-      // only temporary for following game flow
-      if (evaluation) {
-        console.log(`${this.stages[this.currentStageIndex].name} stage: You guessed right!`);
-      } 
-      else {
-        console.log(`${this.stages[this.currentStageIndex].name} stage: You guessed wrong!`);
-      }
       if (!evaluation) {
         setTimeout(this.flipTable, 1000);
       }
-      if (this.stages[this.currentStageIndex].name === "bonus") {
-        if (evaluation) console.log('You win a BONUS!');
-        setTimeout(this.flipTable, 1000);
-      }
+      // if (this.stages[this.currentStageIndex].name === "bonus") {
+      //   if (evaluation) console.log('You win a BONUS!');
+      //   setTimeout(this.flipTable, 1000);
+      // }
       return evaluation;
     },
+    collectBonus() {
+      this.flipTable();
+    }
   }
 }
 </script>
