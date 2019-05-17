@@ -101,7 +101,9 @@ export default {
       else {
         console.log(`${this.stages[this.currentStageIndex].name} stage: You guessed wrong!`);
       }
-      if (!evaluation) this.flipTable();
+      if (!evaluation) {
+        setTimeout(this.flipTable, 1000);
+      }
       if (this.stages[this.currentStageIndex].name === "bonus") {
         if (evaluation) console.log('You win a BONUS!');
         setTimeout(this.flipTable, 1000);
