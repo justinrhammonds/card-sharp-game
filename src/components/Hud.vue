@@ -10,8 +10,8 @@
       <li class="total-score">
         Score: {{totalScore}}
       </li>
-      <li class="total-lives">
-        Tries Remaining: {{livesRemaining}}
+      <li class="total-tries">
+        Tries Remaining: {{triesRemaining}}
       </li> 
       -->
     </ul>
@@ -23,27 +23,24 @@ export default {
   name: "hud",
   data() {
     return {
-      bonus: "Points",
-      toggle: "toggle-on",
+      bonus: "+300 Points",
     }
   },
   computed: {
     totalScore: function() {
       return 0;
     },
-    livesRemaining: function() {
+    ltriesRemaining: function() {
       return 3;
     },
   },
   methods: {
     toggleBonus() {
-      if (this.bonus === "Points") {
-        this.toggle = "toggle-on";
-        this.bonus = "Lives";
+      if (this.bonus === "+300 Points") {
+        this.bonus = "+1 Try";
       } 
       else {
-        this.toggle = "toggle-off";
-        this.bonus = "Points";
+        this.bonus = "+300 Points";
       }
     }
   }
@@ -75,6 +72,7 @@ export default {
   .bonus-container {
     border: 2px solid white;
     padding: .5rem;
+    width: calc(var(--card-width) * 4);
   }
 
   .fa-star {
