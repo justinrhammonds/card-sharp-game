@@ -5,13 +5,15 @@
         :key="index"
         v-for="(stage, index) in stages"
         :active-stage-id="currentStageIndex"
-        :stage="stage"
+        :row-stage="stage"
+        :swappedCard="swappedCard"
       />
     </div>  
     <game-controls 
       @prediction="advanceStageAndEvaluate"
       @collect-bonus="collectBonus"
-      :stage-name="currentStage.name"
+      :stage="currentStage"
+      @swap="swapCard"
     />
   </div>
 </template>
@@ -34,6 +36,9 @@ export default {
       stages,
       currentStageIndex: 0,
       previousCardValue: null,
+      totalCardsSwapped: 0,
+      currentStageCardValue: null,
+      swappedCard: null,
     }
   },
   computed: {
@@ -50,6 +55,9 @@ export default {
     this.cards = this.cards.slice(0, 12);
     this.dealStages(this.cards);
   },
+  updated() {
+    this.swappedCard = null;
+  },
   methods: {
     flipTable() {
       /* 
@@ -60,11 +68,19 @@ export default {
       */
       this.$nextTick().then(() => {
         this.currentStageIndex = 0;
+        this.resetStages();
         this.cards = cards;
         this.shuffle();
+        this.totalCardsSwapped = 0;
         this.cards = this.cards.slice(0, 12);
         this.dealStages(this.cards);
       })
+    },
+    // TODO - find a better way to do this.
+    resetStages() {
+      for (let i = 0; i < 4; i += 1) {
+        this.stages[i].swaps = 1;
+      }
     },
     shuffle() {
       for (const card of cards) {
@@ -75,15 +91,22 @@ export default {
       });
     },
     dealStages(cards) {
-      console.log('Starting new game...');
       for (let i = 0; i < stages.length; i += 1) {
         stages[i].card = cards[i];
       }
     },
     drawCard(cards, position) {
       const card = cards[position];
-      this.currentStageCardValue = card.value; 
+      this.currentStageCardValue = card.value;
       return card;
+    },
+    swapCard() {
+      const swapPosition = 6 + this.totalCardsSwapped;
+      this.currentStage.card = this.cards[swapPosition];
+      this.swappedCard = this.currentStage.card;
+      this.totalCardsSwapped = this.totalCardsSwapped + 1; 
+      this.currentStage.swaps = this.currentStage.swaps - 1;
+      this.$emit("adjust-score", -1, true);
     },
     advanceStageAndEvaluate(prediction) {
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
@@ -96,16 +119,27 @@ export default {
       else {
         evaluation = this.currentStageCardValue < previousCardValue;
       }
-      if (!evaluation) {
+      // if not bonus round, and prediction was correct, award points
+      if (this.stages[this.currentStageIndex].name !== "bonus" && evaluation) {
+        this.$emit("adjust-score", +1);
+      }
+
+      // if not bonus round, and prediction was incorrect, lose a try and reset rows
+      if (this.stages[this.currentStageIndex].name !== "bonus" && !evaluation) {
+        this.$emit("adjust-tries", -1);
         setTimeout(this.flipTable, 1000);
       }
-      // if (this.stages[this.currentStageIndex].name === "bonus") {
-      //   if (evaluation) console.log('You win a BONUS!');
-      //   setTimeout(this.flipTable, 1000);
-      // }
+
+      // if bonus round, and prediction was incorrect, reset rows
+      if (this.stages[this.currentStageIndex].name === "bonus" && !evaluation) {
+        setTimeout(this.flipTable, 1000);
+      }
+      
+      this.stages[this.currentStageIndex].evaluation = evaluation;
       return evaluation;
     },
     collectBonus() {
+      this.$emit("award-bonus");
       this.flipTable();
     }
   }

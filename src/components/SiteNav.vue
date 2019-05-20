@@ -2,17 +2,34 @@
   <nav class="site-nav">
     <ul>
       <li class="title"><h1>Card Sharp</h1></li>
-      <!-- TODO 
-      <li class="nav-1">New Game</li>
-      <li class="nav-2">How to Play</li> 
-      -->
+      <!-- <li class="nav-1">New Game</li> -->
+      <li class="nav-2" @click="showInstructions">How to Play</li> 
     </ul>
+    <b-modal 
+      id="how-to-play-instructions" 
+      size="lg"
+      title="Welcome to Card Sharp!"
+      hide-header
+      hide-footer
+      scrollable>
+      <how-to-play />
+    </b-modal>
   </nav>
 </template>
 
 <script>
+import HowToPlay from './HowToPlay.vue';
+
 export default {
   name: "site-nav",
+  components: {
+    HowToPlay
+  },
+  methods: {
+    showInstructions () {
+      this.$bvModal.show('how-to-play-instructions');
+    },
+  }
 }
 </script>
 

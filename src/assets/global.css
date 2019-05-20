@@ -6,6 +6,9 @@
   --card-height: calc(var(--card-width) / .727278);
   --card-width: 12vw;
   --nav-font-size: calc(10px + (20 - 10) * (100vw - 400px) / (1600 - 400));
+  --orange: coral;
+  --blue: #16dcdc;
+  --green: #5cea42;
 }
 
 html {
@@ -25,7 +28,7 @@ body {
   background-repeat: repeat; 
   color: white;
   font-family: var(--open-sans);
-  font-size: 12px;
+  font-size: 16px;
   margin: 0;
 }
 

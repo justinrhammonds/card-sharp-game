@@ -6,14 +6,12 @@
         @click="toggleBonus()">
         <span class="bonus-container"><font-awesome-icon icon="star" />Bonus: {{bonus}}</span>
       </li>
-      <!-- TODO
       <li class="total-score">
-        Score: {{totalScore}}
+        Score: {{score}}
       </li>
       <li class="total-tries">
-        Tries Remaining: {{triesRemaining}}
+        Tries Remaining: {{tries}}
       </li> 
-      -->
     </ul>
   </nav>
 </template>
@@ -21,26 +19,28 @@
 <script>
 export default {
   name: "hud",
+  props: {
+    score: {
+      type: Number
+    },
+    tries: {
+      type: Number
+    }
+  },
   data() {
     return {
       bonus: "+300 Points",
     }
   },
-  computed: {
-    totalScore: function() {
-      return 0;
-    },
-    ltriesRemaining: function() {
-      return 3;
-    },
-  },
   methods: {
     toggleBonus() {
       if (this.bonus === "+300 Points") {
         this.bonus = "+1 Try";
+        this.$emit("bonus-toggle", "tries");
       } 
       else {
         this.bonus = "+300 Points";
+        this.$emit("bonus-toggle", "score");
       }
     }
   }
@@ -67,6 +67,10 @@ export default {
 
   .bonus-type {
     width: 40vw;
+  }
+
+  .bonus-type span {
+    background-color: rgba(256,256,256,25%);
   }
 
   .bonus-container {

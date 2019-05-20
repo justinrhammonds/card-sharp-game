@@ -1,10 +1,15 @@
 <template>
   <div class="row-stage">
     <div :class="{highlighted: isNextStage}">
-      <card 
+      <card v-if="isSwapped"
         :revealed="isRevealed"
-        :suit="stage.card.suit" 
-        :face-value="stage.card.name" 
+        :suit="swappedCard.suit" 
+        :face-value="swappedCard.name" 
+      />
+      <card v-else
+        :revealed="isRevealed"
+        :suit="rowStage.card.suit" 
+        :face-value="rowStage.card.name" 
       />
     </div>
   </div>
@@ -19,26 +24,28 @@ export default {
     Card,
   },
   props: { 
-    stage: {
+    rowStage: {
       type: Object
     },
     activeStageId: {
       type: Number,
       default: -1
+    },
+    swappedCard: {
+      type: Object
     }
   },
   computed: {
     isRevealed: function() {
-      return (this.stage.id <= this.activeStageId) ? true : false;
-    },
-    isActive: function() {
-      return  this.activeStageId === this.stage.id && 
-              this.stage.name != "bonus";
+      return (this.rowStage.id <= this.activeStageId) ? true : false;
     },
     isNextStage: function() {
-      return this.activeStageId + 1 === this.stage.id;
-    }
-  },
+      return this.activeStageId + 1 === this.rowStage.id;
+    },
+    isSwapped: function() {
+      return this.swappedCard != null && this.rowStage.id === this.activeStageId;
+    },
+  }
 }
 </script>
 

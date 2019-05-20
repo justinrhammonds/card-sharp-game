@@ -1,5 +1,5 @@
 <template>
-  <img class="card" :src="path" > 
+  <img class="card" :src="path"> 
 </template>
 
 <script>
@@ -41,6 +41,7 @@ export default {
   .card {
     height: var(--card-height);
     width: var(--card-width);
+    border-radius: calc(var(--card-width) * .05);
   }
 
 </style>
