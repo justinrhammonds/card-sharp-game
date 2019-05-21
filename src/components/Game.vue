@@ -13,12 +13,14 @@
     <b-modal
       id="game-recap-modal" 
       title="Game Over"
+      size="sm"
       hide-header
+      hide-footer
       ok-only>
       <game-recap 
         :final-score="finalScore"
-        @start-new-game="startNewGame" 
-      />
+        @start-new-game="startNewGame">
+      </game-recap>
     </b-modal>
   </div>
 </template>

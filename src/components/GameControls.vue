@@ -72,7 +72,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: calc(var(--card-height) / 3);
+    padding-top: calc(var(--card-height) * .2);
     width: 100vw;
   }
 
@@ -80,7 +80,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: calc(var(--card-height) / 6);
+    padding-top: calc(var(--card-height) * .1);
     width: 100vw;
   }
 

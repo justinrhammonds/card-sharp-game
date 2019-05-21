@@ -37,17 +37,17 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 1.75rem;
+  font-size: calc(2rem + (3 - 2) * (100vw - 400px) / (1600 - 400));
   line-height: 1.85rem;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: calc(1.5rem + (2.5 - 1.5) * (100vw - 400px) / (1600 - 400));
   line-height: 1.6rem;
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: calc(1.25rem + (2.25 - 1.25) * (100vw - 400px) / (1600 - 400));
   line-height: 1.35rem;
 }
 

@@ -1,8 +1,5 @@
 <template>
-  <section class="how-to-play-modal">
-    <h1>How to play <span class="logo-title">Card Sharp</span></h1>
-    <hr>
-    
+  <section class="how-to-play-modal">  
     <p>The game begins with six cards dealt in a row. The first card, called the <em>base card</em>, is dealt face up. The last five are dealt face down. The <b>objective</b> is to correctly guess whether the next card in the row will be higher or lower than the base card.</p>
     
     <hr>
@@ -35,13 +32,8 @@
 </template>
 
 <script>
-import Card from './Card.vue';
-
 export default {
     name: "how-to-play-modal",
-    components: {
-        Card
-    }
 }
 </script>
 

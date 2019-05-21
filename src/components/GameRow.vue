@@ -68,10 +68,10 @@ export default {
       */
       this.$nextTick().then(() => {
         this.currentStageIndex = 0;
-        this.resetStages();
         this.cards = cards;
-        this.shuffle();
         this.totalCardsSwapped = 0;
+        this.resetStages();
+        this.shuffle();
         this.cards = this.cards.slice(0, 12);
         this.dealStages(this.cards);
       })
@@ -108,6 +108,7 @@ export default {
       this.currentStage.swaps = this.currentStage.swaps - 1;
       this.$emit("adjust-score", -1, true);
     },
+    // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
       this.currentStageIndex = this.nextStageIndex;
@@ -151,7 +152,7 @@ export default {
   .row-container {
     display: flex;
     justify-content: space-evenly;
-    padding-top: 10vh;
+    padding-top: 5vh;
   }
 
 </style>

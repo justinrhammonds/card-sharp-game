@@ -8,10 +8,11 @@
     <b-modal 
       id="how-to-play-instructions" 
       size="lg"
-      title="Welcome to Card Sharp!"
-      hide-header
       hide-footer
       scrollable>
+      <template slot="modal-title" class="modal-title">
+          <h1>How to Play <span class="logo-title">Card Sharp</span></h1>
+      </template>
       <how-to-play />
     </b-modal>
   </nav>
@@ -59,6 +60,10 @@ export default {
   color: #ffffffea;
   flex-grow: 2;
   font-family: var(--righteous);
+}
+
+.modal-title {
+  color: black;
 }
 
 </style>
