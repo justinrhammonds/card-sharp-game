@@ -1,7 +1,6 @@
 :root {
   --righteous: 'Righteous', cursive;
   --open-sans: 'Open Sans', sans-serif;
-  --bungee: 'Bungee Shade', cursive;
   --graduate: 'Graduate', cursive;
   --card-height: calc(var(--card-width) / .727278);
   --card-width: 12vw;

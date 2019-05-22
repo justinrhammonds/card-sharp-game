@@ -104,4 +104,5 @@ export default {
     margin:  10% 3%;
     text-transform: uppercase;
   }
+  
 </style>

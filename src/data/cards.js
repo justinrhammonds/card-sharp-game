@@ -51,8 +51,8 @@ const cards = [
   { suit: "clubs", name: "queen", value: 12 },
   { suit: "clubs", name: "king", value: 13 },
   { suit: "clubs", name: "ace", value: 14 },
-  // { suit: "hearts", name: "red-joker", value: 0 },
-  // { suit: "spades", name: "black-joker", value: 0 },    
+  { suit: "hearts", name: "red-joker", value: 0 },
+  { suit: "spades", name: "black-joker", value: 0 },    
 ];
 
 export default cards;

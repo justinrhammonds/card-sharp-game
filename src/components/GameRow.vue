@@ -12,6 +12,7 @@
     <game-controls 
       @prediction="advanceStageAndEvaluate"
       @collect-bonus="collectBonus"
+      @collect-joker-bonus="collectJokerBonusAndSwap"
       :stage="currentStage"
       @swap="swapCard"
     />
@@ -108,21 +109,32 @@ export default {
       this.currentStage.swaps = this.currentStage.swaps - 1;
       this.$emit("adjust-score", -1, true);
     },
+    swapJokerCard() {
+      const swapPosition = 6 + this.totalCardsSwapped;
+      this.currentStage.card = this.cards[swapPosition];
+      this.swappedCard = this.currentStage.card;
+      this.totalCardsSwapped = this.totalCardsSwapped + 1; 
+    },
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
+      console.log('stages :', this.stages);
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
       this.currentStageIndex = this.nextStageIndex;
       this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
       let evaluation;
       if (prediction === "higher") {
-        evaluation = this.currentStageCardValue > previousCardValue;
+        evaluation = this.currentStageCardValue > previousCardValue || 
+        // joker should always evaluate to true prediction
+        this.stages[this.currentStageIndex].card.value === 0;
       } 
       else {
-        evaluation = this.currentStageCardValue < previousCardValue;
+        evaluation = this.currentStageCardValue < previousCardValue || 
+        // joker should always evaluate to true prediction
+        this.stages[this.currentStageIndex].card.value === 0;
       }
-      // if not bonus round, and prediction was correct, award points
-      if (this.stages[this.currentStageIndex].name !== "bonus" && evaluation) {
-        this.$emit("adjust-score", +1);
+      // if not bonus round, prediction was correct, and wasn't joker, award points
+      if (this.stages[this.currentStageIndex].name !== "bonus" && evaluation && this.stages[this.currentStageIndex].card.value !== 0) {
+          this.$emit("adjust-score", +1);
       }
 
       // if not bonus round, and prediction was incorrect, lose a try and reset rows
@@ -142,6 +154,10 @@ export default {
     collectBonus() {
       this.$emit("award-bonus");
       this.flipTable();
+    },
+    collectJokerBonusAndSwap() {
+      this.$emit("award-bonus");
+      this.swapJokerCard();
     }
   }
 }

@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import GameRow from '../components/GameRow.vue';
 import Hud from '../components/Hud.vue';
+import GameRow from '../components/GameRow.vue';
 import GameRecap from '../components/GameRecap.vue';
 
 export default {
@@ -90,7 +90,6 @@ export default {
     startNewGame() {
       this.totalScore = 0;
       this.triesRemaining = 3;
-      this.bonusType = "score";
     }
   }
 }

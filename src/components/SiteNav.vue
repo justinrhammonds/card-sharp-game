@@ -11,7 +11,7 @@
       hide-footer
       scrollable>
       <template slot="modal-title" class="modal-title">
-          <h1>How to Play <span class="logo-title">Card Sharp</span></h1>
+          <h1><span class="logo-title">Card Sharp </span><span class="highlighted-instructions">Instructions</span></h1>
       </template>
       <how-to-play />
     </b-modal>
@@ -35,6 +35,10 @@ export default {
 </script>
 
 <style>
+
+.logo-title {
+  font-family: var(--righteous);
+}
 
 .site-nav {
   background-color: #1a1a1a;
