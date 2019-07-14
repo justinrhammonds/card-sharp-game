@@ -23,13 +23,12 @@ html {
 }
 
 body {
-  background-color: #299104;
-  background-image: url('./45-degree-fabric.png');
-  background-repeat: repeat; 
+  background-color: #1a1a1a; 
   color: white;
   font-family: var(--open-sans);
   font-size: 16px;
   margin: 0;
+  font-weight: 400;
 }
 
 h1, h2, h3 {

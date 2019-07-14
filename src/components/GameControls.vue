@@ -139,19 +139,18 @@ export default {
     content: "";
     position: absolute;
     display: block;
-    border-style: solid;
-    z-index: -1;
-    bottom: calc(var(--card-width) * -.1)
+    border-style: solid; 
+    bottom: calc(var(--card-width) * -.08)
   }
 
   .ribbon .ribbon-content:before {
     left: 0;
-    border-width: calc(var(--card-width) * .10)  0 0 calc(var(--card-width) * .10);
+    border-width: calc(var(--card-width) * .08)  0 0 calc(var(--card-width) * .08);
   }
 
   .ribbon .ribbon-content:after {
     right: 0;
-    border-width: calc(var(--card-width) * .10) calc(var(--card-width) * .10) 0 0;
+    border-width: calc(var(--card-width) * .08) calc(var(--card-width) * .08) 0 0;
   }
 
   .green .ribbon-content:before, 

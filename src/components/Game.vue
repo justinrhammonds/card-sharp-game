@@ -109,7 +109,10 @@ export default {
 <style scoped>
 
   #game {
-    height: 100%;
+    height: 100vh;
+    background-color: #299104;
+    background-image: url('../assets/45-degree-fabric.png');
+    background-repeat: repeat; 
   }
 
   .score-title, .score-display {

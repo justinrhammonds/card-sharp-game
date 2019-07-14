@@ -37,12 +37,11 @@
 <style>
 
   .how-to-play-modal {
-    background: #1a1a1a;
     overflow-x: hidden;
     color: white;
     width: 100vw;
     height: 100vh;
-    padding: 5vh 5vw;
+    padding: 2rem;
   }
 
   .title-heading {

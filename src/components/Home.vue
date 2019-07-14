@@ -17,12 +17,8 @@
 <style scoped>
 
   .home-page {
-    width: 100vw;
-    height: 100vh;
-    background-color: #1a1a1a; 
     color: white;
-    padding: 10vmax;
-    font-size: var(--large-font-size);
+    padding: 2rem;
   }
 
   .menu-button {
@@ -32,7 +28,6 @@
     padding: 1rem;
     margin: calc(var(--large-font-size) * 2) var(--large-font-size) 0 0;
     display: inline-block;
-    font-size: var(--large-font-size);
     border: 5px solid white;
     box-shadow: 0 5px 8px 0 black, 0 7px 20px 0 black; 
     font-family: var(--monoton);

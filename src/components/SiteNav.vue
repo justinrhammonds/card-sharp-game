@@ -28,7 +28,6 @@ export default {
 
 .site-nav {
   background-color: #1a1a1a;
-  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
