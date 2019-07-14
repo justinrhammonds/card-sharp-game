@@ -73,8 +73,4 @@ export default {
   text-decoration: none;
 }
 
-.nav-menu li a:hover {
-  color: aqua;
-}
-
 </style>

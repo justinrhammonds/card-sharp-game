@@ -61,6 +61,7 @@ nav li {
 }
 
 a {
+  color: #007bff;
   text-decoration: none; 
   transition: all .25s ease;
 }
