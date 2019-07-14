@@ -1,73 +1,80 @@
 <template>
   <nav class="site-nav">
-    <ul>
-      <li class="title"><h1>Card Sharp</h1></li>
-      <!-- <li class="nav-1">New Game</li> -->
-      <li class="nav-2" @click="showInstructions">How to Play</li> 
+    <div class="title">
+      <span class="main-title">Card</span>
+      <span class="main-title">Sharp</span>
+      <span class="sub-title">Solo</span>
+    </div>
+    <ul class="nav-menu">
+      <li><router-link to="/tutorial">Tutorial</router-link></li> 
+      <li><router-link to="/play" go>Play Game</router-link></li> 
     </ul>
-    <b-modal 
-      id="how-to-play-instructions" 
-      size="lg"
-      hide-footer
-      scrollable>
-      <template slot="modal-title" class="modal-title">
-          <h1><span class="logo-title">Card Sharp </span><span class="highlighted-instructions">Instructions</span></h1>
-      </template>
-      <how-to-play />
-    </b-modal>
   </nav>
 </template>
 
 <script>
-import HowToPlay from './HowToPlay.vue';
 
 export default {
   name: "site-nav",
   components: {
-    HowToPlay
   },
   methods: {
-    showInstructions () {
-      this.$bvModal.show('how-to-play-instructions');
-    },
+
   }
 }
 </script>
 
 <style>
 
-.logo-title {
-  font-family: var(--righteous);
-}
-
 .site-nav {
   background-color: #1a1a1a;
   width: 100vw;
-}
-
-.site-nav ul {
   display: flex;
-  margin: 0;
-  padding: 0 2rem;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  padding: .5rem calc(var(--nav-font-size) * .5);
 }
 
-.nav-1, .nav-2 {
-  flex-grow: 1;
+.main-title{
+  text-transform: uppercase;
+  font-family: var(--monoton);
+  font-weight: 400;
+  color: white;
+  font-size: calc(var(--nav-font-size) * 1.1);
+  margin-right: calc(var(--nav-font-size) * .35);
+}
+
+.sub-title {
+  font-family: var(--yellowtail);
+  color: #007bff;
+  font-weight: 500;
+  font-size: calc(var(--nav-font-size) * 1.2);
+}
+
+.nav-menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.nav-menu li {
+  font-family: var(--yellowtail);
   font-size: var(--nav-font-size);
-  font-family: var(--graduate);
-  padding: 0 var(--nav-font-size);
+  color: #007bff;
+  padding: .5rem 0 .5rem 1rem;
+  margin-left: calc(var(--nav-font-size) * .4);
 }
 
-.title {
-  color: #ffffffea;
-  flex-grow: 2;
-  font-family: var(--righteous);
+.nav-menu li a:hover,
+.nav-menu li a:focus {
+  outline: none;
+  text-decoration: none;
 }
 
-.modal-title {
-  color: black;
+.nav-menu li a:hover {
+  color: aqua;
 }
 
 </style>

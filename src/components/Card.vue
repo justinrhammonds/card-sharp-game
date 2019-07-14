@@ -32,7 +32,7 @@ export default {
       return `${url}#view-card-back`;
      }
     } 
-  }
+  },
 }
 </script>
 
@@ -41,7 +41,8 @@ export default {
   .card {
     height: var(--card-height);
     width: var(--card-width);
-    border-radius: calc(var(--card-width) * .05);
+    border-radius: calc(var(--card-width) * .075);
+    box-shadow: 2px 4px 8px -4px black, -2px 4px 8px -4px black;
   }
 
 </style>

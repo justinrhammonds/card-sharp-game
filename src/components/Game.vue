@@ -3,39 +3,40 @@
     <hud
       :score="totalScore"
       :tries="triesRemaining"
-      @bonus-toggle="calibrateBonusType"  
+      @bonus-toggle="calibrateBonusType"
     />
     <game-row 
       @award-bonus="awardBonus"
       @adjust-score="recalculateScore"
       @adjust-tries="recalculateTries"
     />
-    <b-modal
-      id="game-recap-modal" 
-      title="Game Over"
-      size="sm"
-      hide-header
-      hide-footer
-      ok-only>
-      <game-recap 
-        :final-score="finalScore"
-        @start-new-game="startNewGame">
-      </game-recap>
-    </b-modal>
+    <modal v-show="gameOver"
+      @close="closeGameRecap"
+      @start-new-game="startNewGame">
+      <template v-slot:modal-header>
+        <h1 class="m-header-title">Game Over</h1>
+      </template>
+      <template v-slot:modal-body>
+        <div class="m-content">
+          <div class="score-title">Final Score</div>
+          <div class="score-display">{{finalScore}}</div>
+        </div>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
 import Hud from '../components/Hud.vue';
 import GameRow from '../components/GameRow.vue';
-import GameRecap from '../components/GameRecap.vue';
+import Modal from '../components/Modal.vue';
 
 export default {
   name: "game",
   components: {
     Hud,
     GameRow,
-    GameRecap,
+    Modal
   },
   data() {
     return {
@@ -45,6 +46,7 @@ export default {
         swapPenalty: 50,
         tryAdjust: 1,
       },
+      gameOver: false,
       finalScore: 0,
       totalScore: 0,
       triesRemaining: 3,
@@ -68,8 +70,7 @@ export default {
     },
     recalculateTries(increaseOrDecrease) {
       if (this.triesRemaining === 0 && increaseOrDecrease < 0) {
-        this.finalScore = this.totalScore;
-        this.$bvModal.show('game-recap-modal');
+        this.endGame();
         this.startNewGame();
       }
       else {
@@ -87,9 +88,19 @@ export default {
         this.recalculateTries(+1);
       }
     },
+    endGame() {
+      this.showGameRecap();
+      this.finalScore = this.totalScore;
+    },
     startNewGame() {
       this.totalScore = 0;
       this.triesRemaining = 3;
+    },
+    showGameRecap() {
+      this.gameOver = true;
+    },
+    closeGameRecap() {
+      this.gameOver = false;
     }
   }
 }
@@ -99,6 +110,25 @@ export default {
 
   #game {
     height: 100%;
+  }
+
+  .score-title, .score-display {
+    font-size: calc(var(--large-font-size) * 2.5);
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .score-title {
+    color: #007bff;
+  }
+
+  .score-display {
+    font-size: calc(var(--large-font-size) * 4);
+  }
+
+  .m-header-title {
+    color: mediumvioletred;
   }
 
 </style>

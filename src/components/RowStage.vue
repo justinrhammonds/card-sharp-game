@@ -8,6 +8,7 @@
       <font-awesome-icon icon="star" />
     </div>
     <div :class="stageHighlightType">
+      <slot v-if="activeStageId === rowStage.id" name="default"></slot>
       <card v-if="isSwapped"
         :revealed="isRevealed"
         :suit="swappedCard.suit" 
@@ -83,26 +84,28 @@ export default {
   .highlighted {
     background-color: aqua;
     border-radius: 4%;
-    box-shadow: 0 0 calc(var(--card-width) * .06) calc(var(--card-width) * .06) aqua;
+    box-shadow: 0 0 calc(var(--card-width) * .04) calc(var(--card-width) * .04) aqua;
   }
   
   .bonus-highlight {
-    background-color: #b5f174;
+    background-color: lime;
     border-radius: 4%;
-    box-shadow: 0 0 calc(var(--card-width) * .06) calc(var(--card-width) * .06) #b5f174;
+    box-shadow: 0 0 calc(var(--card-width) * .04) calc(var(--card-width) * .04) lime;
   }
 
   .bonus-marker {
-    font-size: var(--nav-font-size);
+    font-size: calc(7px + (20 - 7) * (100vw - 400px) / (1600 - 400));
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .bonus-marker h3 {
-    font-size: var(--nav-font-size);
+    font-family: var(--monoton);
+    font-size: calc(7px + (20 - 7) * (100vw - 400px) / (1600 - 400));
     margin:  10% 3%;
     text-transform: uppercase;
+    font-weight: 400;
   }
   
 </style>

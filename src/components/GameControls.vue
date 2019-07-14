@@ -1,37 +1,37 @@
 <template>
   <div 
     class="game-controls">
-    <div class="panel-1">
-      <button v-if="isNotBonusStage"
-        class="control-button blue"
-        @click="predict('higher')">
-        Higher
-      </button>
-      <button v-if="isNotBonusStage"
-        class="control-button blue"
-        @click="predict('lower')">
-        Lower
-      </button>
-    </div>
-    <div class="panel-2">
-      <button v-if="swapAvailable"
-        class="control-button orange"
-        @click="swap()">
-        Swap Card
-      </button>
-      <button  
-        v-if="bonusStageWon"
-        class="control-button green"
-        @click="collectBonus()">
-        Collect Bonus
-      </button>
-      <button  
-        v-if="isJokerCard"
-        class="control-button green"
-        @click="collectJokerBonus()">
-        Collect Bonus
-      </button>
-    </div>
+    <button v-if="isNotBonusStage"
+      class="control-arrow up"
+      @click="predict('higher')">
+      <svg viewBox="0 0 600 600">
+        <path d="M 300 0, L 600 400, L 400 400, L 400 600, L 200 600, L 200 400, L 0 400" style="fill:lime;" />
+      </svg>
+    </button>
+    <button v-if="isNotBonusStage"
+      class="control-arrow down"
+      @click="predict('lower')">
+      <svg viewBox="0 0 600 600">
+        <path d="M 200 0, L 400 0, L 400 200, L 600 200, L 300 600, L 0 200, L 200 200" style="fill:lime;" />
+      </svg>
+    </button>
+    <button v-if="swapAvailable"
+      class="ribbon swap blue"
+      @click="swap()">
+      <span class="ribbon-content">Swap</span>
+    </button>
+    <button  
+      v-if="bonusStageWon"
+      class="ribbon bonus green"
+      @click="collectBonus()">
+      <span class="ribbon-content">Bonus</span>
+    </button>
+    <button  
+      v-if="isJokerCard"
+      class="ribbon bonus green"
+      @click="collectJokerBonus()">
+      <span class="ribbon-content">Bonus</span>
+    </button>
   </div>
 </template>
 
@@ -81,45 +81,87 @@ export default {
 </script>
 <style scoped>
 
-  .panel-1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: calc(var(--card-height) * .2);
-    width: 100vw;
+  .game-controls {
+    position: relative;
   }
 
-  .panel-2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: calc(var(--card-height) * .1);
-    width: 100vw;
-  }
-
-  .control-button {
+  .control-arrow {
+    position: absolute;
+    left: 16.666666667vw;
     text-transform: uppercase;
-    color: white;
-    border: calc(var(--card-width) * .018) solid white;
-    width: calc(var(--card-width) * 1.3);
-    height: calc(var(--card-width) * .65);
-    margin: 0 calc(var(--card-width) * .2);;
-    font-family: var(--open-sans);
-    font-size: calc(var(--card-width) * .18);
-    font-weight: 700;
+    background: none;
+    border: none;
+    width: calc(var(--card-width) * .5);
+    height: calc(var(--card-width) * .5);
+    margin: 0 calc(var(--card-width) * .2);
     outline: none;
   }
 
-  .orange {
-    background-color: var(--orange);
+  .down {
+    top: calc(var(--card-height) * .80);
+  }
+
+  .up {
+    top: calc(var(--card-height) * -.15);
+  }
+
+  .control-arrow svg {
+    filter:drop-shadow(2px 4px 6px rgba(0,0,0,.55));
   }
 
   .blue {
-    background-color: var(--blue);
+    background-color: #007bff;
   }
 
   .green {
     background-color: var(--green);
+  }
+
+  .ribbon {
+    position: absolute;
+    text-transform: uppercase;
+    width: 116%;
+    left: -8%;
+    top: calc(var(--card-height) * .3333);
+    border: none;
+    color: #fff;
+    text-align: center;
+    padding: calc(var(--nav-font-size) * .5); /* Adjust to suit */
+    font-family: var(--monoton);
+    font-size: calc(var(--card-width) * .10);
+    font-weight: 400;
+    outline: none;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,.2), 0 7px 20px 0 rgba(0,0,0,.17);
+  }
+
+  .ribbon .ribbon-content:before, 
+  .ribbon .ribbon-content:after {
+    content: "";
+    position: absolute;
+    display: block;
+    border-style: solid;
+    z-index: -1;
+    bottom: calc(var(--card-width) * -.1)
+  }
+
+  .ribbon .ribbon-content:before {
+    left: 0;
+    border-width: calc(var(--card-width) * .10)  0 0 calc(var(--card-width) * .10);
+  }
+
+  .ribbon .ribbon-content:after {
+    right: 0;
+    border-width: calc(var(--card-width) * .10) calc(var(--card-width) * .10) 0 0;
+  }
+
+  .green .ribbon-content:before, 
+  .green .ribbon-content:after {
+    border-color: #12cc12 transparent transparent transparent;
+  }
+
+  .blue .ribbon-content:before, 
+  .blue .ribbon-content:after {
+    border-color: #0050ff transparent transparent transparent;
   }
 
 </style>

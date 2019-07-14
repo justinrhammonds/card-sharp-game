@@ -1,19 +1,22 @@
 <template>
   <div id="app">
     <site-nav />
-    <game />
+    <transition
+      name="page-fade"
+      mode="out-in">
+      <router-view />
+    </transition>
+
   </div>
 </template>
 
 <script>
-import Game from './components/Game.vue';
 import SiteNav from './components/SiteNav.vue';
 
 export default {
   name: 'app',
   components: {
-    SiteNav,
-    Game
+    SiteNav
   },
 }
 
@@ -25,6 +28,18 @@ export default {
     display: flex;
     flex-flow: column;
     height: 100vh;
+  }
+
+  .page-fade-enter-active,
+  .page-fade-leave-active {
+    transition-duration: 0.25s;
+    transition-property: opacity;
+    transition-timing-function: ease;
+  }
+
+  .page-fade-enter,
+  .page-fade-leave-active {
+    opacity: 0
   }
 
 </style>

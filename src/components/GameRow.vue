@@ -1,21 +1,24 @@
 <template>
   <div class="game-row">
     <div class="row-container">
-      <row-stage 
+      <row-stage
+        ref="renderedStages"
         :key="index"
         v-for="(stage, index) in stages"
         :active-stage-id="currentStageIndex"
         :row-stage="stage"
         :swappedCard="swappedCard"
-      />
+      >
+        <game-controls 
+          @prediction="advanceStageAndEvaluate"
+          @collect-bonus="collectBonus"
+          @collect-joker-bonus="collectJokerBonusAndSwap"
+          :stage="currentStage"
+          @swap="swapCard"
+        />
+      </row-stage>
     </div>  
-    <game-controls 
-      @prediction="advanceStageAndEvaluate"
-      @collect-bonus="collectBonus"
-      @collect-joker-bonus="collectJokerBonusAndSwap"
-      :stage="currentStage"
-      @swap="swapCard"
-    />
+
   </div>
 </template>
 
@@ -117,7 +120,6 @@ export default {
     },
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
-      console.log('stages :', this.stages);
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
       this.currentStageIndex = this.nextStageIndex;
       this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
@@ -168,7 +170,7 @@ export default {
   .row-container {
     display: flex;
     justify-content: space-evenly;
-    padding-top: 5vh;
+    padding-top: 10vh;
   }
 
 </style>
