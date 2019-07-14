@@ -1,10 +1,12 @@
 <template>
   <nav class="site-nav">
+    <router-link to="/">
     <div class="title">
       <span class="main-title">Card</span>
       <span class="main-title">Sharp</span>
       <span class="sub-title">Solo</span>
     </div>
+    </router-link> 
     <ul class="nav-menu">
       <li><router-link to="/tutorial">Tutorial</router-link></li> 
       <li><router-link to="/play" go>Play Game</router-link></li> 
