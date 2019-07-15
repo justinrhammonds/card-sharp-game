@@ -98,11 +98,11 @@ export default {
   }
 
   .down {
-    top: calc(var(--card-height) * .80);
+    bottom: calc(var(--card-height) * -1.18);
   }
 
   .up {
-    top: calc(var(--card-height) * -.15);
+    top: calc(var(--card-height) * -.12);
   }
 
   .control-arrow svg {
@@ -132,6 +132,7 @@ export default {
     font-weight: 400;
     outline: none;
     box-shadow: 0 5px 8px 0 rgba(0,0,0,.2), 0 7px 20px 0 rgba(0,0,0,.17);
+    text-shadow: 1.5px 1.5px #222;
   }
 
   .ribbon .ribbon-content:before, 

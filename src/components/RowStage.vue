@@ -82,15 +82,17 @@ export default {
   }
 
   .highlighted {
+    display: flex;
     background-color: aqua;
     border-radius: 4%;
-    box-shadow: 0 0 calc(var(--card-width) * .04) calc(var(--card-width) * .04) aqua;
+    box-shadow: 0 0 calc(var(--card-width) * .09) calc(var(--card-width) * .09) aqua;
   }
   
   .bonus-highlight {
+    display: flex;
     background-color: lime;
     border-radius: 4%;
-    box-shadow: 0 0 calc(var(--card-width) * .04) calc(var(--card-width) * .04) lime;
+    box-shadow: 0 0 calc(var(--card-width) * .09) calc(var(--card-width) * .09) lime;
   }
 
   .bonus-marker {
@@ -98,6 +100,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-shadow: 1.5px 1.5px #222;
   }
 
   .bonus-marker h3 {
@@ -106,6 +109,10 @@ export default {
     margin:  10% 3%;
     text-transform: uppercase;
     font-weight: 400;
+  }
+
+  .bonus-marker svg {
+    filter:drop-shadow(1px 1px 0 #222);
   }
   
 </style>

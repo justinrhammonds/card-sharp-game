@@ -16,15 +16,16 @@ This application is still under development. In the meantime, you can still try 
 * **Card component** - SVG Splicing combined with css calc() to manage card dimensions and display
 * **GameRow component** - the logic intensive component that drives the primary systems of game flow
 * **GameControls component** - contains the page elements for interaction during game flow: predictions, etc.
-* **SiteNav & Hud components** - static components mostly at this point. 
+* **SiteNav & Hud components** - site navigation, scoring, attempt, and bonus toggle
 * **Scoring & Card Swaps** - scoring systems have now been implemented, as well as player's ability to swap a card
 * **Fluid Layout and (Google) Fonts** - built using Flexbox and Calc to achieve ideal layout between, primarily optimized for viewport widths between 400px and 1600px
-* **HowToPlay component** - "How to Play" instructions now available and was built using bootstrap modals
+* **HowToPlay component** - "Tutorial" is work in progress. In the meantime, this section includes gameplay instructions
+* **Custom Modal component** displays final score at the conclusion of each game.
 
 ## Features Planned, Not Yet Implemented
-* Save, Store, and Display High Score 
-* Optimized UI Layout - enhance current game layout to focus on the main 'two' cards (the current base card, and the next) at a given stage
-* Ability to click 'New Game' to reset and begin a new game
+* Save, Store, and Display High Score - will feature an API that updates the top ten all-time high score list, and a component that collects new high score details when eligible at the conclusion of a game
+* Optimized "Portrait" Mobile View Layout - this will essentially zoom in on the important cards in game flow for "portrait" mode in smaller mobile displays
+* Ability to click 'New Game' when game is currently loaded to reset and begin a new game
 
 ***
 
