@@ -122,7 +122,7 @@ export default {
     advanceStageAndEvaluate(prediction) {
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
       this.currentStageIndex = this.nextStageIndex;
-      this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex)
+      this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex);
       let evaluation;
       if (prediction === "higher") {
         evaluation = this.currentStageCardValue > previousCardValue || 

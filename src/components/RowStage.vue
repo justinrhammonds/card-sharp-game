@@ -58,15 +58,14 @@ export default {
       return this.rowStage.name === "bonus";
     },
     stageHighlightType: function() {
-      if (this.activeStageId + 1 === this.rowStage.id && this.isBonusStage) {
+      if (this.activeStageId + 1 === this.rowStage.id && this.isBonusStage && this.rowStage.evaluation) {
         return "bonus-highlight";
       }
-      else if (this.activeStageId + 1 === this.rowStage.id ) {
+      if (this.activeStageId + 1 === this.rowStage.id  && this.rowStage.evaluation) {
         return "highlighted";
       }
-      else {
-         return "";
-      }
+      
+      return "";
     },
     isSwapped: function() {
       return this.swappedCard != null && this.rowStage.id === this.activeStageId;

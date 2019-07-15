@@ -1,27 +1,32 @@
 <template>
   <div 
     class="game-controls">
-    <button v-if="isNotBonusStage"
+    <div v-if="guessWasIncorrect" class="incorrect-marker">
+      <svg viewBox="0 0 1000 1000">
+        <path d="M 0 200, L 200 0, L 500 300, L 800 0, L 1000 200, L 700 500, L 1000 800, L 800 1000, L 500 700, L 200 1000, L 0 800, L 300 500" style="fill:red;" />
+      </svg>
+    </div>
+    <button v-if="isNotBonusStage && !guessWasIncorrect"
       class="control-arrow up"
       @click="predict('higher')">
       <svg viewBox="0 0 600 600">
         <path d="M 300 0, L 600 400, L 400 400, L 400 600, L 200 600, L 200 400, L 0 400" style="fill:lime;" />
       </svg>
     </button>
-    <button v-if="isNotBonusStage"
+    <button v-if="isNotBonusStage && !guessWasIncorrect"
       class="control-arrow down"
       @click="predict('lower')">
       <svg viewBox="0 0 600 600">
         <path d="M 200 0, L 400 0, L 400 200, L 600 200, L 300 600, L 0 200, L 200 200" style="fill:lime;" />
       </svg>
     </button>
-    <button v-if="swapAvailable"
+    <button v-if="swapAvailable && !guessWasIncorrect"
       class="ribbon swap blue"
       @click="swap()">
       <span class="ribbon-content">Swap</span>
     </button>
     <button  
-      v-if="bonusStageWon"
+      v-if="bonusStageWon && !guessWasIncorrect"
       class="ribbon bonus green"
       @click="collectBonus()">
       <span class="ribbon-content">Bonus</span>
@@ -49,6 +54,9 @@ export default {
     }
   },
   computed: {
+    guessWasIncorrect: function() {
+      return this.stage.evaluation === false;
+    },
     isNotBonusStage: function() {
       return this.stage.name !== "bonus" && !this.isJokerCard;
     },
@@ -83,6 +91,15 @@ export default {
 
   .game-controls {
     position: relative;
+  }
+
+  .incorrect-marker svg {
+    position: absolute;
+    left: 3vw;
+    top: calc(var(--card-height) * .3333);
+    width: calc(var(--card-width) * .5);
+    height: calc(var(--card-width) * .5);
+    filter:drop-shadow(2px 3px 3px rgba(0,0,0,.7));
   }
 
   .control-arrow {
