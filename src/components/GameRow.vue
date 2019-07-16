@@ -84,6 +84,7 @@ export default {
     resetStages() {
       for (let i = 0; i < 4; i += 1) {
         this.stages[i].swaps = 1;
+        this.stages[i].evaluation = null;
       }
     },
     shuffle() {
@@ -134,6 +135,9 @@ export default {
         // joker should always evaluate to true prediction
         this.stages[this.currentStageIndex].card.value === 0;
       }
+
+      this.stages[this.currentStageIndex].evaluation = evaluation;
+
       // if not bonus round, prediction was correct, and wasn't joker, award points
       if (this.stages[this.currentStageIndex].name !== "bonus" && evaluation && this.stages[this.currentStageIndex].card.value !== 0) {
           this.$emit("adjust-score", +1);
@@ -150,7 +154,6 @@ export default {
         setTimeout(this.flipTable, 1000);
       }
       
-      this.stages[this.currentStageIndex].evaluation = evaluation;
       return evaluation;
     },
     collectBonus() {

@@ -95,10 +95,10 @@ export default {
 
   .incorrect-marker svg {
     position: absolute;
-    left: 3vw;
-    top: calc(var(--card-height) * .3333);
-    width: calc(var(--card-width) * .5);
-    height: calc(var(--card-width) * .5);
+    left: 1.5vw;
+    top: calc(var(--card-height) * .25);
+    width: calc(var(--card-width) * .75);
+    height: calc(var(--card-width) * .75);
     filter:drop-shadow(2px 3px 3px rgba(0,0,0,.7));
   }
 
@@ -119,7 +119,7 @@ export default {
   }
 
   .up {
-    top: calc(var(--card-height) * -.12);
+    top: calc(var(--card-height) * -.15);
   }
 
   .control-arrow svg {

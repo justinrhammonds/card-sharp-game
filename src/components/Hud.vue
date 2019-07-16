@@ -2,10 +2,12 @@
   <nav class="hud">
     <ul>
       <li 
+        ref="tries-value"
         class="total-tries">
         <font-awesome-icon :key="index" v-for="(n,index) in tries" icon="heart" />
       </li>
-      <li 
+      <li
+        ref="score-value"
         class="total-score">
         SCORE : {{score}}
       </li> 
@@ -33,15 +35,15 @@ export default {
   name: "hud",
   props: {
     score: {
-      type: Number
+      type: Number,
     },
     tries: {
-      type: Number
+      type: Number,
     }
   },
   data() {
     return {
-      bonus: "score",
+      bonus: "score"
     }
   },
   methods: {
@@ -55,11 +57,73 @@ export default {
         this.$emit("bonus-toggle", "score");
       }
     }
+  },
+  watch: {
+    score: function(newValue, oldValue) {
+      if (oldValue < newValue && newValue !== 0) {
+        this.$refs["score-value"].classList.toggle('higher');
+        setTimeout(() => {
+          this.$refs["score-value"].classList.toggle('higher');
+        }, 1000);
+      }
+
+      if (oldValue > newValue && newValue !== 0) {
+        this.$refs["score-value"].classList.toggle('lower');
+        setTimeout(() => {
+          this.$refs["score-value"].classList.toggle('lower');
+        }, 1000);
+      }
+    },
+    tries: function(newValue, oldValue) {
+      if (oldValue < newValue && newValue !== 0) {
+        this.$refs["tries-value"].classList.toggle('higher');
+        setTimeout(() => {
+          this.$refs["tries-value"].classList.toggle('higher');
+        }, 1000);
+      }
+
+      if (oldValue > newValue && newValue !== 0) {
+        this.$refs["tries-value"].classList.toggle('lower');
+        setTimeout(() => {
+          this.$refs["tries-value"].classList.toggle('lower');
+        }, 1000);
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+
+@keyframes flash-red {
+  0%, 100% {
+    color: white;
+  }
+  50% {
+    color: coral;
+  }
+}
+
+@keyframes flash-green {
+  0%, 100% {
+    color: white;
+  }
+  50% {
+    color: lime;
+  }
+}
+
+.higher {
+  /* transition: color 1s ease;
+  color: green; */
+  animation: flash-green 1.2s;
+}
+
+.lower {
+  /* transition: color 1s ease;
+  color: red; */
+  animation: flash-red 1.2s;
+}
 
   .hud {
     width: 100vw;
@@ -94,7 +158,7 @@ export default {
   }
 
   .total-tries {
-    float:left;
+    float: left;
     width: 20vw;
   }
 

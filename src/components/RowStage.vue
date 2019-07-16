@@ -7,7 +7,7 @@
       <h3>Bonus</h3>
       <font-awesome-icon icon="star" />
     </div>
-    <div :class="stageHighlightType">
+    <div>
       <slot v-if="activeStageId === rowStage.id" name="default"></slot>
       <card v-if="isSwapped"
         :revealed="isRevealed"
@@ -57,16 +57,6 @@ export default {
     isBonusStage: function() {
       return this.rowStage.name === "bonus";
     },
-    stageHighlightType: function() {
-      if (this.activeStageId + 1 === this.rowStage.id && this.isBonusStage && this.rowStage.evaluation) {
-        return "bonus-highlight";
-      }
-      if (this.activeStageId + 1 === this.rowStage.id  && this.rowStage.evaluation) {
-        return "highlighted";
-      }
-      
-      return "";
-    },
     isSwapped: function() {
       return this.swappedCard != null && this.rowStage.id === this.activeStageId;
     },
@@ -78,20 +68,6 @@ export default {
 
   .row-stage {
     align-self: center;
-  }
-
-  .highlighted {
-    display: flex;
-    background-color: aqua;
-    border-radius: 4%;
-    box-shadow: 0 0 calc(var(--card-width) * .09) calc(var(--card-width) * .09) aqua;
-  }
-  
-  .bonus-highlight {
-    display: flex;
-    background-color: lime;
-    border-radius: 4%;
-    box-shadow: 0 0 calc(var(--card-width) * .09) calc(var(--card-width) * .09) lime;
   }
 
   .bonus-marker {
