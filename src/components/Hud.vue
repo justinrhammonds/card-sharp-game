@@ -79,14 +79,14 @@ export default {
         this.$refs["tries-value"].classList.toggle('higher');
         setTimeout(() => {
           this.$refs["tries-value"].classList.toggle('higher');
-        }, 1000);
+        }, 1500);
       }
 
       if (oldValue > newValue && newValue !== 0) {
         this.$refs["tries-value"].classList.toggle('lower');
         setTimeout(() => {
           this.$refs["tries-value"].classList.toggle('lower');
-        }, 1000);
+        }, 1500);
       }
     }
   }
@@ -98,31 +98,39 @@ export default {
 @keyframes flash-red {
   0%, 100% {
     color: white;
+    filter: none;
+    text-shadow: none;
   }
   50% {
     color: coral;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
+    text-shadow: 2px 2px rgba(0,0,0,.55);
   }
 }
 
 @keyframes flash-green {
   0%, 100% {
     color: white;
+    filter: none;
+    text-shadow: none;
   }
   50% {
     color: lime;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
+    text-shadow: 2px 2px rgba(0,0,0,.55);
   }
 }
 
 .higher {
   /* transition: color 1s ease;
   color: green; */
-  animation: flash-green 1.2s;
+  animation: flash-green 1.5s;
 }
 
 .lower {
   /* transition: color 1s ease;
   color: red; */
-  animation: flash-red 1.2s;
+  animation: flash-red 1.5s;
 }
 
   .hud {
