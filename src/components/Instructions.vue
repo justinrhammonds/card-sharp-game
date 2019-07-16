@@ -1,9 +1,9 @@
 <template>
-  <section class="how-to-play-modal">  
-    <h1 class="title-heading">Tutorial Coming Soon!</h1>
+  <section class="instructions">  
+    <h2 class="title-heading">Tutorial Coming Soon!</h2>
     <p>The game begins with six cards dealt in a row. The first card is dealt face up, and the last five are dealt face down. You earn points and progress through each row by correctly guessing whether the next card will be higher or lower. When you guess incorrectly, the board resets and you start over on a new row.</p>
     <div class="card-order">
-      <h2 class="title-heading">Order of Cards</h2>
+      <h3 class="title-heading">Order of Cards</h3>
       <div class="order-grouping">
         <card :key="index" v-for="(n,index) in this.demoCards" :revealed="true" suit="hearts" :face-value="n" style="overflow:hidden;" />
       </div>
@@ -19,7 +19,7 @@
   import Card from "./Card";
 
   export default {
-    name: "how-to-play-modal",
+    name: "instructions",
     components: {
       Card
     },
@@ -34,7 +34,7 @@
 
 <style scoped>
 
-  .how-to-play-modal {
+  .instructions {
     overflow-x: hidden;
     color: white;
     width: 100vw;

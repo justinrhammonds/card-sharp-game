@@ -1,15 +1,15 @@
 <template>
-  <how-to-play />
+  <instructions />
 </template>
 
 <script>
 
-import HowToPlay from './HowToPlay.vue';
+import Instructions from './Instructions.vue';
 
 export default {
   name: "tutorial",
   components: {
-    HowToPlay
+    Instructions
   }
 }
 

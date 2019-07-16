@@ -46,7 +46,7 @@ export default {
       gameOver: false,
       finalScore: 0,
       totalScore: 0,
-      triesRemaining: this.gameConfig.startingTries,
+      triesRemaining: gameConfig.startingTries,
       bonusType: "score",
     }
   },
@@ -54,15 +54,15 @@ export default {
     recalculateScore(increaseOrDecrease, isSwap = false, isBonus = false) {
       // if on a swap
       if (isSwap && this.totalScore > 0) { // never have less than 0 points
-        this.totalScore = this.totalScore + (this.gameConfig.swapPenalty * increaseOrDecrease);
+        this.totalScore = this.totalScore + (gameConfig.swapPenalty * increaseOrDecrease);
       }
       // if on collect bonus
       if (!isSwap && increaseOrDecrease > 0 && this.totalScore >= 0 && isBonus === true) {
-        this.totalScore = this.totalScore + (this.gameConfig.bonusScore * increaseOrDecrease);
+        this.totalScore = this.totalScore + (gameConfig.bonusScore * increaseOrDecrease);
       }
       // else if on correct guess
       else if (!isSwap && increaseOrDecrease > 0 && this.totalScore >= 0) {
-        this.totalScore = this.totalScore + (this.gameConfig.score * increaseOrDecrease);
+        this.totalScore = this.totalScore + (gameConfig.score * increaseOrDecrease);
       }
     },
     recalculateTries(increaseOrDecrease) {
@@ -71,7 +71,7 @@ export default {
         this.startNewGame();
       }
       else {
-        this.triesRemaining = this.triesRemaining + (this.gameConfig.tryAdjust * increaseOrDecrease);
+        this.triesRemaining = this.triesRemaining + (gameConfig.tryAdjust * increaseOrDecrease);
       }
     },
     calibrateBonusType(bonusType) {
@@ -90,8 +90,8 @@ export default {
       this.finalScore = this.totalScore;
     },
     startNewGame() {
-      this.totalScore = this.gameConfig.startingScore;
-      this.triesRemaining = this.gameConfig.startingTries;
+      this.totalScore = gameConfig.startingScore;
+      this.triesRemaining = gameConfig.startingTries;
     },
     showGameRecap() {
       this.gameOver = true;
