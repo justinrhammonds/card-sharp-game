@@ -3,6 +3,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'card',
   props: {
@@ -24,16 +25,17 @@ export default {
       this is because vue binding is executed at runtime while 
       webpack aliases are executed at compile time
       */
-     const url = require(`../assets/${this.suit}.svg`);
-     if (this.revealed) {
-      return `${url}#view-${this.faceValue}`;
-     } 
-     else {
-      return `${url}#view-card-back`;
-     }
+      const url = require(`../assets/${this.suit}.svg`);
+      if (this.revealed) {
+        return `${url}#view-${this.faceValue}`;
+      } 
+      else {
+        return `${url}#view-card-back`;
+      }
     } 
   },
 }
+
 </script>
 
 <style scoped>

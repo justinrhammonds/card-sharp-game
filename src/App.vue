@@ -6,6 +6,7 @@
 </template>
 
 <script>
+
 import SiteNav from './components/SiteNav.vue';
 
 export default {

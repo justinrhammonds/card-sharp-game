@@ -1,7 +1,7 @@
 export const stages = [
   /*
   due to how vue's reactivity system, since I need to listen for changes downstream on value of 'card' 
-  I needee to set the card as a property of stage
+  I need to set the card as a property of stage
   */
   {
     id: 0,

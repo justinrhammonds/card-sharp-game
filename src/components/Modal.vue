@@ -15,10 +15,10 @@
     </div>
   </div>
   </transition>
-
 </template>
 
 <script>
+
 export default {
   name: "modal",
   methods: {
@@ -36,9 +36,11 @@ export default {
     window.addEventListener('click', this.outsideClick);
   },
 }
+
 </script>
 
 <style scoped>
+
 .modal {
   display: block;
   position: fixed;

@@ -31,6 +31,7 @@
 </template>
 
 <script>
+
 import Card from './Card.vue';
 
 export default {
@@ -62,6 +63,7 @@ export default {
     },
   }
 }
+
 </script>
 
 <style scoped>

@@ -31,6 +31,7 @@
 </template>
 
 <script>
+
 export default {
   name: "hud",
   props: {
@@ -46,21 +47,9 @@ export default {
       bonus: "score"
     }
   },
-  methods: {
-    toggleBonus() {
-      if (this.bonus === "score") {
-        this.bonus = "tries";
-        this.$emit("bonus-toggle", "tries");
-      } 
-      else {
-        this.bonus = "score";
-        this.$emit("bonus-toggle", "score");
-      }
-    }
-  },
   watch: {
     score: function(newValue, oldValue) {
-      if (oldValue < newValue && newValue !== 0) {
+      if (oldValue < newValue) {
         this.$refs["score-value"].classList.toggle('higher');
         setTimeout(() => {
           this.$refs["score-value"].classList.toggle('higher');
@@ -75,63 +64,38 @@ export default {
       }
     },
     tries: function(newValue, oldValue) {
-      if (oldValue < newValue && newValue !== 0) {
+      if (oldValue < newValue  && (newValue === 0 && oldValue <= 0)) {
         this.$refs["tries-value"].classList.toggle('higher');
         setTimeout(() => {
           this.$refs["tries-value"].classList.toggle('higher');
         }, 1500);
       }
 
-      if (oldValue > newValue && newValue !== 0) {
+      if (oldValue > newValue) {
         this.$refs["tries-value"].classList.toggle('lower');
         setTimeout(() => {
           this.$refs["tries-value"].classList.toggle('lower');
         }, 1500);
       }
     }
-  }
+  },
+  methods: {
+    toggleBonus() {
+      if (this.bonus === "score") {
+        this.bonus = "tries";
+        this.$emit("bonus-toggle", "tries");
+      } 
+      else {
+        this.bonus = "score";
+        this.$emit("bonus-toggle", "score");
+      }
+    }
+  },
 }
+
 </script>
 
 <style scoped>
-
-@keyframes flash-red {
-  0%, 100% {
-    color: white;
-    filter: none;
-    text-shadow: none;
-  }
-  50% {
-    color: coral;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
-    text-shadow: 2px 2px rgba(0,0,0,.55);
-  }
-}
-
-@keyframes flash-green {
-  0%, 100% {
-    color: white;
-    filter: none;
-    text-shadow: none;
-  }
-  50% {
-    color: lime;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
-    text-shadow: 2px 2px rgba(0,0,0,.55);
-  }
-}
-
-.higher {
-  /* transition: color 1s ease;
-  color: green; */
-  animation: flash-green 1.5s;
-}
-
-.lower {
-  /* transition: color 1s ease;
-  color: red; */
-  animation: flash-red 1.5s;
-}
 
   .hud {
     width: 100vw;
@@ -182,6 +146,40 @@ export default {
 
   .fa-heart {
     margin: 0 .25rem;
+  }
+
+  @keyframes flash-red {
+    0%, 100% {
+      color: white;
+      filter: none;
+      text-shadow: none;
+    }
+    50% {
+      color: coral;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
+      text-shadow: 2px 2px rgba(0,0,0,.55);
+    }
+  }
+
+  @keyframes flash-green {
+    0%, 100% {
+      color: white;
+      filter: none;
+      text-shadow: none;
+    }
+    50% {
+      color: lime;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
+      text-shadow: 2px 2px rgba(0,0,0,.55);
+    }
+  }
+
+  .higher {
+    animation: flash-green 1.5s;
+  }
+
+  .lower {
+    animation: flash-red 1.5s;
   }
 
 </style>

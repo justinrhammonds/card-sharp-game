@@ -17,16 +17,12 @@
 <script>
 
 export default {
-  name: "site-nav",
-  components: {
-  },
-  methods: {
-
-  }
+  name: "site-nav"
 }
+
 </script>
 
-<style>
+<style scoped>
 
 .site-nav {
   background-color: #1a1a1a;

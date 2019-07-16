@@ -4,7 +4,7 @@ import Game from '@/components/Game'
 import Home from '@/components/Home'
 import Tutorial from '@/components/Tutorial'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 export default new VueRouter({
   routes: [
@@ -24,4 +24,4 @@ export default new VueRouter({
         component: Tutorial
     }
   ]
-})
+});

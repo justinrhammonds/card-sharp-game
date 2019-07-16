@@ -27,9 +27,11 @@
 </template>
 
 <script>
+
 import Hud from '../components/Hud.vue';
 import GameRow from '../components/GameRow.vue';
 import Modal from '../components/Modal.vue';
+import gameConfig from '../data/game-config.js';
 
 export default {
   name: "game",
@@ -40,16 +42,11 @@ export default {
   },
   data() {
     return {
-      config: {
-        score: 100,
-        bonusScore: 300,
-        swapPenalty: 50,
-        tryAdjust: 1,
-      },
+      gameConfig,
       gameOver: false,
       finalScore: 0,
       totalScore: 0,
-      triesRemaining: 3,
+      triesRemaining: this.gameConfig.startingTries,
       bonusType: "score",
     }
   },
@@ -57,15 +54,15 @@ export default {
     recalculateScore(increaseOrDecrease, isSwap = false, isBonus = false) {
       // if on a swap
       if (isSwap && this.totalScore > 0) { // never have less than 0 points
-        this.totalScore = this.totalScore + (this.config.swapPenalty * increaseOrDecrease);
+        this.totalScore = this.totalScore + (this.gameConfig.swapPenalty * increaseOrDecrease);
       }
       // if on collect bonus
       if (!isSwap && increaseOrDecrease > 0 && this.totalScore >= 0 && isBonus === true) {
-        this.totalScore = this.totalScore + (this.config.bonusScore * increaseOrDecrease);
+        this.totalScore = this.totalScore + (this.gameConfig.bonusScore * increaseOrDecrease);
       }
       // else if on correct guess
       else if (!isSwap && increaseOrDecrease > 0 && this.totalScore >= 0) {
-        this.totalScore = this.totalScore + (this.config.score * increaseOrDecrease);
+        this.totalScore = this.totalScore + (this.gameConfig.score * increaseOrDecrease);
       }
     },
     recalculateTries(increaseOrDecrease) {
@@ -74,7 +71,7 @@ export default {
         this.startNewGame();
       }
       else {
-        this.triesRemaining = this.triesRemaining + (this.config.tryAdjust * increaseOrDecrease);
+        this.triesRemaining = this.triesRemaining + (this.gameConfig.tryAdjust * increaseOrDecrease);
       }
     },
     calibrateBonusType(bonusType) {
@@ -93,8 +90,8 @@ export default {
       this.finalScore = this.totalScore;
     },
     startNewGame() {
-      this.totalScore = 0;
-      this.triesRemaining = 3;
+      this.totalScore = this.gameConfig.startingScore;
+      this.triesRemaining = this.gameConfig.startingTries;
     },
     showGameRecap() {
       this.gameOver = true;
@@ -104,6 +101,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped>

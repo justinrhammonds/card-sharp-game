@@ -41,6 +41,7 @@
 </template>
 
 <script>
+
 export default {
   name: "game-controls",
   props: {
@@ -86,7 +87,9 @@ export default {
     }
   }
 }
+
 </script>
+
 <style scoped>
 
   .game-controls {

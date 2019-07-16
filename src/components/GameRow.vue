@@ -7,8 +7,7 @@
         v-for="(stage, index) in stages"
         :active-stage-id="currentStageIndex"
         :row-stage="stage"
-        :swappedCard="swappedCard"
-      >
+        :swappedCard="swappedCard">
         <game-controls 
           @prediction="advanceStageAndEvaluate"
           @collect-bonus="collectBonus"
@@ -18,11 +17,11 @@
         />
       </row-stage>
     </div>  
-
   </div>
 </template>
 
 <script>
+
 import stages from '../data/stages.js';
 import cards from '../data/cards.js';
 import RowStage from './RowStage.vue';
@@ -52,15 +51,6 @@ export default {
     currentStage: function() {
       return this.stages[this.currentStageIndex];
     }
-  },
-  created() {
-    this.shuffle();
-    //only need a max of 12 cards for a game
-    this.cards = this.cards.slice(0, 12);
-    this.dealStages(this.cards);
-  },
-  updated() {
-    this.swappedCard = null;
   },
   methods: {
     flipTable() {
@@ -164,8 +154,18 @@ export default {
       this.$emit("award-bonus");
       this.swapJokerCard();
     }
+  },
+  created() {
+    this.shuffle();
+    //only need a max of 12 cards for a game
+    this.cards = this.cards.slice(0, 12);
+    this.dealStages(this.cards);
+  },
+  updated() {
+    this.swappedCard = null;
   }
 }
+
 </script>
 
 <style scoped>
