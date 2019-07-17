@@ -130,7 +130,7 @@ export default {
   }
 
   .blue {
-    background-color: #007bff;
+    background-color: var(--blue);
   }
 
   .green {
