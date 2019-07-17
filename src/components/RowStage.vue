@@ -77,7 +77,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-shadow: 1.5px 1.5px #222;
+    text-shadow: 1.5px 1.5px var(--black);
   }
 
   .bonus-marker h3 {
@@ -85,7 +85,6 @@ export default {
     font-size: calc(7px + (20 - 7) * (100vw - 400px) / (1600 - 400));
     margin:  10% 3%;
     text-transform: uppercase;
-    font-weight: 400;
   }
 
   .bonus-marker svg {

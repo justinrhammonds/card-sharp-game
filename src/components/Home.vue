@@ -23,15 +23,15 @@
   }
 
   .menu-button {
-    background-color: rgba(74, 239, 52, .85);
+    background-color: #4aef34d9;
     color: white;
     text-decoration: none;
     padding: 1rem;
     margin: calc(var(--large-font-size) * 2) var(--large-font-size) 0 0;
+    font-size: var(--large-font-size);
     display: inline-block;
     border: 5px solid white;
     box-shadow: 0 5px 8px 0 black, 0 7px 20px 0 black; 
-    font-family: var(--monoton);
   }
 
   .menu-button:hover {

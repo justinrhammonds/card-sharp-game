@@ -11,15 +11,14 @@
       @adjust-tries="recalculateTries"
     />
     <modal v-show="gameOver"
-      @close="closeGameRecap"
-      @start-new-game="startNewGame">
+      @close="closeGameRecap">
       <template v-slot:modal-header>
-        <h1 class="m-header-title">Game Over</h1>
+        <h2 class="recap-title">Game Over</h2>
       </template>
       <template v-slot:modal-body>
-        <div class="m-content">
+        <div class="recap-content">
           <div class="score-title">Final Score</div>
-          <div class="score-display">{{finalScore}}</div>
+          <div class="score-content">{{finalScore}}</div>
         </div>
       </template>
     </modal>
@@ -113,22 +112,22 @@ export default {
     background-repeat: repeat; 
   }
 
-  .score-title, .score-display {
-    font-size: calc(var(--large-font-size) * 2.5);
+  .score-title, .score-content {
     width: 100%;
     display: block;
     text-align: center;
   }
 
   .score-title {
-    color: #007bff;
+    font-size: calc(var(--large-font-size) * 2.5);
+    color: var(--blue);
   }
 
-  .score-display {
+  .score-content {
     font-size: calc(var(--large-font-size) * 4);
   }
 
-  .m-header-title {
+  .recap-title {
     color: mediumvioletred;
   }
 

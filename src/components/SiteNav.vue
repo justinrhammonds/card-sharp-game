@@ -25,7 +25,7 @@ export default {
 <style scoped>
 
 .site-nav {
-  background-color: #1a1a1a;
+  background-color: var(--black);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,8 +34,6 @@ export default {
 
 .main-title{
   text-transform: uppercase;
-  font-family: var(--monoton);
-  font-weight: 400;
   color: white;
   font-size: calc(var(--nav-font-size) * 1.1);
   margin-right: calc(var(--nav-font-size) * .35);
@@ -43,7 +41,7 @@ export default {
 
 .sub-title {
   font-family: var(--yellowtail);
-  color: #007bff;
+  color: var(--blue);
   font-weight: 500;
   font-size: calc(var(--nav-font-size) * 1.2);
 }
@@ -59,7 +57,7 @@ export default {
 .nav-menu li {
   font-family: var(--yellowtail);
   font-size: var(--nav-font-size);
-  color: #007bff;
+  color: var(--blue);
   padding: .5rem 0 .5rem 1rem;
   margin-left: calc(var(--nav-font-size) * .4);
 }

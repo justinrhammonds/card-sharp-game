@@ -42,11 +42,6 @@
     padding: 2rem;
   }
 
-  .title-heading {
-    font-family: var(--monoton);
-    font-weight: 400;
-  }
-
   .order-grouping {
     display: flex;
     justify-content: space-evenly;

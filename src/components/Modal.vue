@@ -79,10 +79,6 @@ export default {
   cursor: pointer;
 }
 
-.m-body {
-  font-family: var(--monoton);
-}
-
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.25s ease-out;
 }

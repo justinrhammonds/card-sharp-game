@@ -144,15 +144,14 @@ export default {
     left: -8%;
     top: calc(var(--card-height) * .3333);
     border: none;
-    color: #fff;
+    color: white;
     text-align: center;
     padding: calc(var(--nav-font-size) * .5); /* Adjust to suit */
-    font-family: var(--monoton);
     font-size: calc(var(--card-width) * .10);
-    font-weight: 400;
+    font-family: var(--monoton);
     outline: none;
     box-shadow: 0 5px 8px 0 rgba(0,0,0,.2), 0 7px 20px 0 rgba(0,0,0,.17);
-    text-shadow: 1.5px 1.5px #222;
+    text-shadow: 1.5px 1.5px var(--black);
   }
 
   .ribbon .ribbon-content:before, 
@@ -176,7 +175,7 @@ export default {
 
   .green .ribbon-content:before, 
   .green .ribbon-content:after {
-    border-color: #12cc12 transparent transparent transparent;
+    border-color: #15af15 transparent transparent transparent;
   }
 
   .blue .ribbon-content:before, 

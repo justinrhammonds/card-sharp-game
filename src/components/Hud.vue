@@ -1,5 +1,5 @@
 <template>
-  <nav class="hud">
+  <section class="hud">
     <ul>
       <li 
         ref="tries-value"
@@ -9,7 +9,7 @@
       <li
         ref="score-value"
         class="total-score">
-        SCORE : {{score}}
+        Score : {{score}}
       </li> 
       <li 
         class="bonus-container">
@@ -27,7 +27,7 @@
         </span>
       </li>
     </ul>
-  </nav>
+  </section>
 </template>
 
 <script>
@@ -100,7 +100,7 @@ export default {
   .hud {
     width: 100vw;
     background-color: mediumvioletred;
-    color: #fff;
+    color: white;
     font-family: var(--monoton);
     font-weight: 400;
     font-size: var(--nav-font-size);
@@ -155,7 +155,7 @@ export default {
       text-shadow: none;
     }
     50% {
-      color: coral;
+      color: var(--bright-coral);
       filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
       text-shadow: 2px 2px rgba(0,0,0,.55);
     }
