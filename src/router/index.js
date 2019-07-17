@@ -9,9 +9,9 @@ Vue.use(VueRouter);
 export default new VueRouter({
   routes: [
     {
-        path: '/',
-        name: 'Home',
-        component: Home
+      path: '/',
+      name: 'Home',
+      component: Home
     },
     {
       path: '/play',
@@ -19,9 +19,9 @@ export default new VueRouter({
       component: Game
     },  
     {
-        path: '/tutorial',
-        name: 'Tutorial',
-        component: Tutorial
+      path: '/tutorial',
+      name: 'Tutorial',
+      component: Tutorial
     }
   ]
 });

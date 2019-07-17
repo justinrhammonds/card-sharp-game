@@ -114,7 +114,7 @@ export default {
       if (prediction === "higher") {
         currentStage.evaluation = currentStage.card.value > prevValue || 
         // joker should always evaluate to true prediction
-        currentValue === 0;
+        currentStage.card.value === 0;
       } 
       else {
         currentStage.evaluation = currentStage.card.value < prevValue || 
