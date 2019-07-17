@@ -112,39 +112,42 @@ export default {
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
+      // advance stage
       this.currentStageIndex = this.nextStageIndex;
-      this.stages[this.currentStageIndex].card = this.drawCard(this.cards, this.currentStageIndex);
-      let evaluation;
+      const currentStage = this.stages[this.currentStageIndex];
+      currentStage.card = this.drawCard(this.cards, this.currentStageIndex);
+
+      return this.evaluatePrediction(prediction, previousCardValue, currentStage);
+    },
+    evaluatePrediction(prediction, prevValue, currentStage) {
       if (prediction === "higher") {
-        evaluation = this.currentStageCardValue > previousCardValue || 
+        currentStage.evaluation = currentStage.card.value > prevValue || 
         // joker should always evaluate to true prediction
-        this.stages[this.currentStageIndex].card.value === 0;
+        currentValue === 0;
       } 
       else {
-        evaluation = this.currentStageCardValue < previousCardValue || 
+        currentStage.evaluation = currentStage.card.value < prevValue || 
         // joker should always evaluate to true prediction
-        this.stages[this.currentStageIndex].card.value === 0;
+        currentStage.card.value === 0;
       }
 
-      this.stages[this.currentStageIndex].evaluation = evaluation;
-
       // if not bonus round, prediction was correct, and wasn't joker, award points
-      if (this.stages[this.currentStageIndex].name !== "bonus" && evaluation && this.stages[this.currentStageIndex].card.value !== 0) {
+      if (currentStage.name !== "bonus" && currentStage.evaluation && currentStage.card.value !== 0) {
           this.$emit("adjust-score", +1);
       }
 
       // if not bonus round, and prediction was incorrect, lose a try and reset rows
-      if (this.stages[this.currentStageIndex].name !== "bonus" && !evaluation) {
+      if (currentStage.name !== "bonus" && !currentStage.evaluation) {
         this.$emit("adjust-tries", -1);
         setTimeout(this.flipTable, 1000);
       }
 
       // if bonus round, and prediction was incorrect, reset rows
-      if (this.stages[this.currentStageIndex].name === "bonus" && !evaluation) {
+      if (currentStage.name === "bonus" && !currentStage.evaluation) {
         setTimeout(this.flipTable, 1000);
       }
       
-      return evaluation;
+      return currentStage.evaluation;
     },
     collectBonus() {
       this.$emit("award-bonus");
