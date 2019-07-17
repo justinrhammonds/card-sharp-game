@@ -132,12 +132,14 @@ export default {
   .total-tries {
     float: left;
     width: 20vw;
+    transition: color 1s ease;
   }
 
   .total-score {
     margin: 0 auto;
     text-align: center;
     width: 60vw;
+    transition: color 1s ease;
   }
   
   .fa-star {
@@ -148,38 +150,13 @@ export default {
     margin: 0 .25rem;
   }
 
-  @keyframes flash-red {
-    0%, 100% {
-      color: white;
-      filter: none;
-      text-shadow: none;
-    }
-    50% {
-      color: var(--bright-coral);
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
-      text-shadow: 2px 2px rgba(0,0,0,.55);
-    }
-  }
-
-  @keyframes flash-green {
-    0%, 100% {
-      color: white;
-      filter: none;
-      text-shadow: none;
-    }
-    50% {
-      color: lime;
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
-      text-shadow: 2px 2px rgba(0,0,0,.55);
-    }
-  }
-
-  .higher {
-    animation: flash-green 1.5s;
-  }
-
-  .lower {
-    animation: flash-red 1.5s;
-  }
+.higher {
+  transition: color 1s ease;
+  color: lime; 
+}
+.lower {
+  transition: color 1s ease;
+  color: var(--bright-coral);
+}
 
 </style>
