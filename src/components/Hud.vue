@@ -84,7 +84,7 @@ export default {
       if (this.bonus === "score") {
         this.bonus = "tries";
       } 
-      if (this.bonus === "tries") {
+      else {
         this.bonus = "score";
       }
 
