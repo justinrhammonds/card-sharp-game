@@ -38,16 +38,11 @@ export default {
       cards,
       stages,
       currentStageIndex: 0,
-      previousCardValue: null,
-      totalCardsSwapped: 0,
-      currentStageCardValue: null,
+      swapCardIndex: 6,
       swappedCard: null,
     }
   },
   computed: {
-    nextStageIndex: function() {
-      return this.currentStageIndex + 1;
-    },
     currentStage: function() {
       return this.stages[this.currentStageIndex];
     }
@@ -62,8 +57,8 @@ export default {
       */
       this.$nextTick().then(() => {
         this.currentStageIndex = 0;
+        this.swapCardIndex = 6;
         this.cards = cards;
-        this.totalCardsSwapped = 0;
         this.resetStages();
         this.shuffle();
         this.cards = this.cards.slice(0, 12);
@@ -91,29 +86,25 @@ export default {
       }
     },
     drawCard(cards, position) {
-      const card = cards[position];
-      this.currentStageCardValue = card.value;
-      return card;
+      return cards[position];
     },
     swapCard() {
-      const swapPosition = 6 + this.totalCardsSwapped;
-      this.currentStage.card = this.cards[swapPosition];
+      this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.totalCardsSwapped = this.totalCardsSwapped + 1; 
+      this.swapCardIndex = this.swapCardIndex + 1; 
       this.currentStage.swaps = this.currentStage.swaps - 1;
       this.$emit("adjust-score", -1, true);
     },
     swapJokerCard() {
-      const swapPosition = 6 + this.totalCardsSwapped;
-      this.currentStage.card = this.cards[swapPosition];
+      this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.totalCardsSwapped = this.totalCardsSwapped + 1; 
+      this.swapCardIndex = this.swapCardIndex + 1; 
     },
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
       const previousCardValue = this.stages[this.currentStageIndex].card.value;
       // advance stage
-      this.currentStageIndex = this.nextStageIndex;
+      this.currentStageIndex = this.currentStageIndex + 1;
       const currentStage = this.stages[this.currentStageIndex];
       currentStage.card = this.drawCard(this.cards, this.currentStageIndex);
 

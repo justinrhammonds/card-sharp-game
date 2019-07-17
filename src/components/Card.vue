@@ -12,7 +12,7 @@ export default {
       type: Boolean
     },
     suit: {
-      type: String,
+      type: String
     },
     faceValue: {
       type: String
@@ -29,9 +29,8 @@ export default {
       if (this.revealed) {
         return `${url}#view-${this.faceValue}`;
       } 
-      else {
-        return `${url}#view-card-back`;
-      }
+
+      return `${url}#view-card-back`;
     } 
   },
 }

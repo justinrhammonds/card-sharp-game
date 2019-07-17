@@ -3,7 +3,7 @@
     <hud
       :score="totalScore"
       :tries="triesRemaining"
-      @bonus-toggle="calibrateBonusType"
+      @bonus-toggle="toggleBonusType"
     />
     <game-row 
       @award-bonus="awardBonus"
@@ -11,7 +11,7 @@
       @adjust-tries="recalculateTries"
     />
     <modal v-show="gameOver"
-      @close="closeGameRecap">
+      @close="continueNewGame">
       <template v-slot:modal-header>
         <h2 class="recap-title">Game Over</h2>
       </template>
@@ -66,36 +66,36 @@ export default {
     },
     recalculateTries(increaseOrDecrease) {
       if (this.triesRemaining === 0 && increaseOrDecrease < 0) {
-        this.endGame();
+        this.endGameAndRecap();
         this.startNewGame();
       }
       else {
-        this.triesRemaining = this.triesRemaining + (gameConfig.tryAdjust * increaseOrDecrease);
+        this.triesRemaining = this.triesRemaining + (gameConfig.defaultTry * increaseOrDecrease);
       }
     },
-    calibrateBonusType(bonusType) {
-      this.bonusType = bonusType;
+    toggleBonusType(type) {
+      this.bonusType = type;
     },
     awardBonus() {
       if (this.bonusType === "score") {
         this.recalculateScore(+1, false, true);
       }
-      else {
+      if (this.bonusType === "tries") {
         this.recalculateTries(+1);
       }
     },
-    endGame() {
-      this.showGameRecap();
+    endGameAndRecap() {
+      this.endGame();
       this.finalScore = this.totalScore;
     },
     startNewGame() {
       this.totalScore = gameConfig.startingScore;
       this.triesRemaining = gameConfig.startingTries;
     },
-    showGameRecap() {
+    endGame() {
       this.gameOver = true;
     },
-    closeGameRecap() {
+    continueNewGame() {
       this.gameOver = false;
     }
   }

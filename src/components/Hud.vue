@@ -83,12 +83,12 @@ export default {
     toggleBonus() {
       if (this.bonus === "score") {
         this.bonus = "tries";
-        this.$emit("bonus-toggle", "tries");
       } 
-      else {
+      if (this.bonus === "tries") {
         this.bonus = "score";
-        this.$emit("bonus-toggle", "score");
       }
+
+      this.$emit("bonus-toggle", this.bonus);
     }
   },
 }

@@ -5,7 +5,7 @@
     <div class="card-order">
       <h3 class="title-heading">Order of Cards</h3>
       <div class="order-grouping">
-        <card :key="index" v-for="(n,index) in this.demoCards" :revealed="true" suit="hearts" :face-value="n" style="overflow:hidden;" />
+        <card :key="index" v-for="(n,index) in this.demoCards" :revealed="true" suit="hearts" :face-value="n" />
       </div>
     </div>
     <p>If you don't like a card, you can swap it for a new one. You can only do this once per card, and you cannot swap when there's only one card (the bonus card) remaining. </p> 
@@ -50,8 +50,7 @@
 
   .order-grouping .card {
     margin-left: -40%;
+    overflow: hidden;
   }
 
 </style>
-
-
