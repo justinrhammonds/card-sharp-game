@@ -50,20 +50,20 @@ export default {
   watch: {
     score: function(newValue, oldValue) {
       if (oldValue < newValue) {
-        toggleHudHighlight(this.$refs["score-value"], "higher");
+        this.toggleHudHighlight(this.$refs["score-value"], "higher");
       }
 
       if (oldValue > newValue && newValue !== 0) {
-        toggleHudHighlight(this.$refs["score-value"], "lower");
+        this.toggleHudHighlight(this.$refs["score-value"], "lower");
       }
     },
     tries: function(newValue, oldValue) {
       if (oldValue < newValue  && (newValue === 0 && oldValue <= 0)) {
-        toggleHudHighlight(this.$refs["tries-value"], "higher");
+        this.toggleHudHighlight(this.$refs["tries-value"], "higher");
       }
 
       if (oldValue > newValue) {
-        toggleHudHighlight(this.$refs["tries-value"], "lower");
+        this.toggleHudHighlight(this.$refs["tries-value"], "lower");
       }
     }
   },
