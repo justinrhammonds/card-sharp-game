@@ -50,32 +50,20 @@ export default {
   watch: {
     score: function(newValue, oldValue) {
       if (oldValue < newValue) {
-        this.$refs["score-value"].classList.toggle('higher');
-        setTimeout(() => {
-          this.$refs["score-value"].classList.toggle('higher');
-        }, 1000);
+        toggleHudHighlight(this.$refs["score-value"], "higher");
       }
 
       if (oldValue > newValue && newValue !== 0) {
-        this.$refs["score-value"].classList.toggle('lower');
-        setTimeout(() => {
-          this.$refs["score-value"].classList.toggle('lower');
-        }, 1000);
+        toggleHudHighlight(this.$refs["score-value"], "lower");
       }
     },
     tries: function(newValue, oldValue) {
       if (oldValue < newValue  && (newValue === 0 && oldValue <= 0)) {
-        this.$refs["tries-value"].classList.toggle('higher');
-        setTimeout(() => {
-          this.$refs["tries-value"].classList.toggle('higher');
-        }, 1500);
+        toggleHudHighlight(this.$refs["tries-value"], "higher");
       }
 
       if (oldValue > newValue) {
-        this.$refs["tries-value"].classList.toggle('lower');
-        setTimeout(() => {
-          this.$refs["tries-value"].classList.toggle('lower');
-        }, 1500);
+        toggleHudHighlight(this.$refs["tries-value"], "lower");
       }
     }
   },
@@ -84,11 +72,17 @@ export default {
       if (this.bonus === "score") {
         this.bonus = "tries";
       } 
-      else {
+      if (this.bonus === "tries") {
         this.bonus = "score";
       }
 
       this.$emit("bonus-toggle", this.bonus);
+    },
+    toggleHudHighlight(el, change) {
+        el.classList.toggle(change);
+        setTimeout(() => {
+          el.classList.toggle(change);
+        }, 1000);
     }
   },
 }
@@ -132,14 +126,12 @@ export default {
   .total-tries {
     float: left;
     width: 20vw;
-    transition: color 1s ease;
   }
 
   .total-score {
     margin: 0 auto;
     text-align: center;
     width: 60vw;
-    transition: color 1s ease;
   }
   
   .fa-star {
@@ -150,13 +142,38 @@ export default {
     margin: 0 .25rem;
   }
 
-.higher {
-  transition: color 1s ease;
-  color: lime; 
-}
-.lower {
-  transition: color 1s ease;
-  color: var(--bright-coral);
-}
+  @keyframes flash-red {
+    0%, 100% {
+      color: white;
+      filter: none;
+      text-shadow: none;
+    }
+    50% {
+      color: var(--bright-coral);
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
+      text-shadow: 2px 2px rgba(0,0,0,.55);
+    }
+  }
+
+  @keyframes flash-green {
+    0%, 100% {
+      color: white;
+      filter: none;
+      text-shadow: none;
+    }
+    50% {
+      color: lime;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
+      text-shadow: 2px 2px rgba(0,0,0,.55);
+    }
+  }
+
+  .higher {
+    animation: flash-green 1.5s;
+  }
+
+  .lower {
+    animation: flash-red 1.5s;
+  }
 
 </style>
