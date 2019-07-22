@@ -1,9 +1,8 @@
 <template>
-  <img class="card" :src="path"> 
+  <img class="card" :src="path">
 </template>
 
 <script>
-
 export default {
   name: 'card',
   props: {
@@ -20,18 +19,12 @@ export default {
   },
   computed: {
     path: function() {
-      /*
-      cannot just reference as `../assets/${...}.svg#view-${...}`
-      this is because vue binding is executed at runtime while 
-      webpack aliases are executed at compile time
-      */
-      const url = require(`../assets/${this.suit}.svg`);
       if (this.revealed) {
-        return `${url}#view-${this.faceValue}`;
-      } 
+        return `/img/${this.suit}.svg#view-${this.faceValue}`;
+      }
 
-      return `${url}#view-card-back`;
-    } 
+      return `/img/${this.suit}.svg#view-card-back`;
+    }
   },
 }
 
