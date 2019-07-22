@@ -24,7 +24,6 @@
 import { mapGetters } from 'vuex'
 
 import stages from '../data/stages.js';
-import cards from '../data/cards.js';
 import RowStage from './RowStage.vue';
 import GameControls from './GameControls.vue';
 
