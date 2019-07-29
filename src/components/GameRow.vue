@@ -8,7 +8,7 @@
         :active-stage-id="currentStageIndex"
         :row-stage="stage"
         :swappedCard="swappedCard">
-        <game-controls
+        <game-controls 
           @prediction="advanceStageAndEvaluate"
           @collect-bonus="collectBonus"
           @collect-joker-bonus="collectJokerBonusAndSwap"
@@ -16,12 +16,11 @@
           @swap="swapCard"
         />
       </row-stage>
-    </div>
+    </div>  
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 import stages from '../data/stages.js';
 import cards from '../data/cards.js';
@@ -36,6 +35,7 @@ export default {
   },
   data() {
     return {
+      cards,
       stages,
       currentStageIndex: 0,
       swapCardIndex: 6,
@@ -43,26 +43,25 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      cards: 'cards'
-    }),
     currentStage: function() {
       return this.stages[this.currentStageIndex];
     }
   },
   methods: {
     flipTable() {
-      /*
+      /* 
       I used this.$nextTick().then()... because I
       needed to force waiting for a new UI cycle to
-      avoid the side effect of 'not rerendering' the
+      avoid the side effect of 'not rerendering' the 
       stage 0 card in the view
       */
       this.$nextTick().then(() => {
         this.currentStageIndex = 0;
         this.swapCardIndex = 6;
+        this.cards = cards;
         this.resetStages();
         this.shuffle();
+        this.cards = this.cards.slice(0, 12);
         this.dealStages(this.cards);
       })
     },
@@ -74,7 +73,12 @@ export default {
       }
     },
     shuffle() {
-      this.$store.commit('setRandomShuffleSeed')
+      for (const card of cards) {
+        card.order = Math.random();
+      }
+      cards.sort((a, b) => {
+        return a.order - b.order;
+      });
     },
     dealStages(cards) {
       for (let i = 0; i < stages.length; i += 1) {
@@ -87,14 +91,14 @@ export default {
     swapCard() {
       this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.swapCardIndex = this.swapCardIndex + 1;
+      this.swapCardIndex = this.swapCardIndex + 1; 
       this.currentStage.swaps = this.currentStage.swaps - 1;
       this.$emit("adjust-score", -1, true);
     },
     swapJokerCard() {
       this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.swapCardIndex = this.swapCardIndex + 1;
+      this.swapCardIndex = this.swapCardIndex + 1; 
     },
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
@@ -108,12 +112,12 @@ export default {
     },
     evaluatePrediction(prediction, prevValue, currentStage) {
       if (prediction === "higher") {
-        currentStage.evaluation = currentStage.card.value > prevValue ||
+        currentStage.evaluation = currentStage.card.value > prevValue || 
         // joker should always evaluate to true prediction
         currentStage.card.value === 0;
-      }
+      } 
       else {
-        currentStage.evaluation = currentStage.card.value < prevValue ||
+        currentStage.evaluation = currentStage.card.value < prevValue || 
         // joker should always evaluate to true prediction
         currentStage.card.value === 0;
       }
@@ -133,7 +137,7 @@ export default {
       if (currentStage.name === "bonus" && !currentStage.evaluation) {
         setTimeout(this.flipTable, 1000);
       }
-
+      
       return currentStage.evaluation;
     },
     collectBonus() {
@@ -147,6 +151,8 @@ export default {
   },
   created() {
     this.shuffle();
+    //only need a max of 12 cards for a game
+    this.cards = this.cards.slice(0, 12);
     this.dealStages(this.cards);
   },
   updated() {
