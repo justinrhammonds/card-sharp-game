@@ -5,6 +5,7 @@ const gameSettings = {
     try: 1,
     startingScore: 0,
     startingTries: 3,
+    startingBonus: "tries"
 };
 
 export default gameSettings;

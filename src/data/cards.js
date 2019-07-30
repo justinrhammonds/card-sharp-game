@@ -32,7 +32,7 @@ const jokers = [
   { suit: "spades", name: "black-joker", value: 0 },
 ];
 
-cards = [...cards, jokers];
+cards = [...cards, ...jokers];
 
 export default cards;
 

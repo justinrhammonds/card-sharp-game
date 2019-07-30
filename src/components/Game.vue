@@ -40,7 +40,7 @@ export default {
       finalScore: 0,
       totalScore: 0,
       triesRemaining: gameSettings.startingTries,
-      bonusType: "score"
+      bonusType: gameSettings.startingBonus
     };
   },
   methods: {

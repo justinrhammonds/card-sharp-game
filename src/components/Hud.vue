@@ -1,28 +1,16 @@
 <template>
   <section class="hud">
     <ul>
-      <li 
-        ref="tries-value"
-        class="total-tries">
+      <li ref="tries-value" class="total-tries">
         <font-awesome-icon :key="index" v-for="(n,index) in tries" icon="heart" />
       </li>
-      <li
-        ref="score-value"
-        class="total-score">
-        Score : {{score}}
-      </li> 
-      <li 
-        class="bonus-container">
-        <span 
-          v-if="this.bonus === 'score'"
-          class="bonus-type" 
-          @click="toggleBonus()">
-          <font-awesome-icon icon="star" /> + 300
+      <li ref="score-value" class="total-score">Score : {{score}}</li>
+      <li class="bonus-container">
+        <span v-if="this.bonus === 'score'" class="bonus-type" @click="toggleBonus()">
+          <font-awesome-icon icon="star" />+ 300
         </span>
-        <span 
-          v-else
-          class="bonus-type"
-          @click="toggleBonus()"><font-awesome-icon icon="star" /> + 1 
+        <span v-else class="bonus-type" @click="toggleBonus()">
+          <font-awesome-icon icon="star" />+ 1
           <font-awesome-icon icon="heart" />
         </span>
       </li>
@@ -31,21 +19,22 @@
 </template>
 
 <script>
+import gameSettings from "../data/gameSettings.js";
 
 export default {
   name: "hud",
   props: {
     score: {
-      type: Number,
+      type: Number
     },
     tries: {
-      type: Number,
+      type: Number
     }
   },
   data() {
     return {
-      bonus: "score"
-    }
+      bonus: gameSettings.startingBonus
+    };
   },
   watch: {
     score: function(newValue, oldValue) {
@@ -58,7 +47,7 @@ export default {
       }
     },
     tries: function(newValue, oldValue) {
-      if (oldValue < newValue  && (newValue === 0 && oldValue <= 0)) {
+      if (oldValue < newValue && (newValue === 0 && oldValue <= 0)) {
         this.toggleHudHighlight(this.$refs["tries-value"], "higher");
       }
 
@@ -71,109 +60,107 @@ export default {
     toggleBonus() {
       if (this.bonus === "score") {
         this.bonus = "tries";
-      } 
-      if (this.bonus === "tries") {
+      } else {
         this.bonus = "score";
       }
 
       this.$emit("bonus-toggle", this.bonus);
     },
     toggleHudHighlight(el, change) {
+      el.classList.toggle(change);
+      setTimeout(() => {
         el.classList.toggle(change);
-        setTimeout(() => {
-          el.classList.toggle(change);
-        }, 1000);
+      }, 1000);
     }
-  },
-}
-
+  }
+};
 </script>
 
 <style scoped>
+.hud {
+  width: 100vw;
+  background-color: mediumvioletred;
+  color: white;
+  font-family: var(--monoton);
+  font-weight: 400;
+  font-size: var(--nav-font-size);
+}
 
-  .hud {
-    width: 100vw;
-    background-color: mediumvioletred;
+.hud ul {
+  margin: 0 auto;
+  padding: 1rem calc(var(--nav-font-size) * 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bonus-container span:hover {
+  cursor: pointer;
+}
+
+.bonus-container {
+  background-color: mediumvioletred;
+  text-align: right;
+  width: 20vw;
+}
+
+.bonus-container span {
+  border: 2px solid white;
+  padding: calc(var(--nav-font-size) * 0.05) calc(var(--nav-font-size) * 0.15);
+}
+
+.total-tries {
+  float: left;
+  width: 20vw;
+}
+
+.total-score {
+  margin: 0 auto;
+  text-align: center;
+  width: 60vw;
+}
+
+.fa-star {
+  margin-right: 0.6rem;
+}
+
+.fa-heart {
+  margin: 0 0.25rem;
+}
+
+@keyframes flash-red {
+  0%,
+  100% {
     color: white;
-    font-family: var(--monoton);
-    font-weight: 400;
-    font-size: var(--nav-font-size);
+    filter: none;
+    text-shadow: none;
   }
+  50% {
+    color: var(--bright-coral);
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.55));
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.55);
+  }
+}
 
-  .hud ul {
-    margin: 0 auto;
-    padding: 1rem calc(var(--nav-font-size) * .5);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+@keyframes flash-green {
+  0%,
+  100% {
+    color: white;
+    filter: none;
+    text-shadow: none;
   }
+  50% {
+    color: lime;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.55));
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.55);
+  }
+}
 
-  .bonus-container span:hover {
-    cursor: pointer;
-  }
-  
-  .bonus-container {
-    background-color: mediumvioletred;
-    text-align: right;
-    width: 20vw;
-  }
+.higher {
+  animation: flash-green 1.5s;
+}
 
-  .bonus-container span {
-    border: 2px solid white;
-    padding: calc(var(--nav-font-size) * .05) calc(var(--nav-font-size) * .15);
-  }
-
-  .total-tries {
-    float: left;
-    width: 20vw;
-  }
-
-  .total-score {
-    margin: 0 auto;
-    text-align: center;
-    width: 60vw;
-  }
-  
-  .fa-star {
-    margin-right: .6rem;
-  }
-
-  .fa-heart {
-    margin: 0 .25rem;
-  }
-
-  @keyframes flash-red {
-    0%, 100% {
-      color: white;
-      filter: none;
-      text-shadow: none;
-    }
-    50% {
-      color: var(--bright-coral);
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
-      text-shadow: 2px 2px rgba(0,0,0,.55);
-    }
-  }
-
-  @keyframes flash-green {
-    0%, 100% {
-      color: white;
-      filter: none;
-      text-shadow: none;
-    }
-    50% {
-      color: lime;
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,.55));
-      text-shadow: 2px 2px rgba(0,0,0,.55);
-    }
-  }
-
-  .higher {
-    animation: flash-green 1.5s;
-  }
-
-  .lower {
-    animation: flash-red 1.5s;
-  }
-
+.lower {
+  animation: flash-red 1.5s;
+}
 </style>
