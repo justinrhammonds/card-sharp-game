@@ -6,10 +6,10 @@
       </li>
       <li ref="score-value" class="total-score">Score : {{score}}</li>
       <li class="bonus-container">
-        <span v-if="this.bonus === 'score'" class="bonus-type" @click="toggleBonus()">
+        <span v-if="this.bonusType === 'score'" class="bonus-type" @click="toggleBonusType()">
           <font-awesome-icon icon="star" />+ 300
         </span>
-        <span v-else class="bonus-type" @click="toggleBonus()">
+        <span v-else class="bonus-type" @click="toggleBonusType()">
           <font-awesome-icon icon="star" />+ 1
           <font-awesome-icon icon="heart" />
         </span>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import gameSettings from "../data/gameSettings.js";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "hud",
@@ -31,10 +31,8 @@ export default {
       type: Number
     }
   },
-  data() {
-    return {
-      bonus: gameSettings.startingBonus
-    };
+  computed: {
+    ...mapState(["bonusType"])
   },
   watch: {
     score: function(newValue, oldValue) {
@@ -57,15 +55,8 @@ export default {
     }
   },
   methods: {
-    toggleBonus() {
-      if (this.bonus === "score") {
-        this.bonus = "tries";
-      } else {
-        this.bonus = "score";
-      }
+    ...mapMutations(["toggleBonusType"]),
 
-      this.$emit("bonus-toggle", this.bonus);
-    },
     toggleHudHighlight(el, change) {
       el.classList.toggle(change);
       setTimeout(() => {

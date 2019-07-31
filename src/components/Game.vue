@@ -1,6 +1,6 @@
 <template>
   <div id="game">
-    <hud :score="totalScore" :tries="triesRemaining" @bonus-toggle="toggleBonusType" />
+    <hud :score="totalScore" :tries="triesRemaining" />
     <game-row
       @award-bonus="awardBonus"
       @adjust-score="recalculateScore"
@@ -25,6 +25,7 @@ import Hud from "../components/Hud.vue";
 import GameRow from "../components/GameRow.vue";
 import Modal from "../components/Modal.vue";
 import gameSettings from "../data/gameSettings.js";
+import { mapState } from "vuex";
 
 export default {
   name: "game",
@@ -39,9 +40,11 @@ export default {
       gameOver: false,
       finalScore: 0,
       totalScore: 0,
-      triesRemaining: gameSettings.startingTries,
-      bonusType: gameSettings.startingBonus
+      triesRemaining: gameSettings.startingTries
     };
+  },
+  computed: {
+    ...mapState(["bonusType"])
   },
   methods: {
     recalculateScore(increaseOrDecrease, isSwap = false, isBonus = false) {
@@ -75,9 +78,6 @@ export default {
         this.triesRemaining =
           this.triesRemaining + gameSettings.try * increaseOrDecrease;
       }
-    },
-    toggleBonusType(type) {
-      this.bonusType = type;
     },
     awardBonus() {
       if (this.bonusType === "score") {
