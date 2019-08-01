@@ -23,16 +23,8 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "hud",
-  props: {
-    score: {
-      type: Number
-    },
-    tries: {
-      type: Number
-    }
-  },
   computed: {
-    ...mapState(["bonusType"])
+    ...mapState(["bonusType", "score", "tries"])
   },
   watch: {
     score: function(newValue, oldValue) {

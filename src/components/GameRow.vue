@@ -7,8 +7,9 @@
         v-for="(stage, index) in stages"
         :active-stage-id="currentStageIndex"
         :row-stage="stage"
-        :swappedCard="swappedCard">
-        <game-controls 
+        :swappedCard="swappedCard"
+      >
+        <game-controls
           @prediction="advanceStageAndEvaluate"
           @collect-bonus="collectBonus"
           @collect-joker-bonus="collectJokerBonusAndSwap"
@@ -16,16 +17,15 @@
           @swap="swapCard"
         />
       </row-stage>
-    </div>  
+    </div>
   </div>
 </template>
 
 <script>
-
-import stages from '../data/stages.js';
-import cards from '../data/cards.js';
-import RowStage from './RowStage.vue';
-import GameControls from './GameControls.vue';
+import stages from "../data/stages.js";
+import cards from "../data/cards.js";
+import RowStage from "./RowStage.vue";
+import GameControls from "./GameControls.vue";
 
 export default {
   name: "game-row",
@@ -39,8 +39,8 @@ export default {
       stages,
       currentStageIndex: 0,
       swapCardIndex: 6,
-      swappedCard: null,
-    }
+      swappedCard: null
+    };
   },
   computed: {
     currentStage: function() {
@@ -61,9 +61,8 @@ export default {
         this.cards = cards;
         this.resetStages();
         this.shuffle();
-        this.cards = this.cards.slice(0, 12);
         this.dealStages(this.cards);
-      })
+      });
     },
     // TODO - find a better way to do this.
     resetStages() {
@@ -91,14 +90,14 @@ export default {
     swapCard() {
       this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.swapCardIndex = this.swapCardIndex + 1; 
+      this.swapCardIndex = this.swapCardIndex + 1;
       this.currentStage.swaps = this.currentStage.swaps - 1;
       this.$emit("adjust-score", -1, true);
     },
     swapJokerCard() {
       this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.swapCardIndex = this.swapCardIndex + 1; 
+      this.swapCardIndex = this.swapCardIndex + 1;
     },
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
@@ -108,23 +107,32 @@ export default {
       const currentStage = this.stages[this.currentStageIndex];
       currentStage.card = this.drawCard(this.cards, this.currentStageIndex);
 
-      return this.evaluatePrediction(prediction, previousCardValue, currentStage);
+      return this.evaluatePrediction(
+        prediction,
+        previousCardValue,
+        currentStage
+      );
     },
     evaluatePrediction(prediction, prevValue, currentStage) {
       if (prediction === "higher") {
-        currentStage.evaluation = currentStage.card.value > prevValue || 
-        // joker should always evaluate to true prediction
-        currentStage.card.value === 0;
-      } 
-      else {
-        currentStage.evaluation = currentStage.card.value < prevValue || 
-        // joker should always evaluate to true prediction
-        currentStage.card.value === 0;
+        currentStage.evaluation =
+          currentStage.card.value > prevValue ||
+          // joker should always evaluate to true prediction
+          currentStage.card.value === 0;
+      } else {
+        currentStage.evaluation =
+          currentStage.card.value < prevValue ||
+          // joker should always evaluate to true prediction
+          currentStage.card.value === 0;
       }
 
       // if not bonus round, prediction was correct, and wasn't joker, award points
-      if (currentStage.name !== "bonus" && currentStage.evaluation && currentStage.card.value !== 0) {
-          this.$emit("adjust-score", +1);
+      if (
+        currentStage.name !== "bonus" &&
+        currentStage.evaluation &&
+        currentStage.card.value !== 0
+      ) {
+        this.$emit("adjust-score", +1);
       }
 
       // if not bonus round, and prediction was incorrect, lose a try and reset rows
@@ -137,7 +145,7 @@ export default {
       if (currentStage.name === "bonus" && !currentStage.evaluation) {
         setTimeout(this.flipTable, 1000);
       }
-      
+
       return currentStage.evaluation;
     },
     collectBonus() {
@@ -151,23 +159,18 @@ export default {
   },
   created() {
     this.shuffle();
-    //only need a max of 12 cards for a game
-    this.cards = this.cards.slice(0, 12);
     this.dealStages(this.cards);
   },
   updated() {
     this.swappedCard = null;
   }
-}
-
+};
 </script>
 
 <style scoped>
-
-  .row-container {
-    display: flex;
-    justify-content: space-evenly;
-    padding-top: 10vh;
-  }
-
+.row-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 10vh;
+}
 </style>

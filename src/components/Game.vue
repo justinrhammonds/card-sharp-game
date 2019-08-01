@@ -1,6 +1,6 @@
 <template>
   <div id="game">
-    <hud :score="totalScore" :tries="triesRemaining" />
+    <hud />
     <game-row
       @award-bonus="awardBonus"
       @adjust-score="recalculateScore"
@@ -24,7 +24,6 @@
 import Hud from "../components/Hud.vue";
 import GameRow from "../components/GameRow.vue";
 import Modal from "../components/Modal.vue";
-import gameSettings from "../data/gameSettings.js";
 import { mapState } from "vuex";
 
 export default {
@@ -36,47 +35,52 @@ export default {
   },
   data() {
     return {
-      gameSettings,
       gameOver: false,
-      finalScore: 0,
-      totalScore: 0,
-      triesRemaining: gameSettings.startingTries
+      finalScore: 0
     };
   },
   computed: {
-    ...mapState(["bonusType"])
+    ...mapState(["bonusType", "score", "tries", "settings"])
   },
   methods: {
     recalculateScore(increaseOrDecrease, isSwap = false, isBonus = false) {
-      // if on a swap
-      if (isSwap && this.totalScore > 0) {
-        // never have less than 0 points
-        this.totalScore =
-          this.totalScore + gameSettings.swap * increaseOrDecrease;
+      // if on a swap (also never have less than 0 points)
+      if (isSwap && this.score > 0) {
+        this.$store.commit("updateScore", {
+          increaseOrDecrease,
+          amount: this.settings.swap
+        });
       }
       // if on collect bonus
       if (
         !isSwap &&
         increaseOrDecrease > 0 &&
-        this.totalScore >= 0 &&
+        this.score >= 0 &&
         isBonus === true
       ) {
-        this.totalScore =
-          this.totalScore + gameSettings.bonus * increaseOrDecrease;
+        this.$store.commit("updateScore", {
+          increaseOrDecrease,
+          amount: this.settings.scoreBonus
+        });
       }
       // else if on correct guess
-      else if (!isSwap && increaseOrDecrease > 0 && this.totalScore >= 0) {
-        this.totalScore =
-          this.totalScore + gameSettings.score * increaseOrDecrease;
+      else if (!isSwap && increaseOrDecrease > 0 && this.score >= 0) {
+        this.$store.commit("updateScore", {
+          increaseOrDecrease,
+          amount: this.settings.scoreAmount
+        });
       }
     },
     recalculateTries(increaseOrDecrease) {
-      if (this.triesRemaining === 0 && increaseOrDecrease < 0) {
+      if (this.tries === 0 && increaseOrDecrease < 0) {
         this.endGameAndRecap();
         this.startNewGame();
       } else {
-        this.triesRemaining =
-          this.triesRemaining + gameSettings.try * increaseOrDecrease;
+        //this.tries = this.tries + this.settings.tries * increaseOrDecrease;
+        this.$store.commit("updateTries", {
+          increaseOrDecrease,
+          amount: this.settings.triesAmount
+        });
       }
     },
     awardBonus() {
@@ -88,15 +92,11 @@ export default {
       }
     },
     endGameAndRecap() {
-      this.endGame();
-      this.finalScore = this.totalScore;
+      this.gameOver = true;
+      this.finalScore = this.score;
     },
     startNewGame() {
-      this.totalScore = gameSettings.startingScore;
-      this.triesRemaining = gameSettings.startingTries;
-    },
-    endGame() {
-      this.gameOver = true;
+      this.$store.commit("resetGame");
     },
     continueNewGame() {
       this.gameOver = false;
