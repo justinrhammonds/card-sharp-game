@@ -27,7 +27,19 @@ const getters = {
 }
 
 const actions = {
-  
+  awardBonus({ commit, state }) {
+    if (state.bonusType === "score") {
+      commit('updateScore', { 
+        increaseOrDecrease: +1,
+        amount: state.settings.scoreBonus
+      })
+    } else {
+      commit('updateTries', { 
+        increaseOrDecrease: +1,
+        amount: state.settings.triesBonus
+      })
+    }
+  }
 }
 
 const mutations = {

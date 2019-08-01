@@ -149,11 +149,11 @@ export default {
       return currentStage.evaluation;
     },
     collectBonus() {
-      this.$emit("award-bonus");
+      this.$store.dispatch("awardBonus");
       this.flipTable();
     },
     collectJokerBonusAndSwap() {
-      this.$emit("award-bonus");
+      this.$store.dispatch("awardBonus");
       this.swapJokerCard();
     }
   },
