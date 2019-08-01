@@ -1,11 +1,7 @@
 <template>
   <div id="game">
     <hud />
-    <game-row
-      @award-bonus="awardBonus"
-      @adjust-score="recalculateScore"
-      @adjust-tries="recalculateTries"
-    />
+    <game-row @adjust-score="recalculateScore" @adjust-tries="recalculateTries" />
     <modal v-show="gameOver" @close="continueNewGame">
       <template v-slot:modal-header>
         <h2 class="recap-title">Game Over</h2>
@@ -76,19 +72,10 @@ export default {
         this.endGameAndRecap();
         this.startNewGame();
       } else {
-        //this.tries = this.tries + this.settings.tries * increaseOrDecrease;
         this.$store.commit("updateTries", {
           increaseOrDecrease,
           amount: this.settings.triesAmount
         });
-      }
-    },
-    awardBonus() {
-      if (this.bonusType === "score") {
-        this.recalculateScore(+1, false, true);
-      }
-      if (this.bonusType === "tries") {
-        this.recalculateTries(+1);
       }
     },
     endGameAndRecap() {

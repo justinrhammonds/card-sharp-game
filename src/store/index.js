@@ -52,7 +52,7 @@ const mutations = {
   updateScore(state, { increaseOrDecrease, amount }) {
     state.score += (amount * increaseOrDecrease);
   },
-  startOver(state) {
+  resetGame(state) {
     state.score = state.settings.startingScore;
     state.tries = state.settings.startingTries;
   }
