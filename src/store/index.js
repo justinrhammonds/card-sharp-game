@@ -55,6 +55,12 @@ const mutations = {
   resetGame(state) {
     state.score = state.settings.startingScore;
     state.tries = state.settings.startingTries;
+  },
+  shuffleCards(state) {
+    state.cards.forEach(card => card.order = Math.random());
+    state.cards.sort((a, b) => {
+      return a.order - b.order;
+    });
   }
 }
 

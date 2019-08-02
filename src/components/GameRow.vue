@@ -23,9 +23,9 @@
 
 <script>
 import stages from "../data/stages.js";
-import cards from "../data/cards.js";
 import RowStage from "./RowStage.vue";
 import GameControls from "./GameControls.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "game-row",
@@ -35,7 +35,6 @@ export default {
   },
   data() {
     return {
-      cards,
       stages,
       currentStageIndex: 0,
       swapCardIndex: 6,
@@ -43,6 +42,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["cards"]),
     currentStage: function() {
       return this.stages[this.currentStageIndex];
     }
@@ -58,9 +58,8 @@ export default {
       this.$nextTick().then(() => {
         this.currentStageIndex = 0;
         this.swapCardIndex = 6;
-        this.cards = cards;
         this.resetStages();
-        this.shuffle();
+        this.$store.commit("shuffleCards");
         this.dealStages(this.cards);
       });
     },
@@ -70,14 +69,6 @@ export default {
         this.stages[i].swaps = 1;
         this.stages[i].evaluation = null;
       }
-    },
-    shuffle() {
-      for (const card of cards) {
-        card.order = Math.random();
-      }
-      cards.sort((a, b) => {
-        return a.order - b.order;
-      });
     },
     dealStages(cards) {
       for (let i = 0; i < stages.length; i += 1) {
@@ -158,7 +149,7 @@ export default {
     }
   },
   created() {
-    this.shuffle();
+    this.$store.commit("shuffleCards");
     this.dealStages(this.cards);
   },
   updated() {
