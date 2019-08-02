@@ -11,6 +11,8 @@ const state = () => ({
   bonusType: "tries",
   score: 0,
   tries: 3,
+  swapCardIndex: 6,
+  activeStageIndex: 0,
   settings: {
     startingScore: 0,
     scoreAmount: 100,
@@ -61,7 +63,13 @@ const mutations = {
     state.cards.sort((a, b) => {
       return a.order - b.order;
     });
-  }
+  },
+   setSwapCardIndex(state, { amount }) {
+     state.swapCardIndex = amount;
+   },
+   setActiveStageIndex(state, { amount }) {
+     state.activeStageIndex = amount;
+   }
 }
 
 export default new Vuex.Store({

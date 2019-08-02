@@ -5,7 +5,7 @@
         ref="renderedStages"
         :key="index"
         v-for="(stage, index) in stages"
-        :active-stage-id="currentStageIndex"
+        :active-stage-id="activeStageIndex"
         :row-stage="stage"
         :swappedCard="swappedCard"
       >
@@ -35,16 +35,15 @@ export default {
   },
   data() {
     return {
-      stages,
-      currentStageIndex: 0,
-      swapCardIndex: 6,
+      stages, //////////////////////////////////////////////////////////////////
       swappedCard: null
     };
   },
   computed: {
-    ...mapState(["cards"]),
+    ...mapState(["cards", "swapCardIndex", "activeStageIndex"]),
     currentStage: function() {
-      return this.stages[this.currentStageIndex];
+      ////////////////////////////////////////////////
+      return this.stages[this.activeStageIndex];
     }
   },
   methods: {
@@ -56,8 +55,12 @@ export default {
       stage 0 card in the view
       */
       this.$nextTick().then(() => {
-        this.currentStageIndex = 0;
-        this.swapCardIndex = 6;
+        this.$store.commit("setActiveStageIndex", {
+          amount: 0
+        });
+        this.$store.commit("setSwapCardIndex", {
+          amount: 6
+        });
         this.resetStages();
         this.$store.commit("shuffleCards");
         this.dealStages(this.cards);
@@ -65,12 +68,14 @@ export default {
     },
     // TODO - find a better way to do this.
     resetStages() {
+      //////////////////////////////////////////////////////////////
       for (let i = 0; i < 4; i += 1) {
         this.stages[i].swaps = 1;
         this.stages[i].evaluation = null;
       }
     },
     dealStages(cards) {
+      ///////////////////////////////////////////////////////////
       for (let i = 0; i < stages.length; i += 1) {
         stages[i].card = cards[i];
       }
@@ -81,22 +86,28 @@ export default {
     swapCard() {
       this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.swapCardIndex = this.swapCardIndex + 1;
-      this.currentStage.swaps = this.currentStage.swaps - 1;
+      this.$store.commit("setSwapCardIndex", {
+        amount: this.swapCardIndex + 1
+      });
+      this.currentStage.swaps = this.currentStage.swaps - 1; ///////////////////////////
       this.$emit("adjust-score", -1, true);
     },
     swapJokerCard() {
       this.currentStage.card = this.cards[this.swapCardIndex];
       this.swappedCard = this.currentStage.card;
-      this.swapCardIndex = this.swapCardIndex + 1;
+      this.$store.commit("setSwapCardIndex", {
+        amount: this.swapCardIndex + 1
+      });
     },
     // TODO - refactor this into simpler, one-purpose methods
     advanceStageAndEvaluate(prediction) {
-      const previousCardValue = this.stages[this.currentStageIndex].card.value;
+      const previousCardValue = this.stages[this.activeStageIndex].card.value;
       // advance stage
-      this.currentStageIndex = this.currentStageIndex + 1;
-      const currentStage = this.stages[this.currentStageIndex];
-      currentStage.card = this.drawCard(this.cards, this.currentStageIndex);
+      this.$store.commit("setActiveStageIndex", {
+        amount: this.activeStageIndex + 1
+      });
+      const currentStage = this.stages[this.activeStageIndex];
+      currentStage.card = this.drawCard(this.cards, this.activeStageIndex);
 
       return this.evaluatePrediction(
         prediction,
