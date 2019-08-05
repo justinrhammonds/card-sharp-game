@@ -13,6 +13,8 @@ const state = () => ({
   tries: 3,
   swapCardIndex: 6,
   activeStageIndex: 0,
+  gameEnded: false,
+  finalScore: 0,
   settings: {
     startingScore: 0,
     scoreAmount: 100,
@@ -25,7 +27,9 @@ const state = () => ({
 });
 
 const getters = {
-
+  getCard: (state) => (position) => {
+    return state.cards[position];
+  },
 }
 
 const actions = {
@@ -41,10 +45,78 @@ const actions = {
         amount: state.settings.triesBonus
       })
     }
+  },
+  flipTable({ commit, dispatch }, { delay }) {
+    setTimeout(() => {
+      commit("setActiveStageIndex", {
+        amount: 0
+      });
+      commit("setSwapCardIndex", {
+        amount: 6
+      });
+      commit("resetStages");
+      dispatch("deal");
+    }, delay);
+  },
+  deal({ commit }) {
+    commit("shuffleCards");
+    commit("dealStages");
+  },
+  recalculateScore({ commit, state }, { increaseOrDecrease, isSwap, isBonus }) {
+    // if on a swap (also never have less than 0 points)
+    if (isSwap && state.score > 0) {
+      commit("updateScore", {
+        increaseOrDecrease,
+        amount: state.settings.swap
+      });
+    }
+    // if on collect bonus
+    if (
+      !isSwap &&
+      increaseOrDecrease > 0 &&
+      state.score >= 0 &&
+      isBonus
+    ) {
+      commit("updateScore", {
+        increaseOrDecrease,
+        amount: state.settings.scoreBonus
+      });
+    }
+    // else if on correct guess
+    else if (!isSwap && increaseOrDecrease > 0 && state.score >= 0) {
+      commit("updateScore", {
+        increaseOrDecrease,
+        amount: state.settings.scoreAmount
+      });
+    }
+  },
+  endGame({ commit, state }) {
+    commit("setGameEnded", { isEnded: true });
+    commit("setFinalScore", { amount: state.score });
+  },
+  continueNewGame({ commit }) {
+    commit("setGameEnded", { isEnded: false });
+    setTimeout(commit("resetGame"), 1000);
+  },
+  recalculateTries({ commit, dispatch, state }, { increaseOrDecrease }) {
+    if (state.tries === 0 && increaseOrDecrease < 0) {
+      dispatch("endGame")
+    } else {
+    commit("updateTries", {
+        increaseOrDecrease,
+        amount: state.settings.triesAmount
+      });
+    }
   }
 }
 
 const mutations = {
+  setFinalScore(state, { amount }) {
+    state.finalScore = amount;
+  },
+  setGameEnded(state, { isEnded }) {
+    state.gameEnded = isEnded;
+  },
   toggleBonusType(state) {
     state.bonusType = state.bonusType === "score" ? "tries" : "score";
   },
@@ -69,7 +141,18 @@ const mutations = {
    },
    setActiveStageIndex(state, { amount }) {
      state.activeStageIndex = amount;
-   }
+   },
+   dealStages(state) {
+    for (let i = 0; i < state.stages.length; i += 1) {
+      stages[i].card = state.cards[i];
+    }
+  },
+  resetStages(state) {
+    for (let i = 0; i < 4; i += 1) {
+      state.stages[i].swaps = 1;
+      state.stages[i].evaluation = null;
+    }
+  },
 }
 
 export default new Vuex.Store({

@@ -1,8 +1,8 @@
 <template>
   <div id="game">
     <hud />
-    <game-row @adjust-score="recalculateScore" @adjust-tries="recalculateTries" />
-    <modal v-show="gameOver" @close="continueNewGame">
+    <game-row />
+    <modal v-show="gameEnded" @close="continueNewGame">
       <template v-slot:modal-header>
         <h2 class="recap-title">Game Over</h2>
       </template>
@@ -20,7 +20,7 @@
 import Hud from "../components/Hud.vue";
 import GameRow from "../components/GameRow.vue";
 import Modal from "../components/Modal.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "game",
@@ -29,65 +29,11 @@ export default {
     GameRow,
     Modal
   },
-  data() {
-    return {
-      gameOver: false,
-      finalScore: 0
-    };
-  },
   computed: {
-    ...mapState(["bonusType", "score", "tries", "settings"])
+    ...mapState(["gameEnded", "finalScore"])
   },
   methods: {
-    recalculateScore(increaseOrDecrease, isSwap = false, isBonus = false) {
-      // if on a swap (also never have less than 0 points)
-      if (isSwap && this.score > 0) {
-        this.$store.commit("updateScore", {
-          increaseOrDecrease,
-          amount: this.settings.swap
-        });
-      }
-      // if on collect bonus
-      if (
-        !isSwap &&
-        increaseOrDecrease > 0 &&
-        this.score >= 0 &&
-        isBonus === true
-      ) {
-        this.$store.commit("updateScore", {
-          increaseOrDecrease,
-          amount: this.settings.scoreBonus
-        });
-      }
-      // else if on correct guess
-      else if (!isSwap && increaseOrDecrease > 0 && this.score >= 0) {
-        this.$store.commit("updateScore", {
-          increaseOrDecrease,
-          amount: this.settings.scoreAmount
-        });
-      }
-    },
-    recalculateTries(increaseOrDecrease) {
-      if (this.tries === 0 && increaseOrDecrease < 0) {
-        this.endGameAndRecap();
-        this.startNewGame();
-      } else {
-        this.$store.commit("updateTries", {
-          increaseOrDecrease,
-          amount: this.settings.triesAmount
-        });
-      }
-    },
-    endGameAndRecap() {
-      this.gameOver = true;
-      this.finalScore = this.score;
-    },
-    startNewGame() {
-      this.$store.commit("resetGame");
-    },
-    continueNewGame() {
-      this.gameOver = false;
-    }
+    ...mapActions(["continueNewGame"])
   }
 };
 </script>

@@ -22,10 +22,9 @@
 </template>
 
 <script>
-import stages from "../data/stages.js";
 import RowStage from "./RowStage.vue";
 import GameControls from "./GameControls.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "game-row",
@@ -35,66 +34,33 @@ export default {
   },
   data() {
     return {
-      stages, //////////////////////////////////////////////////////////////////
       swappedCard: null
     };
   },
   computed: {
-    ...mapState(["cards", "swapCardIndex", "activeStageIndex"]),
+    ...mapState(["cards", "stages", "swapCardIndex", "activeStageIndex"]),
+    ...mapGetters(["getCard"]),
     currentStage: function() {
-      ////////////////////////////////////////////////
       return this.stages[this.activeStageIndex];
     }
   },
   methods: {
-    flipTable() {
-      /* 
-      I used this.$nextTick().then()... because I
-      needed to force waiting for a new UI cycle to
-      avoid the side effect of 'not rerendering' the 
-      stage 0 card in the view
-      */
-      this.$nextTick().then(() => {
-        this.$store.commit("setActiveStageIndex", {
-          amount: 0
-        });
-        this.$store.commit("setSwapCardIndex", {
-          amount: 6
-        });
-        this.resetStages();
-        this.$store.commit("shuffleCards");
-        this.dealStages(this.cards);
-      });
-    },
-    // TODO - find a better way to do this.
-    resetStages() {
-      //////////////////////////////////////////////////////////////
-      for (let i = 0; i < 4; i += 1) {
-        this.stages[i].swaps = 1;
-        this.stages[i].evaluation = null;
-      }
-    },
-    dealStages(cards) {
-      ///////////////////////////////////////////////////////////
-      for (let i = 0; i < stages.length; i += 1) {
-        stages[i].card = cards[i];
-      }
-    },
-    drawCard(cards, position) {
-      return cards[position];
-    },
     swapCard() {
-      this.currentStage.card = this.cards[this.swapCardIndex];
-      this.swappedCard = this.currentStage.card;
+      this.currentStage.card = this.getCard(this.swapCardIndex);
+      this.swappedCard = this.currentStage.card; /////////////////////////
       this.$store.commit("setSwapCardIndex", {
         amount: this.swapCardIndex + 1
       });
-      this.currentStage.swaps = this.currentStage.swaps - 1; ///////////////////////////
-      this.$emit("adjust-score", -1, true);
+      this.currentStage.swaps = this.currentStage.swaps - 1; ///////////////////////////////////
+      this.$store.dispatch("recalculateScore", {
+        increaseOrDecrease: -1,
+        isSwap: true,
+        isBonus: false
+      });
     },
     swapJokerCard() {
-      this.currentStage.card = this.cards[this.swapCardIndex];
-      this.swappedCard = this.currentStage.card;
+      this.currentStage.card = this.getCard(this.swapCardIndex);
+      this.swappedCard = this.currentStage.card; //////////////////////////////////////////////
       this.$store.commit("setSwapCardIndex", {
         amount: this.swapCardIndex + 1
       });
@@ -107,7 +73,7 @@ export default {
         amount: this.activeStageIndex + 1
       });
       const currentStage = this.stages[this.activeStageIndex];
-      currentStage.card = this.drawCard(this.cards, this.activeStageIndex);
+      currentStage.card = this.getCard(this.activeStageIndex);
 
       return this.evaluatePrediction(
         prediction,
@@ -134,25 +100,29 @@ export default {
         currentStage.evaluation &&
         currentStage.card.value !== 0
       ) {
-        this.$emit("adjust-score", +1);
+        this.$store.dispatch("recalculateScore", {
+          increaseOrDecrease: +1,
+          isSwap: false,
+          isBonus: false
+        });
       }
 
       // if not bonus round, and prediction was incorrect, lose a try and reset rows
       if (currentStage.name !== "bonus" && !currentStage.evaluation) {
-        this.$emit("adjust-tries", -1);
-        setTimeout(this.flipTable, 1000);
+        this.$store.dispatch("recalculateTries", { increaseOrDecrease: -1 });
+        this.$store.dispatch("flipTable", { delay: 1000 });
       }
 
       // if bonus round, and prediction was incorrect, reset rows
       if (currentStage.name === "bonus" && !currentStage.evaluation) {
-        setTimeout(this.flipTable, 1000);
+        this.$store.dispatch("flipTable", { delay: 1000 });
       }
 
       return currentStage.evaluation;
     },
     collectBonus() {
       this.$store.dispatch("awardBonus");
-      this.flipTable();
+      this.$store.dispatch("flipTable", { delay: 0 });
     },
     collectJokerBonusAndSwap() {
       this.$store.dispatch("awardBonus");
@@ -160,8 +130,7 @@ export default {
     }
   },
   created() {
-    this.$store.commit("shuffleCards");
-    this.dealStages(this.cards);
+    this.$store.dispatch("deal");
   },
   updated() {
     this.swappedCard = null;

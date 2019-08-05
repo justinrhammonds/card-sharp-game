@@ -6,10 +6,10 @@
       </li>
       <li ref="score-value" class="total-score">Score : {{score}}</li>
       <li class="bonus-container">
-        <span v-if="this.bonusType === 'score'" class="bonus-type" @click="toggleBonusType()">
+        <span v-if="this.bonusType === 'score'" class="bonus-type" @click="toggleBonusType">
           <font-awesome-icon icon="star" />+ 300
         </span>
-        <span v-else class="bonus-type" @click="toggleBonusType()">
+        <span v-else class="bonus-type" @click="toggleBonusType">
           <font-awesome-icon icon="star" />+ 1
           <font-awesome-icon icon="heart" />
         </span>

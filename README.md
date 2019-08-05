@@ -3,11 +3,17 @@ Card Sharp is a made-for-web card game inspired by the classic TV game show 'Car
 
 ***
 
-## Technical Specifications
+## Technical Notes
+### Pardon the mess as I am currently moving the application state into VUEX! 
+
 This application is still under development. In the meantime, you can still try out the [Demo Version](https://justinrhammonds.github.io/card-sharp-game). The web application is built using the Vue.js front-end JavaScript framework.
 
-### Run `npm install` to install packages
+## Why did I choose this game to build?
+I wanted to build a card game, in part because I remember enjoying watching Card Sharks on TV as a kid, and also because my neice and nephew are really fascinated by games and programming and always enjoy watching me write code. This game is as much for them as it is for me.
 
+
+## Running Demo app locally
+### Run `npm install` to install packages
 ### Run `npm run serve` to start running the app locally   
 
 ***
@@ -23,9 +29,9 @@ This application is still under development. In the meantime, you can still try 
 * **Custom Modal component** displays final score at the conclusion of each game.
 
 ## Features Planned, Not Yet Implemented
-* Save, Store, and Display High Score - will feature an API that updates the top ten all-time high score list, and a component that collects new high score details when eligible at the conclusion of a game
-* Optimized "Portrait" Mobile View Layout - this will essentially zoom in on the important cards in game flow for "portrait" mode in smaller mobile displays
-* Ability to click 'New Game' when game is currently loaded to reset and begin a new game
+* HIGH SCORE LIST - integration with a Node API will update an all-time high score list.
+* I'm planning to implement the app in Vue Native for download onto devices.
+* At some point, I'd like the tutorial to be an interactive walk-through.
 
 ***
 
