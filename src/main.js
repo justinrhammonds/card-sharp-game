@@ -5,7 +5,6 @@ import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faStar, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import './assets/global.css'
  
 // Formerly, UI design was heavy on icons. Since it's not any longer, this should be replaced.
 library.add(faStar, faHeart);

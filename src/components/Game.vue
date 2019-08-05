@@ -42,7 +42,7 @@ export default {
 #game {
   height: 100vh;
   background-color: #299104;
-  background-image: url("../assets/45-degree-fabric.png");
+  background-image: url("/img/45-degree-fabric.png");
   background-repeat: repeat;
 }
 
