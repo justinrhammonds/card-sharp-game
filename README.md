@@ -4,13 +4,12 @@ Card Sharp is a made-for-web card game inspired by the classic TV game show 'Car
 ***
 
 ## Technical Notes
-### Pardon the mess as I am currently moving the application state into VUEX! 
 
-This application is still under development. In the meantime, you can still try out the [Demo Version](https://justinrhammonds.github.io/card-sharp-game). The web application is built using the Vue.js front-end JavaScript framework.
+### Pardon the mess as I am currently moving the application state into VUEX! 
+This application is still under development. In the meantime, you can still try out the [Demo Version](https://justinrhammonds.github.io/card-sharp-game). The web application is built using the Vue.js front-end JavaScript framework. Note: For the initial Proof of Concept, I focused on building this for the latest version of Chrome. This was done intentionally because I wanted to work with and incorporate newer, more bleeding edge patterns and concepts in CSS and JS for my own edification. Future work will be done to extend this to support in additional browsers and earlier versions.  
 
 ## Why did I choose this game to build?
 I wanted to build a card game, in part because I remember enjoying watching Card Sharks on TV as a kid, and also because my neice and nephew are really fascinated by games and programming and always enjoy watching me write code. This game is as much for them as it is for me.
-
 
 ## Running Demo app locally
 ### Run `npm install` to install packages
@@ -69,7 +68,5 @@ Joker Bonus: +300 points or +1 Try
 Swap Point Penalty: -50 points
 
 ***Note: A player's score will never go below 0.
-
-***
 
 ## Thanks for visiting!

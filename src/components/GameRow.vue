@@ -5,7 +5,6 @@
         ref="renderedStages"
         :key="index"
         v-for="(stage, index) in stages"
-        :active-stage-id="activeStageIndex"
         :row-stage="stage"
         :swappedCard="swappedCard"
       >
@@ -47,11 +46,11 @@ export default {
   methods: {
     swapCard() {
       this.currentStage.card = this.getCard(this.swapCardIndex);
-      this.swappedCard = this.currentStage.card; /////////////////////////
+      this.swappedCard = this.currentStage.card; 
       this.$store.commit("setSwapCardIndex", {
         amount: this.swapCardIndex + 1
       });
-      this.currentStage.swaps = this.currentStage.swaps - 1; ///////////////////////////////////
+      this.currentStage.swaps = this.currentStage.swaps - 1; 
       this.$store.dispatch("recalculateScore", {
         increaseOrDecrease: -1,
         isSwap: true,
@@ -60,7 +59,7 @@ export default {
     },
     swapJokerCard() {
       this.currentStage.card = this.getCard(this.swapCardIndex);
-      this.swappedCard = this.currentStage.card; //////////////////////////////////////////////
+      this.swappedCard = this.currentStage.card; 
       this.$store.commit("setSwapCardIndex", {
         amount: this.swapCardIndex + 1
       });
