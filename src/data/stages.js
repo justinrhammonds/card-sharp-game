@@ -1,20 +1,12 @@
 let stages = [];
-const stageDefaults = {
-  base: 1,
-  row1: 1,
-  row2: 1,
-  row3: 1,
-  row4: 0,
-  bonus: 0
-};
+const totalStages = 6;
 
-Object.keys(stageDefaults).forEach((item, index) => {
+for (let index = 0; index < totalStages; index++) {
   stages.push({
     id: index,
-    name: item,
-    swaps: stageDefaults[item],
+    swaps: index <= (totalStages - 2) ? 1 : 0,
     card: null
-  })
-});
+  });
+}
 
 export default stages;

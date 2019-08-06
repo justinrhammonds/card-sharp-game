@@ -49,33 +49,32 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "game-controls",
-  props: {
-    stage: {
-      type: Object
-    }
-  },
-  // data() {
-  //   return {
-  //     prediction: null,
-  //   }
-  // },
   computed: {
+    ...mapGetters(["isBonusStage", "currentStage"]),
     guessWasIncorrect: function() {
-      return this.stage.evaluation === false;
+      return this.currentStage.evaluation === false;
     },
     isNotBonusStage: function() {
-      return this.stage.name !== "bonus" && !this.isJokerCard;
+      return !this.isBonusStage(this.currentStage.id) && !this.isJokerCard;
     },
     bonusStageWon: function() {
-      return this.stage.name === "bonus" && this.stage.evaluation === true;
+      return (
+        this.isBonusStage(this.currentStage.id) &&
+        this.currentStage.evaluation === true
+      );
     },
     swapAvailable: function() {
-      return this.stage.swaps > 0 && !this.isJokerCard;
+      return this.currentStage.swaps > 0 && !this.isJokerCard;
     },
     isJokerCard: function() {
-      return this.stage.card.value === 0 && this.stage.name !== "bonus";
+      return (
+        this.currentStage.card.value === 0 &&
+        !this.isBonusStage(this.currentStage.id)
+      );
     }
   },
   methods: {

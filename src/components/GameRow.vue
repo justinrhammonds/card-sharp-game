@@ -38,19 +38,19 @@ export default {
   },
   computed: {
     ...mapState(["cards", "stages", "swapCardIndex", "activeStageIndex"]),
-    ...mapGetters(["getCard"]),
-    currentStage: function() {
-      return this.stages[this.activeStageIndex];
-    }
+    ...mapGetters(["getCard", "currentStage", "isBonusStage"])
   },
   methods: {
     swapCard() {
-      this.currentStage.card = this.getCard(this.swapCardIndex);
-      this.swappedCard = this.currentStage.card; 
+      this.$store.commit("setStageCard", {
+        stageId: this.currentStage.id,
+        card: this.getCard(this.swapCardIndex)
+      });
+      this.swappedCard = this.currentStage.card; /////////////////////
       this.$store.commit("setSwapCardIndex", {
         amount: this.swapCardIndex + 1
       });
-      this.currentStage.swaps = this.currentStage.swaps - 1; 
+      this.currentStage.swaps = this.currentStage.swaps - 1; /////////////////////
       this.$store.dispatch("recalculateScore", {
         increaseOrDecrease: -1,
         isSwap: true,
@@ -58,8 +58,11 @@ export default {
       });
     },
     swapJokerCard() {
-      this.currentStage.card = this.getCard(this.swapCardIndex);
-      this.swappedCard = this.currentStage.card; 
+      this.$store.commit("setStageCard", {
+        stageId: this.currentStage.id,
+        card: this.getCard(this.swapCardIndex)
+      });
+      this.swappedCard = this.currentStage.card; ////////////////////////////////////
       this.$store.commit("setSwapCardIndex", {
         amount: this.swapCardIndex + 1
       });
@@ -82,20 +85,20 @@ export default {
     },
     evaluatePrediction(prediction, prevValue, currentStage) {
       if (prediction === "higher") {
-        currentStage.evaluation =
+        currentStage.evaluation = ///////////////////////////////////////////
           currentStage.card.value > prevValue ||
           // joker should always evaluate to true prediction
           currentStage.card.value === 0;
       } else {
         currentStage.evaluation =
-          currentStage.card.value < prevValue ||
+          currentStage.card.value < prevValue || /////////////////////////////
           // joker should always evaluate to true prediction
           currentStage.card.value === 0;
       }
 
-      // if not bonus round, prediction was correct, and wasn't joker, award points
+      // if not bonus stage, prediction was correct, and wasn't joker, award points
       if (
-        currentStage.name !== "bonus" &&
+        !this.isBonusStage(this.currentStage.id) &&
         currentStage.evaluation &&
         currentStage.card.value !== 0
       ) {
@@ -106,14 +109,17 @@ export default {
         });
       }
 
-      // if not bonus round, and prediction was incorrect, lose a try and reset rows
-      if (currentStage.name !== "bonus" && !currentStage.evaluation) {
+      // if not bonus stage, and prediction was incorrect, lose a try and reset rows
+      if (
+        !this.isBonusStage(this.currentStage.id) &&
+        !currentStage.evaluation
+      ) {
         this.$store.dispatch("recalculateTries", { increaseOrDecrease: -1 });
         this.$store.dispatch("flipTable", { delay: 1000 });
       }
 
-      // if bonus round, and prediction was incorrect, reset rows
-      if (currentStage.name === "bonus" && !currentStage.evaluation) {
+      // if bonus stage, and prediction was incorrect, reset rows
+      if (this.isBonusStage(this.currentStage.id) && !currentStage.evaluation) {
         this.$store.dispatch("flipTable", { delay: 1000 });
       }
 
@@ -129,7 +135,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("deal");
+    this.$store.dispatch("shuffleAndDeal");
   },
   updated() {
     this.swappedCard = null;

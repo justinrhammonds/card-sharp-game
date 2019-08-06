@@ -1,26 +1,24 @@
 <template>
   <div class="row-stage">
-    <div class="bonus-marker" v-if="isBonusStage">
+    <div class="bonus-marker" v-if="isBonusStage(rowStage.id)">
       <font-awesome-icon icon="star" />
       <h3>Bonus</h3>
       <font-awesome-icon icon="star" />
     </div>
-    <div>
-      <slot v-if="activeStageIndex === rowStage.id" name="default"></slot>
-      <card
-        v-if="isSwapped"
-        :revealed="isRevealed"
-        :suit="swappedCard.suit"
-        :face-value="swappedCard.name"
-      />
-      <card
-        v-else
-        :revealed="isRevealed"
-        :suit="rowStage.card.suit"
-        :face-value="rowStage.card.name"
-      />
-    </div>
-    <div class="bonus-marker" v-if="isBonusStage">
+    <slot v-if="activeStageIndex === rowStage.id" name="default"></slot>
+    <card
+      v-if="isSwapped"
+      :revealed="isRevealed"
+      :suit="swappedCard.suit"
+      :face-value="swappedCard.name"
+    />
+    <card
+      v-else
+      :revealed="isRevealed"
+      :suit="rowStage.card.suit"
+      :face-value="rowStage.card.name"
+    />
+    <div class="bonus-marker" v-if="isBonusStage(rowStage.id)">
       <font-awesome-icon icon="star" />
       <h3>Bonus</h3>
       <font-awesome-icon icon="star" />
@@ -30,7 +28,7 @@
 
 <script>
 import Card from "./Card.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "row-stage",
@@ -47,11 +45,9 @@ export default {
   },
   computed: {
     ...mapState(["activeStageIndex"]),
+    ...mapGetters(["isBonusStage"]),
     isRevealed: function() {
       return this.rowStage.id <= this.activeStageIndex ? true : false;
-    },
-    isBonusStage: function() {
-      return this.rowStage.name === "bonus";
     },
     isSwapped: function() {
       return (

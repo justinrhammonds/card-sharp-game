@@ -30,6 +30,12 @@ const getters = {
   getCard: (state) => (position) => {
     return state.cards[position];
   },
+  currentStage: (state) => {
+    return state.stages[state.activeStageIndex];
+  },
+  isBonusStage: (state) => (stageId) => {
+    return stageId === state.stages.length - 1
+  }
 }
 
 const actions = {
@@ -55,10 +61,10 @@ const actions = {
         amount: 6
       });
       commit("resetStages");
-      dispatch("deal");
+      dispatch("shuffleAndDeal");
     }, delay);
   },
-  deal({ commit }) {
+  shuffleAndDeal({ commit }) {
     commit("shuffleCards");
     commit("dealStages");
   },
@@ -144,8 +150,11 @@ const mutations = {
    },
    dealStages(state) {
     for (let i = 0; i < state.stages.length; i += 1) {
-      stages[i].card = state.cards[i];
+      state.stages[i].card = state.cards[i];
     }
+  },
+  setStageCard(state, { stageId, card }) {
+    state.stages[stageId].card = card;
   },
   resetStages(state) {
     for (let i = 0; i < 4; i += 1) {
@@ -153,6 +162,7 @@ const mutations = {
       state.stages[i].evaluation = null;
     }
   },
+
 }
 
 export default new Vuex.Store({
