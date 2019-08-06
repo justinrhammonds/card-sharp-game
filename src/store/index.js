@@ -30,11 +30,14 @@ const getters = {
   getCard: (state) => (position) => {
     return state.cards[position];
   },
+  getStage: (state) => (id) => {
+    return state.stages[id];
+  },
   currentStage: (state) => {
     return state.stages[state.activeStageIndex];
   },
   isBonusStage: (state) => (stageId) => {
-    return stageId === state.stages.length - 1
+    return stageId === state.stages.length - 1;
   }
 }
 
@@ -113,7 +116,24 @@ const actions = {
         amount: state.settings.triesAmount
       });
     }
-  }
+  },
+  swapCard({ commit, dispatch, state, getters }, { isJokerCard = false }) {
+    commit("setStageCard", {
+      stageId: state.currentStage.id,
+      card: getters.getCard(state.swapCardIndex)
+    });
+    commit("setSwapCardIndex", {
+      amount: state.swapCardIndex + 1
+    });
+    if (!isJokerCard)  {
+      commit("decrementStageSwaps");
+      dispatch("recalculateScore", {
+        increaseOrDecrease: -1,
+        isSwap: true,
+        isBonus: false
+      });
+    }
+  },
 }
 
 const mutations = {
@@ -162,7 +182,9 @@ const mutations = {
       state.stages[i].evaluation = null;
     }
   },
-
+  decrementStageSwaps(state) {
+    state.currentStage.swaps -= 1;
+  }
 }
 
 export default new Vuex.Store({
