@@ -42,7 +42,7 @@
     >
       <span class="ribbon-content">Bonus</span>
     </button>
-    <button v-if="isJokerCard" class="ribbon bonus green" @click="collectJokerBonus()">
+    <button v-if="isJokerCard" class="ribbon bonus green" @click="collectBonus()">
       <span class="ribbon-content">Bonus</span>
     </button>
   </div>
@@ -83,9 +83,6 @@ export default {
     },
     collectBonus() {
       this.$emit("collect-bonus");
-    },
-    collectJokerBonus() {
-      this.$emit("collect-joker-bonus");
     },
     swap() {
       this.$emit("swap");

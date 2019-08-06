@@ -11,7 +11,6 @@
         <game-controls
           @prediction="advanceStageAndEvaluate"
           @collect-bonus="collectBonus"
-          @collect-joker-bonus="collectJokerBonusAndSwap"
           :stage="currentStage"
           @swap="swapCard"
         />
@@ -127,11 +126,11 @@ export default {
     },
     collectBonus() {
       this.$store.dispatch("awardBonus");
-      this.$store.dispatch("flipTable", { delay: 0 });
-    },
-    collectJokerBonusAndSwap() {
-      this.$store.dispatch("awardBonus");
-      this.swapJokerCard();
+      if (this.isBonusStage(this.currentStage.id)) {
+        this.$store.dispatch("flipTable", { delay: 0 });
+      } else {
+        this.swapJokerCard();
+      }
     }
   },
   created() {

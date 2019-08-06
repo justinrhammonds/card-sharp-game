@@ -14,7 +14,7 @@ const state = () => ({
   swapCardIndex: 6,
   activeStageIndex: 0,
   gameEnded: false,
-  finalScore: 0,
+  finalScore: null,
   settings: {
     startingScore: 0,
     scoreAmount: 100,
