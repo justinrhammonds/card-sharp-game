@@ -42,7 +42,7 @@ const getters = {
 }
 
 const actions = {
-  awardBonus({ commit, state }) {
+  awardBonus({ commit, state, getters, dispatch }) {
     if (state.bonusType === "score") {
       commit('updateScore', { 
         increaseOrDecrease: +1,
@@ -53,6 +53,11 @@ const actions = {
         increaseOrDecrease: +1,
         amount: state.settings.triesBonus
       })
+    }
+    if (getters.isBonusStage(getters.currentStage.id)) {
+      dispatch("flipTable", { delay: 0 });
+    } else {
+      dispatch("swapJokerCard");
     }
   },
   flipTable({ commit, dispatch }, { delay }) {
@@ -117,23 +122,30 @@ const actions = {
       });
     }
   },
-  swapCard({ commit, dispatch, state, getters }, { isJokerCard = false }) {
+  swapCard({ commit, dispatch, state, getters }) {
     commit("setStageCard", {
-      stageId: state.currentStage.id,
+      stageId: getters.currentStage.id,
       card: getters.getCard(state.swapCardIndex)
     });
     commit("setSwapCardIndex", {
       amount: state.swapCardIndex + 1
     });
-    if (!isJokerCard)  {
-      commit("decrementStageSwaps");
-      dispatch("recalculateScore", {
-        increaseOrDecrease: -1,
-        isSwap: true,
-        isBonus: false
-      });
-    }
+    commit("decrementStageSwaps", { stageId: getters.currentStage.id });
+    dispatch("recalculateScore", {
+      increaseOrDecrease: -1,
+      isSwap: true,
+      isBonus: false
+    });
   },
+  swapJokerCard({ commit, state, getters }) {
+    commit("setStageCard", {
+      stageId: getters.currentStage.id,
+      card: getters.getCard(state.swapCardIndex)
+    });
+    commit("setSwapCardIndex", {
+      amount: state.swapCardIndex + 1
+    });
+  }
 }
 
 const mutations = {
@@ -182,8 +194,8 @@ const mutations = {
       state.stages[i].evaluation = null;
     }
   },
-  decrementStageSwaps(state) {
-    state.currentStage.swaps -= 1;
+  decrementStageSwaps(state, { stageId }) {
+    state.stages[stageId].swaps -= 1;
   }
 }
 

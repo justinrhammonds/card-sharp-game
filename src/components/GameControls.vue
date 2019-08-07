@@ -9,7 +9,7 @@
       </svg>
     </div>
     <button
-      v-if="isNotBonusStage && !guessWasIncorrect"
+      v-if="isNotBonusStage && guessWasCorrect"
       class="control-arrow up"
       @click="predict('higher')"
     >
@@ -21,7 +21,7 @@
       </svg>
     </button>
     <button
-      v-if="isNotBonusStage && !guessWasIncorrect"
+      v-if="isNotBonusStage && guessWasCorrect"
       class="control-arrow down"
       @click="predict('lower')"
     >
@@ -32,17 +32,17 @@
         />
       </svg>
     </button>
-    <button v-if="swapAvailable && !guessWasIncorrect" class="ribbon swap blue" @click="swap()">
+    <button v-if="swapAvailable && guessWasCorrect" class="ribbon swap blue" @click="swap">
       <span class="ribbon-content">Swap</span>
     </button>
     <button
-      v-if="bonusStageWon && !guessWasIncorrect"
+      v-if="bonusStageWon && guessWasCorrect"
       class="ribbon bonus green"
-      @click="collectBonus()"
+      @click="collectBonus"
     >
       <span class="ribbon-content">Bonus</span>
     </button>
-    <button v-if="isJokerCard" class="ribbon bonus green" @click="collectBonus()">
+    <button v-if="isJokerBonus" class="ribbon bonus green" @click="collectBonus">
       <span class="ribbon-content">Bonus</span>
     </button>
   </div>
@@ -55,6 +55,9 @@ export default {
   name: "game-controls",
   computed: {
     ...mapGetters(["isBonusStage", "currentStage"]),
+    guessWasCorrect: function() {
+      return !this.guessWasIncorrect;
+    },
     guessWasIncorrect: function() {
       return this.currentStage.evaluation === false;
     },
@@ -62,15 +65,12 @@ export default {
       return !this.isBonusStage(this.currentStage.id) && !this.isJokerCard;
     },
     bonusStageWon: function() {
-      return (
-        this.isBonusStage(this.currentStage.id) &&
-        this.currentStage.evaluation === true
-      );
+      return this.isBonusStage(this.currentStage.id) && this.guessWasCorrect;
     },
     swapAvailable: function() {
       return this.currentStage.swaps > 0 && !this.isJokerCard;
     },
-    isJokerCard: function() {
+    isJokerBonus: function() {
       return (
         this.currentStage.card.value === 0 &&
         !this.isBonusStage(this.currentStage.id)

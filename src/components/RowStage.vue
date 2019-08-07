@@ -6,18 +6,7 @@
       <font-awesome-icon icon="star" />
     </div>
     <slot v-if="activeStageIndex === rowStage.id" name="default"></slot>
-    <card
-      v-if="isSwapped"
-      :revealed="isRevealed"
-      :suit="swappedCard.suit"
-      :face-value="swappedCard.name"
-    />
-    <card
-      v-else
-      :revealed="isRevealed"
-      :suit="rowStage.card.suit"
-      :face-value="rowStage.card.name"
-    />
+    <card :revealed="isRevealed" :suit="rowStage.card.suit" :face-value="rowStage.card.name" />
     <div class="bonus-marker" v-if="isBonusStage(rowStage.id)">
       <font-awesome-icon icon="star" />
       <h3>Bonus</h3>
@@ -38,9 +27,6 @@ export default {
   props: {
     rowStage: {
       type: Object
-    },
-    swappedCard: {
-      type: Object
     }
   },
   computed: {
@@ -48,11 +34,6 @@ export default {
     ...mapGetters(["isBonusStage"]),
     isRevealed: function() {
       return this.rowStage.id <= this.activeStageIndex ? true : false;
-    },
-    isSwapped: function() {
-      return (
-        this.swappedCard != null && this.rowStage.id === this.activeStageIndex
-      );
     }
   }
 };
