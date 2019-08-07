@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     predict(prediction) {
-      this.$emit("prediction", prediction);
+      this.$emit("prediction", { prediction });
     },
     collectBonus() {
       this.$emit("collect-bonus");

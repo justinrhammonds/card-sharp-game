@@ -145,7 +145,65 @@ const actions = {
     commit("setSwapCardIndex", {
       amount: state.swapCardIndex + 1
     });
-  }
+  },
+  advanceStageAndEvaluate({ commit, state, getters, dispatch }, { prediction }) {
+    const previousCardValue = state.stages[state.activeStageIndex].card.value;
+    
+    // advance stage
+    commit("setActiveStageIndex", {
+      amount: state.activeStageIndex + 1
+    });
+
+    // evaluate
+    if (prediction === "higher") {
+      commit("setStageEvaluation", {
+        stageId: getters.currentStage.id,
+        evaluation: getters.currentStage.card.value < previousCardValue
+      });
+    } 
+
+    if (prediction === "lower") {
+      commit("setStageEvaluation", {
+        stageId: getters.currentStage.id,
+        evaluation: getters.currentStage.card.value < previousCardValue
+      });
+    }
+
+    // joker will always evaluate to true
+    if (getters.currentStage.card.value === 0) {
+      commit("setStageEvaluation", {
+        stageId: getters.currentStage.id,
+        evaluation: true
+      });
+    } 
+
+    // if not bonus stage, prediction was correct, and wasn't joker, award points
+    if (
+      !getters.isBonusStage(getters.currentStage.id) &&
+      getters.currentStage.evaluation &&
+      getters.currentStage.card.value !== 0
+    ) {
+      dispatch("recalculateScore", {
+        increaseOrDecrease: +1,
+        isSwap: false,
+        isBonus: false
+      });
+    }
+
+    // if not bonus stage, and prediction was incorrect, lose a try and reset rows
+    if (
+      !getters.isBonusStage(getters.currentStage.id) &&
+      !getters.currentStage.evaluation
+    ) {
+      dispatch("recalculateTries", { increaseOrDecrease: -1 });
+      dispatch("flipTable", { delay: 1000 });
+    }
+
+    // if bonus stage, and prediction was incorrect, reset rows
+    if (getters.isBonusStage(getters.currentStage.id) && !getters.currentStage.evaluation) {
+      dispatch("flipTable", { delay: 1000 });
+    }
+  },
 }
 
 const mutations = {
@@ -189,13 +247,16 @@ const mutations = {
     state.stages[stageId].card = card;
   },
   resetStages(state) {
-    for (let i = 0; i < 4; i += 1) {
-      state.stages[i].swaps = 1;
-      state.stages[i].evaluation = null;
-    }
+    state.stages.forEach((stage) => {
+      stage.id < (state.stages.length - 2) ? stage.swaps = 1 : stage.swaps = 0;
+      stage.evaluation = null;
+    });
   },
   decrementStageSwaps(state, { stageId }) {
     state.stages[stageId].swaps -= 1;
+  },
+  setStageEvaluation(state, {stageId, evaluation }) {
+    state.stages[stageId].evaluation = evaluation;
   }
 }
 
