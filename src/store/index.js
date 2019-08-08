@@ -114,7 +114,7 @@ const actions = {
   },
   recalculateTries({ commit, dispatch, state }, { increaseOrDecrease }) {
     if (state.tries === 0 && increaseOrDecrease < 0) {
-      dispatch("endGame")
+      dispatch("endGame");
     } else {
     commit("updateTries", {
         increaseOrDecrease,
@@ -158,7 +158,7 @@ const actions = {
     if (prediction === "higher") {
       commit("setStageEvaluation", {
         stageId: getters.currentStage.id,
-        evaluation: getters.currentStage.card.value < previousCardValue
+        evaluation: getters.currentStage.card.value > previousCardValue
       });
     } 
 
@@ -255,7 +255,7 @@ const mutations = {
   decrementStageSwaps(state, { stageId }) {
     state.stages[stageId].swaps -= 1;
   },
-  setStageEvaluation(state, {stageId, evaluation }) {
+  setStageEvaluation(state, { stageId, evaluation }) {
     state.stages[stageId].evaluation = evaluation;
   }
 }

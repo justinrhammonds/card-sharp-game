@@ -24,7 +24,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "hud",
   computed: {
-    ...mapState(["bonusType", "score", "tries"])
+    ...mapState(["bonusType", "score", "tries", "settings"])
   },
   watch: {
     score: function(newValue, oldValue) {
@@ -37,7 +37,10 @@ export default {
       }
     },
     tries: function(newValue, oldValue) {
-      if (oldValue < newValue && (newValue === 0 && oldValue <= 0)) {
+      if (
+        oldValue < newValue &&
+        !(newValue === this.settings.startingTries && oldValue <= 0)
+      ) {
         this.toggleHudHighlight(this.$refs["tries-value"], "higher");
       }
 
