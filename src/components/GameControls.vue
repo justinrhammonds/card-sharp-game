@@ -32,13 +32,13 @@
         />
       </svg>
     </button>
-    <button v-if="swapAvailable && guessWasCorrect" class="ribbon swap blue" @click="swap">
+    <button v-if="swapAvailable && guessWasCorrect" class="ribbon swap blue" @click="swapCard">
       <span class="ribbon-content">Swap</span>
     </button>
     <button
       v-if="bonusStageWon && guessWasCorrect"
       class="ribbon bonus green"
-      @click="collectBonus"
+      @click="awardBonus"
     >
       <span class="ribbon-content">Bonus</span>
     </button>
@@ -78,14 +78,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      "swapCard",
+      "awardBonus",
+      "advanceStageAndEvaluate"
+      ]),
     predict(prediction) {
-      this.$emit("prediction", { prediction });
-    },
-    collectBonus() {
-      this.$emit("collect-bonus");
-    },
-    swap() {
-      this.$emit("swap");
+      this.advanceStageAndEvaluate({ prediction });
     }
   }
 };

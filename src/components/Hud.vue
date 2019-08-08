@@ -143,10 +143,10 @@ export default {
 }
 
 .higher {
-  animation: flash-green 1.5s;
+  animation: flash-green 1.5s ease-in-out;
 }
 
 .lower {
-  animation: flash-red 1.5s;
+  animation: flash-red 1.5s ease-in-out;
 }
 </style>

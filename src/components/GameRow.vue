@@ -2,11 +2,7 @@
   <div class="game-row">
     <div class="row-container">
       <row-stage :key="index" v-for="(stage, index) in stages" :row-stage="stage">
-        <game-controls
-          @prediction="advanceStageAndEvaluate"
-          @collect-bonus="awardBonus"
-          @swap="swapCard"
-        />
+        <game-controls />
       </row-stage>
     </div>
   </div>
@@ -15,7 +11,7 @@
 <script>
 import RowStage from "./RowStage.vue";
 import GameControls from "./GameControls.vue";
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "game-row",
@@ -24,17 +20,10 @@ export default {
     GameControls
   },
   computed: {
-    ...mapState(["stages", "activeStageIndex"]),
-    ...mapGetters(["currentStage", "isBonusStage"])
+    ...mapState(["stages"])
   },
   methods: {
-    ...mapActions([
-      "swapCard",
-      "swapJokerCard",
-      "awardBonus",
-      "shuffleAndDeal",
-      "advanceStageAndEvaluate"
-    ]),
+    ...mapActions(["shuffleAndDeal"]),
   },
   created() {
     this.shuffleAndDeal();

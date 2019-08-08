@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import cards from '../data/cards';
 import stages from '../data/stages';
+// import game from './modules/game';
+// import deck from './modules/deck';
+// import stages from './stages';
 
 Vue.use(Vuex);
 
@@ -265,4 +268,12 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations
-})
+});
+
+// export default new Vuex.Store({
+//   modules: {
+//     game,
+//     deck,
+//     stages
+//   }
+// });
