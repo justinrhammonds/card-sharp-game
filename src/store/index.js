@@ -1,10 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import cards from '../data/cards';
-import stages from '../data/stages';
-// import game from './modules/game';
-// import deck from './modules/deck';
-// import stages from './stages';
+import Vue from "vue";
+import Vuex from "vuex";
+import cards from "./cards";
+import stages from "./stages";
 
 Vue.use(Vuex);
 
@@ -25,42 +22,42 @@ const state = () => ({
     startingTries: 3,
     triesAmount: 1,
     triesBonus: 1,
-    swap: 50,
+    swap: 50
   }
 });
 
 const getters = {
-  getCard: (state) => (position) => {
+  getCard: state => position => {
     return state.cards[position];
   },
-  getStage: (state) => (id) => {
+  getStage: state => id => {
     return state.stages[id];
   },
-  currentStage: (state) => {
+  currentStage: state => {
     return state.stages[state.activeStageIndex];
   },
-  isBonusStage: (state) => (stageId) => {
+  isBonusStage: state => stageId => {
     return stageId === state.stages.length - 1;
   }
-}
+};
 
 const actions = {
   awardBonus({ commit, state, getters, dispatch }) {
     if (state.bonusType === "score") {
-      commit('updateScore', { 
+      commit("updateScore", {
         increaseOrDecrease: +1,
         amount: state.settings.scoreBonus
-      })
+      });
     } else {
-      commit('updateTries', { 
+      commit("updateTries", {
         increaseOrDecrease: +1,
         amount: state.settings.triesBonus
-      })
+      });
     }
     if (getters.isBonusStage(getters.currentStage.id)) {
       dispatch("flipTable", { delay: 0 });
     } else {
-      dispatch("swapJokerCard");
+      dispatch("swapCard");
     }
   },
   flipTable({ commit, dispatch }, { delay }) {
@@ -88,12 +85,7 @@ const actions = {
       });
     }
     // if on collect bonus
-    if (
-      !isSwap &&
-      increaseOrDecrease > 0 &&
-      state.score >= 0 &&
-      isBonus
-    ) {
+    if (!isSwap && increaseOrDecrease > 0 && state.score >= 0 && isBonus) {
       commit("updateScore", {
         increaseOrDecrease,
         amount: state.settings.scoreBonus
@@ -119,13 +111,13 @@ const actions = {
     if (state.tries === 0 && increaseOrDecrease < 0) {
       dispatch("endGame");
     } else {
-    commit("updateTries", {
+      commit("updateTries", {
         increaseOrDecrease,
         amount: state.settings.triesAmount
       });
     }
   },
-  swapCard({ commit, dispatch, state, getters }) {
+  swapCardForPenalty({ commit, dispatch, state, getters }) {
     commit("setStageCard", {
       stageId: getters.currentStage.id,
       card: getters.getCard(state.swapCardIndex)
@@ -140,7 +132,7 @@ const actions = {
       isBonus: false
     });
   },
-  swapJokerCard({ commit, state, getters }) {
+  swapCard({ commit, state, getters }) {
     commit("setStageCard", {
       stageId: getters.currentStage.id,
       card: getters.getCard(state.swapCardIndex)
@@ -149,9 +141,12 @@ const actions = {
       amount: state.swapCardIndex + 1
     });
   },
-  advanceStageAndEvaluate({ commit, state, getters, dispatch }, { prediction }) {
+  advanceStageAndEvaluate(
+    { commit, state, getters, dispatch },
+    { prediction }
+  ) {
     const previousCardValue = state.stages[state.activeStageIndex].card.value;
-    
+
     // advance stage
     commit("setActiveStageIndex", {
       amount: state.activeStageIndex + 1
@@ -163,7 +158,7 @@ const actions = {
         stageId: getters.currentStage.id,
         evaluation: getters.currentStage.card.value > previousCardValue
       });
-    } 
+    }
 
     if (prediction === "lower") {
       commit("setStageEvaluation", {
@@ -178,7 +173,7 @@ const actions = {
         stageId: getters.currentStage.id,
         evaluation: true
       });
-    } 
+    }
 
     // if not bonus stage, prediction was correct, and wasn't joker, award points
     if (
@@ -203,11 +198,14 @@ const actions = {
     }
 
     // if bonus stage, and prediction was incorrect, reset rows
-    if (getters.isBonusStage(getters.currentStage.id) && !getters.currentStage.evaluation) {
+    if (
+      getters.isBonusStage(getters.currentStage.id) &&
+      !getters.currentStage.evaluation
+    ) {
       dispatch("flipTable", { delay: 1000 });
     }
-  },
-}
+  }
+};
 
 const mutations = {
   setFinalScore(state, { amount }) {
@@ -220,28 +218,28 @@ const mutations = {
     state.bonusType = state.bonusType === "score" ? "tries" : "score";
   },
   updateTries(state, { increaseOrDecrease, amount }) {
-    state.tries += (amount * increaseOrDecrease);
+    state.tries += amount * increaseOrDecrease;
   },
   updateScore(state, { increaseOrDecrease, amount }) {
-    state.score += (amount * increaseOrDecrease);
+    state.score += amount * increaseOrDecrease;
   },
   resetGame(state) {
     state.score = state.settings.startingScore;
     state.tries = state.settings.startingTries;
   },
   shuffleCards(state) {
-    state.cards.forEach(card => card.order = Math.random());
+    state.cards.forEach(card => (card.order = Math.random()));
     state.cards.sort((a, b) => {
       return a.order - b.order;
     });
   },
-   setSwapCardIndex(state, { amount }) {
-     state.swapCardIndex = amount;
-   },
-   setActiveStageIndex(state, { amount }) {
-     state.activeStageIndex = amount;
-   },
-   dealStages(state) {
+  setSwapCardIndex(state, { amount }) {
+    state.swapCardIndex = amount;
+  },
+  setActiveStageIndex(state, { amount }) {
+    state.activeStageIndex = amount;
+  },
+  dealStages(state) {
     for (let i = 0; i < state.stages.length; i += 1) {
       state.stages[i].card = state.cards[i];
     }
@@ -250,8 +248,10 @@ const mutations = {
     state.stages[stageId].card = card;
   },
   resetStages(state) {
-    state.stages.forEach((stage) => {
-      stage.id < (state.stages.length - 2) ? stage.swaps = 1 : stage.swaps = 0;
+    state.stages.forEach(stage => {
+      stage.id < state.stages.length - 2
+        ? (stage.swaps = 1)
+        : (stage.swaps = 0);
       stage.evaluation = null;
     });
   },
@@ -261,7 +261,7 @@ const mutations = {
   setStageEvaluation(state, { stageId, evaluation }) {
     state.stages[stageId].evaluation = evaluation;
   }
-}
+};
 
 export default new Vuex.Store({
   state,

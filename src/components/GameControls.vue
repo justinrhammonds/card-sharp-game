@@ -32,24 +32,24 @@
         />
       </svg>
     </button>
-    <button v-if="swapAvailable && guessWasCorrect" class="ribbon swap blue" @click="swapCard">
+    <button
+      v-if="swapAvailable && guessWasCorrect"
+      class="ribbon swap blue"
+      @click="swapCardForPenalty"
+    >
       <span class="ribbon-content">Swap</span>
     </button>
-    <button
-      v-if="bonusStageWon && guessWasCorrect"
-      class="ribbon bonus green"
-      @click="awardBonus"
-    >
+    <button v-if="bonusStageWon && guessWasCorrect" class="ribbon bonus green" @click="awardBonus">
       <span class="ribbon-content">Bonus</span>
     </button>
-    <button v-if="isJokerBonus" class="ribbon bonus green" @click="collectBonus">
+    <button v-if="isJokerBonus" class="ribbon bonus green" @click="awardBonus">
       <span class="ribbon-content">Bonus</span>
     </button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "game-controls",
@@ -79,10 +79,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      "swapCard",
+      "swapCardForPenalty",
       "awardBonus",
       "advanceStageAndEvaluate"
-      ]),
+    ]),
     predict(prediction) {
       this.advanceStageAndEvaluate({ prediction });
     }
