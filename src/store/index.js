@@ -269,11 +269,3 @@ export default new Vuex.Store({
   actions,
   mutations
 });
-
-// export default new Vuex.Store({
-//   modules: {
-//     game,
-//     deck,
-//     stages
-//   }
-// });

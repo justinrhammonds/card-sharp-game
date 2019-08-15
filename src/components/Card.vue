@@ -19,11 +19,12 @@ export default {
   },
   computed: {
     path: function() {
+      const url = require(`../assets/${this.suit}.svg`);
       if (this.revealed) {
-        return `/img/${this.suit}.svg#view-${this.faceValue}`;
-      }
+        return `${url}#view-${this.faceValue}`;
+      } 
 
-      return `/img/${this.suit}.svg#view-card-back`;
+      return `${url}#view-card-back`;
     }
   }
 };
