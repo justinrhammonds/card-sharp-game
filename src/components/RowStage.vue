@@ -62,4 +62,8 @@ export default {
 .bonus-marker svg {
   filter: drop-shadow(1px 1px 0 #222);
 }
+
+.fa-star {
+  color: var(--yellow);
+}
 </style>

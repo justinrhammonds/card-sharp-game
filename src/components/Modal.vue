@@ -69,7 +69,7 @@ export default {
   align-items: center;
   font-family: var(--monoton);
   color: white;
-  font-size: var(--large-font-size);
+  font-size: var(--nav-font-size);
   margin: 0 2rem;
 }
 

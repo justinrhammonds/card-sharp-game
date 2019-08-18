@@ -23,12 +23,14 @@ export default {
   --open-sans: "Open Sans", sans-serif;
   --card-height: calc(var(--card-width) / 0.727278);
   --card-width: 12vw;
+  --small-font-size: calc(14px + (18 - 14) * (100vw - 400px) / (1600 - 400));
   --nav-font-size: calc(15px + (30 - 15) * (100vw - 400px) / (1600 - 400));
-  --large-font-size: calc(15px + (24 - 15) * (100vw - 400px) / (1600 - 400));
-  --bright-coral: #ff4c4c;
+  --large-font-size: calc(32px + (40 - 32) * (100vw - 400px) / (1600 - 400));
+  --bright-coral: #ff8a82;
   --blue: #007bff;
   --green: #5cea42;
   --black: #1a1a1a;
+  --yellow: yellow;
 }
 
 html {

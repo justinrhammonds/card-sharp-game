@@ -27,8 +27,8 @@
     color: white;
     text-decoration: none;
     padding: 1rem;
-    margin: calc(var(--large-font-size) * 2) var(--large-font-size) 0 0;
-    font-size: var(--large-font-size);
+    margin: calc(var(--nav-font-size) * 2) var(--nav-font-size) 0 0;
+    font-size: var(--nav-font-size);
     display: inline-block;
     border: 5px solid white;
     box-shadow: 0 5px 8px 0 black, 0 7px 20px 0 black; 

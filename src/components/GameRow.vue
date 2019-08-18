@@ -23,7 +23,7 @@ export default {
     ...mapState(["stages"])
   },
   methods: {
-    ...mapActions(["shuffleAndDeal"]),
+    ...mapActions(["shuffleAndDeal"])
   },
   created() {
     this.shuffleAndDeal();
@@ -35,6 +35,6 @@ export default {
 .row-container {
   display: flex;
   justify-content: space-evenly;
-  padding-top: 10vh;
+  padding-top: 4vmin;
 }
 </style>

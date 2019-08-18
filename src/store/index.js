@@ -2,13 +2,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 import cards from "./cards";
 import stages from "./stages";
+import leaderboard from "./mockLeaderboard";
 
 Vue.use(Vuex);
 
 const state = () => ({
   cards,
   stages,
-  bonusType: "tries",
   score: 0,
   tries: 3,
   swapCardIndex: 6,
@@ -17,13 +17,15 @@ const state = () => ({
   finalScore: null,
   settings: {
     startingScore: 0,
-    scoreAmount: 100,
-    scoreBonus: 300,
     startingTries: 3,
     triesAmount: 1,
-    triesBonus: 1,
-    swap: 50
-  }
+    baseStreakBonus: 100,
+    baseSwapPenalty: 50
+  },
+  leaderboard,
+  personalBestScore: 0,
+  streakBonus: 100,
+  swapPenalty: 50
 });
 
 const getters = {
@@ -43,17 +45,17 @@ const getters = {
 
 const actions = {
   awardBonus({ commit, state, getters, dispatch }) {
-    if (state.bonusType === "score") {
-      commit("updateScore", {
-        increaseOrDecrease: +1,
-        amount: state.settings.scoreBonus
-      });
-    } else {
-      commit("updateTries", {
-        increaseOrDecrease: +1,
-        amount: state.settings.triesBonus
-      });
-    }
+    commit("updateTries", {
+      increaseOrDecrease: +1,
+      amount: state.settings.triesAmount
+    });
+    commit("updateScore", {
+      increaseOrDecrease: +1,
+      amount: state.streakBonus
+    });
+    commit("setStreakBonus", {
+      amount: state.streakBonus + state.settings.baseStreakBonus
+    });
     if (getters.isBonusStage(getters.currentStage.id)) {
       dispatch("flipTable", { delay: 0 });
     } else {
@@ -76,26 +78,25 @@ const actions = {
     commit("shuffleCards");
     commit("dealStages");
   },
-  recalculateScore({ commit, state }, { increaseOrDecrease, isSwap, isBonus }) {
+  recalculateScore({ commit, state }, { increaseOrDecrease, isSwap }) {
     // if on a swap (also never have less than 0 points)
     if (isSwap && state.score > 0) {
       commit("updateScore", {
         increaseOrDecrease,
-        amount: state.settings.swap
+        amount: state.swapPenalty
       });
-    }
-    // if on collect bonus
-    if (!isSwap && increaseOrDecrease > 0 && state.score >= 0 && isBonus) {
-      commit("updateScore", {
-        increaseOrDecrease,
-        amount: state.settings.scoreBonus
+      commit("setSwapPenalty", {
+        amount: state.swapPenalty + state.settings.baseSwapPenalty
       });
     }
     // else if on correct guess
     else if (!isSwap && increaseOrDecrease > 0 && state.score >= 0) {
       commit("updateScore", {
         increaseOrDecrease,
-        amount: state.settings.scoreAmount
+        amount: state.streakBonus
+      });
+      commit("setStreakBonus", {
+        amount: state.streakBonus + state.settings.baseStreakBonus
       });
     }
   },
@@ -128,8 +129,7 @@ const actions = {
     commit("decrementStageSwaps", { stageId: getters.currentStage.id });
     dispatch("recalculateScore", {
       increaseOrDecrease: -1,
-      isSwap: true,
-      isBonus: false
+      isSwap: true
     });
   },
   swapCard({ commit, state, getters }) {
@@ -183,8 +183,7 @@ const actions = {
     ) {
       dispatch("recalculateScore", {
         increaseOrDecrease: +1,
-        isSwap: false,
-        isBonus: false
+        isSwap: false
       });
     }
 
@@ -194,6 +193,7 @@ const actions = {
       !getters.currentStage.evaluation
     ) {
       dispatch("recalculateTries", { increaseOrDecrease: -1 });
+      dispatch("resetBonusPenaltyIncrements");
       dispatch("flipTable", { delay: 1000 });
     }
 
@@ -204,18 +204,29 @@ const actions = {
     ) {
       dispatch("flipTable", { delay: 1000 });
     }
+  },
+  resetBonusPenaltyIncrements({ commit }) {
+    commit("setStreakBonus", {
+      amount: 100
+    });
+    commit("setSwapPenalty", {
+      amount: 50
+    });
   }
 };
 
 const mutations = {
+  setSwapPenalty(state, { amount }) {
+    state.swapPenalty = amount;
+  },
+  setStreakBonus(state, { amount }) {
+    state.streakBonus = amount;
+  },
   setFinalScore(state, { amount }) {
     state.finalScore = amount;
   },
   setGameEnded(state, { isEnded }) {
     state.gameEnded = isEnded;
-  },
-  toggleBonusType(state) {
-    state.bonusType = state.bonusType === "score" ? "tries" : "score";
   },
   updateTries(state, { increaseOrDecrease, amount }) {
     state.tries += amount * increaseOrDecrease;
@@ -224,6 +235,8 @@ const mutations = {
     state.score += amount * increaseOrDecrease;
   },
   resetGame(state) {
+    state.swapPenalty = state.settings.baseSwapPenalty;
+    state.scoreBonus = state.settings.startingScoreBonus;
     state.score = state.settings.startingScore;
     state.tries = state.settings.startingTries;
   },

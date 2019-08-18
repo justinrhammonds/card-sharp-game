@@ -2,29 +2,36 @@
   <section class="hud">
     <ul>
       <li ref="tries-value" class="total-tries">
-        <font-awesome-icon :key="index" v-for="(n,index) in tries" icon="heart" />
-      </li>
-      <li ref="score-value" class="total-score">Score : {{score}}</li>
-      <li class="bonus-container">
-        <span v-if="this.bonusType === 'score'" class="bonus-type" @click="toggleBonusType">
-          <font-awesome-icon icon="star" />+ 300
-        </span>
-        <span v-else class="bonus-type" @click="toggleBonusType">
-          <font-awesome-icon icon="star" />+ 1
+        <span v-if="(tries > 4)">
+          {{tries}}
           <font-awesome-icon icon="heart" />
         </span>
+        <span v-else>
+          <font-awesome-icon :key="index" v-for="(n,index) in tries" icon="heart" />
+        </span>
+      </li>
+      <li ref="score-value" class="total-score">{{score}}</li>
+      <li class="bonus-container">
+        <div>
+          Streak Bonus:
+          <span class="streak-bonus">{{streakBonus}}</span>
+        </div>
+        <div>
+          Swap Penalty:
+          <span class="swap-penalty">{{swapPenalty * -1}}</span>
+        </div>
       </li>
     </ul>
   </section>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "hud",
   computed: {
-    ...mapState(["bonusType", "score", "tries", "settings"])
+    ...mapState(["score", "tries", "settings", "streakBonus", "swapPenalty"])
   },
   watch: {
     score: function(newValue, oldValue) {
@@ -50,8 +57,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["toggleBonusType"]),
-
     toggleHudHighlight(el, change) {
       el.classList.toggle(change);
       setTimeout(() => {
@@ -74,44 +79,55 @@ export default {
 
 .hud ul {
   margin: 0 auto;
-  padding: 1rem calc(var(--nav-font-size) * 0.5);
+  padding: 0.5rem calc(var(--nav-font-size) * 0.5);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.bonus-container span:hover {
-  cursor: pointer;
-}
-
 .bonus-container {
-  background-color: mediumvioletred;
+  font-family: var(--open-sans);
+  font-size: var(--small-font-size);
   text-align: right;
-  width: 20vw;
 }
 
 .bonus-container span {
-  border: 2px solid white;
-  padding: calc(var(--nav-font-size) * 0.05) calc(var(--nav-font-size) * 0.15);
+  padding-left: 0.5rem;
+}
+
+.streak-bonus {
+  color: var(--green);
+}
+
+.swap-penalty {
+  color: var(--bright-coral);
 }
 
 .total-tries {
   float: left;
-  width: 20vw;
 }
 
 .total-score {
   margin: 0 auto;
   text-align: center;
-  width: 60vw;
+  font-size: var(--large-font-size);
 }
 
 .fa-star {
   margin-right: 0.6rem;
+  color: var(--yellow);
 }
 
 .fa-heart {
   margin: 0 0.25rem;
+}
+
+.score-bonus {
+  color: var(--green);
+}
+
+.swap-penalty {
+  color: var(--bright-coral);
 }
 
 @keyframes flash-red {
