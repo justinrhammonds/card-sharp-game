@@ -7,6 +7,7 @@
       <div class="recap-content">
         <div class="score-title">Final Score</div>
         <div class="score-content">{{finalScore}}</div>
+        <leaderboard />
       </div>
     </template>
   </modal>
@@ -14,12 +15,14 @@
 
 <script>
 import Modal from "./Modal";
+import Leaderboard from "./Leaderboard";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "game-recap",
   components: {
-    Modal
+    Modal,
+    Leaderboard
   },
   computed: {
     ...mapState(["gameEnded", "finalScore"])
@@ -39,12 +42,12 @@ export default {
 }
 
 .score-title {
-  font-size: calc(var(--nav-font-size) * 2.5);
+  font-size: var(--large-font-size);
   color: var(--blue);
 }
 
 .score-content {
-  font-size: calc(var(--nav-font-size) * 4);
+  font-size: calc(var(--nav-font-size) * 2.5);
 }
 
 .recap-title {

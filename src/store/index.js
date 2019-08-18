@@ -23,7 +23,7 @@ const state = () => ({
     baseSwapPenalty: 50
   },
   leaderboard,
-  personalBestScore: 0,
+  personalBestScore: 4000,
   streakBonus: 100,
   swapPenalty: 50
 });
@@ -40,6 +40,13 @@ const getters = {
   },
   isBonusStage: state => stageId => {
     return stageId === state.stages.length - 1;
+  },
+  highestScores: state => {
+    return state.leaderboard
+      .sort((a, b) => {
+        return b.score - a.score;
+      })
+      .slice(0, 24);
   }
 };
 
