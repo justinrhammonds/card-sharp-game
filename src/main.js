@@ -1,20 +1,28 @@
-import Vue from 'vue'
-import App from './App.vue'
-import VueRouter from './router'
-import store from './store'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faStar, faHeart } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
- 
+import Vue from "vue";
+import App from "./App.vue";
+import VueRouter from "./router";
+import VueApollo from "vue-apollo";
+import client from "./apollo/client";
+import store from "./store";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faStar, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 // Formerly, UI design was heavy on icons. Since it's not any longer, this should be replaced.
 library.add(faStar, faHeart);
+const apolloProvider = new VueApollo({
+  defaultClient: client
+});
 
-Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;
+Vue.prototype.$apollo = client;
+Vue.use(VueApollo);
 
 new Vue({
-  el: '#app',
+  el: "#app",
   store,
   router: VueRouter,
-  render: h => h(App),
-}).$mount('#app');
+  apolloProvider,
+  render: h => h(App)
+}).$mount("#app");

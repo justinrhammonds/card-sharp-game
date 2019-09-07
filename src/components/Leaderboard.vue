@@ -1,9 +1,32 @@
 <template>
   <div class="leaderboard">
-    <h3>All-Time Leaderboard</h3>
+    <div v-if="isNewHighScore">
+      <form class="highscore-form">
+        <fieldset>
+          <legend class="instructions">Enter name containing 4 to 10 alphanumeric characters.</legend>
+          <input
+            id="username"
+            type="text"
+            placeholder="enter username"
+            size="10"
+            :pattern="inputValidation"
+            required
+            v-model="scoreInput"
+            @input="validate(scoreInput)"
+          />
+          <button
+            v-if="isValidInput"
+            class="add-score-btn"
+            type="submit"
+            v-on:click="updateLeaderboard"
+          >Submit</button>
+        </fieldset>
+      </form>
+    </div>
     <ul class="score-list">
-      <li class="score" :key="index" v-for="(record, index) in highestScores">
-        <span class="score-amount">{{record.score}}</span>
+      <h3>Leaderboard</h3>
+      <li class="score" :key="index" v-for="(record, index) in getLeaderboard">
+        <span class="score-amount">{{record.total}}</span>
         <span class="score-player">{{record.player}}</span>
         <span class="score-date">{{displayDate(record.date)}}</span>
       </li>
@@ -12,17 +35,66 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { GET_LEADERBOARD, UPDATE_LEADERBOARD } from "../apollo/queries.js";
 
 export default {
   name: "leaderboard",
+  data() {
+    return {
+      inputValidation: "[A-Za-z0-9]{4,10}",
+      getLeaderboard: [],
+      scoreInput: null,
+      isValidInput: false
+    };
+  },
   computed: {
-    ...mapGetters(["highestScores"])
+    lowestScore: function() {
+      let scores = this.getLeaderboard;
+      scores.sort((a, b) => {
+        return b.total - a.total;
+      });
+      return scores[scores.length - 1];
+    },
+    isNewHighScore: function() {
+      return (
+        this.lowestScore !== undefined &&
+        this.lowestScore.total < this.$store.state.finalScore
+      );
+    }
   },
   methods: {
     displayDate(date) {
-      return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+      const result = new Date(parseInt(date));
+      if (!date) return "";
+      return `${result.getMonth() +
+        1}/${result.getDate()}/${result.getFullYear()}`;
+    },
+    async updateLeaderboard() {
+      this.$apollo
+        .mutate({
+          mutation: UPDATE_LEADERBOARD,
+          variables: {
+            total: this.$store.state.finalScore,
+            player: this.scoreInput,
+            date: new Date().valueOf().toString()
+          },
+          update: (cache, { data: { updateLeaderboard } }) => {
+            const data = cache.readQuery({ query: GET_LEADERBOARD });
+            data.getLeaderboard = updateLeaderboard;
+            cache.writeQuery({ query: GET_LEADERBOARD, data });
+          }
+        })
+        .catch(error => console.error(error));
+      this.isNewHighScore = false;
+    },
+    validate(input) {
+      if (input.match(this.inputValidation)) {
+        this.isValidInput = true;
+      }
     }
+  },
+  apollo: {
+    getLeaderboard: GET_LEADERBOARD
   }
 };
 </script>
@@ -30,10 +102,8 @@ export default {
 <style scoped>
 .leaderboard {
   text-align: center;
-  text-transform: uppercase;
-  word-spacing: 1rem;
-  border-top: 0.5rem double white;
-  padding: 1.5rem;
+  border-top: 0.5rem double #222;
+  padding: 1.5rem 0;
 }
 
 .leaderboard h3 {
@@ -46,8 +116,17 @@ export default {
   padding: 0.5rem 2rem;
 }
 
+.highscore-form {
+  border-bottom: 0.5rem double #222;
+}
+
 .score-list {
   padding: 0;
+  width: 100%;
+}
+
+.score-list h3 {
+  text-transform: uppercase;
 }
 
 .score-amount {
@@ -62,7 +141,44 @@ export default {
   align-content: right;
 }
 
-.leaderboard li {
+.leaderboard li,
+.instructions {
   font-family: var(--open-sans);
+}
+
+.highscore-form fieldset {
+  border: none;
+}
+
+.add-score-btn {
+  background-color: var(--green);
+  color: white;
+  border: none;
+  font-size: var(--nav-font-size);
+  font-family: var(--open-sans);
+  margin: 1.2rem auto;
+  padding: 0.75rem;
+  text-transform: uppercase;
+}
+
+#username {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  caret-color: grey;
+  color: white;
+  font-size: calc(20px + (40 - 20) * (100vw - 400px) / (1600 - 400));
+  font-family: var(--open-sans);
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+#username:focus,
+.add-score-btn:focus {
+  outline: none;
+}
+
+#username::placeholder {
+  color: #333;
 }
 </style>
