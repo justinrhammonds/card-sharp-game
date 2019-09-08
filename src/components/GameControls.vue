@@ -9,7 +9,7 @@
       </svg>
     </div>
     <button
-      v-if="isNotBonusStage && guessWasCorrect"
+      v-if="isNotBonusStage && guessWasCorrect && !isJokerBonus"
       class="control-arrow up"
       @click="predict('higher')"
     >
@@ -21,7 +21,7 @@
       </svg>
     </button>
     <button
-      v-if="isNotBonusStage && guessWasCorrect"
+      v-if="isNotBonusStage && guessWasCorrect && !isJokerBonus"
       class="control-arrow down"
       @click="predict('lower')"
     >
