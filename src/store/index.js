@@ -2,7 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import cards from "./cards";
 import stages from "./stages";
-import leaderboard from "./mockLeaderboard";
+import apollo from "../apollo/client";
+import { GET_LEADERBOARD, UPDATE_LEADERBOARD } from "../apollo/queries";
 
 Vue.use(Vuex);
 
@@ -15,16 +16,17 @@ const state = () => ({
   activeStageIndex: 0,
   gameEnded: false,
   finalScore: null,
+  highScoreFormSubmitted: false,
+  streakBonus: 100,
+  swapPenalty: 50,
+  leaderboard: [],
   settings: {
     startingScore: 0,
     startingTries: 3,
     triesAmount: 1,
     baseStreakBonus: 100,
     baseSwapPenalty: 50
-  },
-  leaderboard,
-  streakBonus: 100,
-  swapPenalty: 50
+  }
 });
 
 const getters = {
@@ -39,10 +41,46 @@ const getters = {
   },
   isBonusStage: state => stageId => {
     return stageId === state.stages.length - 1;
+  },
+  isNewHighScore: state => {
+    if (
+      !state.highScoreFormSubmitted &&
+      (state.leaderboard.length < 20 ||
+        state.finalScore >
+          state.leaderboard[state.leaderboard.length - 1].total)
+    ) {
+      return true;
+    }
+    return false;
   }
 };
 
 const actions = {
+  async getLeaderboard({ commit }) {
+    const response = await apollo.query({
+      query: GET_LEADERBOARD
+    });
+    const scores = response.data.getLeaderboard.sort((a, b) => {
+      return b.total - a.total;
+    });
+    commit("setLeaderboard", { scores: scores });
+  },
+  async updateLeaderboard({ dispatch, state }, { username }) {
+    await apollo.mutate({
+      mutation: UPDATE_LEADERBOARD,
+      variables: {
+        total: state.finalScore,
+        player: username,
+        date: new Date().valueOf().toString()
+      },
+      update: (cache, { data: { updateLeaderboard } }) => {
+        const data = cache.readQuery({ query: GET_LEADERBOARD });
+        data.getLeaderboard = updateLeaderboard;
+        cache.writeQuery({ query: GET_LEADERBOARD, data });
+      }
+    });
+    dispatch("getLeaderboard");
+  },
   awardBonus({ commit, state, getters, dispatch }) {
     commit("updateTries", {
       increaseOrDecrease: +1,
@@ -105,6 +143,7 @@ const actions = {
   },
   continueNewGame({ commit }) {
     commit("setGameEnded", { isEnded: false });
+    commit("setHighScoreForm", { submitted: false });
     setTimeout(commit("resetGame"), 1000);
   },
   recalculateTries({ commit, dispatch, state }, { increaseOrDecrease }) {
@@ -215,6 +254,12 @@ const actions = {
 };
 
 const mutations = {
+  setHighScoreForm(state, { submitted }) {
+    state.highScoreFormSubmitted = submitted;
+  },
+  setLeaderboard(state, { scores }) {
+    state.leaderboard = scores;
+  },
   setSwapPenalty(state, { amount }) {
     state.swapPenalty = amount;
   },

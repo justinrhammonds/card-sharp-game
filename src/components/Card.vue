@@ -22,7 +22,7 @@ export default {
       const url = require(`../assets/${this.suit}.svg`);
       if (this.revealed) {
         return `${url}#view-${this.faceValue}`;
-      } 
+      }
 
       return `${url}#view-card-back`;
     }

@@ -1,64 +1,48 @@
 <template>
-  <form class="highscore-form">
+  <form @submit.prevent="submit" class="highscore-form">
     <fieldset>
       <legend class="instructions">Enter name containing 4 to 10 alphanumeric characters.</legend>
       <input
+        v-focus
         id="username"
         type="text"
         placeholder="enter username"
         size="10"
         :pattern="inputValidation"
         required
-        v-model="scoreInput"
-        @input="validate(scoreInput)"
+        v-model="usernameInput"
+        @input="validate(usernameInput)"
       />
-      <button
-        v-if="isValidInput"
-        class="add-score-btn"
-        type="submit"
-        v-on:click="updateLeaderboard"
-      >Submit</button>
+      <button v-if="isValidInput" class="add-score-btn">Submit</button>
     </fieldset>
   </form>
 </template>
 
 <script>
-import { GET_LEADERBOARD, UPDATE_LEADERBOARD } from "../apollo/queries.js";
-
+import { mapActions, mapMutations } from "vuex";
 export default {
   name: "high-score-form",
   data: function() {
     return {
       inputValidation: "[A-Za-z0-9]{4,10}",
-      scoreInput: null,
+      usernameInput: null,
       isValidInput: false
     };
   },
   methods: {
-    async updateLeaderboard() {
-      this.$apollo
-        .mutate({
-          mutation: UPDATE_LEADERBOARD,
-          variables: {
-            total: this.$store.state.finalScore,
-            player: this.scoreInput,
-            date: new Date().valueOf().toString()
-          },
-          update: (cache, { data: { updateLeaderboard } }) => {
-            const data = cache.readQuery({ query: GET_LEADERBOARD });
-            data.getLeaderboard = updateLeaderboard;
-            cache.writeQuery({ query: GET_LEADERBOARD, data });
-          }
-        })
-        .catch(error => console.error(error));
-      this.isNewHighScore = false;
+    ...mapActions(["updateLeaderboard"]),
+    ...mapMutations(["setHighScoreForm"]),
+    submit() {
+      this.updateLeaderboard({ username: this.usernameInput });
+      this.setHighScoreForm({ submitted: true });
     },
     validate(input) {
       if (input.match(this.inputValidation)) {
         this.isValidInput = true;
       }
     }
-  }
+  },
+  created() {}
 };
 </script>
 
