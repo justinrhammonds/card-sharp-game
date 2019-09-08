@@ -19,7 +19,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 export default new ApolloClient({
   link: errorLink.concat(
-    createHttpLink({ uri: process.env.API_URL || "http://localhost:4000" })
+    createHttpLink({ uri: "https://card-sharp-leaderboard-api.herokuapp.com" })
   ),
   cache
 });
