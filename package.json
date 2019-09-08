@@ -58,7 +58,6 @@
     }
   },
   "browserslist": [
-    "last 3 versions in US",
     "last 2 versions",
     "> 1%",
     "not ie <= 8"
