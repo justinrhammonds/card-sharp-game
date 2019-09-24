@@ -7,7 +7,8 @@
       <div class="recap-content">
         <div class="score-title">Final Score</div>
         <div class="score-content">{{finalScore}}</div>
-        <leaderboard />
+        <!-- Temporarily toggled off while I migrate API database to Airtable -->
+        <!-- <leaderboard /> -->
       </div>
     </template>
   </modal>
